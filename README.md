@@ -21,18 +21,20 @@
 ## Introducción
 En este anteproyecto se explicará detalladamente todo en lo que se va basar la web que crearé. Como bien dice el título de la portada del documento, mi proyecto se llama **Gass Ink Tattoo**.
 
-Esta web va enfocada a las personas que les gusta el mundo de los tatuajes, ya que es una web de un futuro estudio de tatuaje. Podrás ver todo tipo de tatuajes en ella, además de poder concertar citas con los tatuadores para tu sesión, donde el tatuaje podrá ser de la misma web, creado desde cero a partir de una idea que se le dará al tatuador o tuyo personalizado. En este último caso el tatuador lo verificará para poder darte un precio exacto de lo que te costará la sesión del tatuaje. Además de lo ya mencionado, en esta web se podrá comprar productos relaccionados con la marca del estudio o para el mantenimiento de tus tatuajes. No entraré en más detalles, porque en los siguientes apartados hablaré en profundidad de cada tema.
+Esta web va enfocada a las personas que les gusta el mundo de los tatuajes, ya que es una web de un futuro estudio de tatuaje. Podrás ver todo tipo de tatuajes en ella, además de poder concertar citas con los tatuadores para tu sesión, donde el tatuaje podrá ser de la misma web, creado desde cero a partir de una idea que se le dará al tatuador o tuyo personalizado. Además de lo ya mencionado, en esta web se podrá comprar productos relacionados con la marca del estudio o para el mantenimiento de tus tatuajes. No entraré en más detalles, porque en los siguientes apartados hablaré en profundidad de cada tema.
 
 ## Finalidad
-Este proyecto estará enfocado en conseguir una web que sea muy intuitiva de manera que todo el mundo pueda navegar con facilidad por ella. Contendrá todo lo necesario para satisfacer las necesidades de cualquier cliente, desde citas de sesiones hasta posibilidad de comprar productos relaccionados con el mundo del tatuaje,
+Este proyecto estará enfocado en conseguir una web que sea muy intuitiva de manera que todo el mundo pueda navegar con facilidad por ella. Contendrá todo lo necesario para satisfacer las necesidades de cualquier cliente, desde citas de sesiones hasta posibilidad de comprar productos relacionados con el mundo del tatuaje.
 
 Por otro lado, quiero que el estudio de tatuaje tenga todo bien organizado en su web, así los trabajadores puedan tener todas sus sesiones, con sus respectivos clientes, ordenadas de manera sencilla.
 
 En la siguiente enumeración voy a recalcar algunos de los puntos más importantes del proyecto:
 
 - **Variedad de diseños:** Tendremos muchísima cantidad de modelos de tatuajes todos ordenados por diferentes tipos para que el cliente pueda encontrar rápidamente lo más semejante a su gusto.
-- **Citas para sesiones de tatuaje:** Se podrá enviar a los tatuadores peticiones para coger cita, de esta forma poder dejar todo confirmado y aceptado por ambas partes, al concertar la cita se le indicará al cliente hora y precio.
+- **Citas para sesiones de tatuaje:** Se podrá enviar a los tatuadores peticiones para coger cita, de esta forma poder dejar todo confirmado y aceptado por ambas partes, al concertar la cita se le indicará al cliente los datos de esta misma.
 - **Apartado de merchardising y productos para tatuajes:** Podrás añadir a tu cita ciertos productos del estudio, como merchandising o productos de cuidado de tatuajes. Todo esto se incluirá en el precio final que se abonará a través de la web.
+
+La conclusión a la que quiero llegar es que el estudio de tatuajes tenga una web muy útil para facilitar la distribución del trabajo y la satisfacción de los clientes.
 
 ## Objetivos
 ### Búsqueda con múltiples filtros
@@ -41,7 +43,7 @@ Podrá buscar sus tatuajes por tipos, además de poder ordenarlos según el crit
 ### Sistema de citas
 Los clientes podrán solicitar su sesión a través de la web con un diseño seleccionado de ella o uno propio (también se elegirá el horario de esta), en este último caso, el tatuador verificará primero el diseño para luego aceptar e informarle sobre el precio al cliente.
 
-### Gestión desde el apartado de trabajador
+### Gestión desde el apartado del trabajador
 El trabajador podrá iniciar sesión en la web para poder acceder a sus datos personales, entre ellos estarán sus últimos trabajos realizados, aparte de ver las citas próximas que tiene pendiente, y también las solicitudes de diseños personalizados de los clientes.
 
 ### Perfil de usuarios
@@ -54,10 +56,10 @@ Buscaré el equilibrio de manera que sea lo más intuitivo para todo tipo de cli
 ## Medios necesarios
 En este apartado hablaré sobre el hardware y software que utilizaré para desarrollar el proyecto:
 
-### HARDWARE
-- Ordenador personal, el cual tiene suficiente capacidad para desarrollar todo el proyecto sin ningún problema.
+### Hardware
+- **Ordenador personal**, el cual tiene suficiente capacidad para desarrollar todo el proyecto sin ningún problema.
 
-### SOFTWARE
+### Software
 - **Entorno de desarrollo:** utilizaré Visual Studio Code, ya que para mi gusto es en el que más he desarrollado, además de tener todo configurado a mis necesidades.
 - **Frameworks**: para el tema de front-end usaré React y para el lado del back-end usaré un framework dedicado a esta parte de la web, como podría ser Symfony, Express, etc
 - **Elementos gráficos:** estos serán previamente editados en Adobe Photoshop CC 19.
@@ -66,20 +68,20 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 
 ## Planificación
 
-### Comienzo del proyecto y estructuración de la web (5h)
+### Comienzo del proyecto (5h)
 
 - Creación del proyecto.
 - Creación de la base de datos.
-- Creación de la estructura básica de la web.
+- Organización de la estructura de la web.
 
-### Creación de funcionalidades de la navegación de la página (12h)
+### Creación de funcionalidades de la navegación de la página (13h)
 
 - Barra de navegación de la página.
 - Apartado de productos y merchandising.
 - Apartado de diseños.
 - Buscador en ambos apartados con filtros.
 
-### Creación de funcionalidades principales - Trabajador (12h)
+### Creación de funcionalidades principales - Trabajador (13h)
 
 - Añadir al login la opción para los trabajadores.
 - Interfaz para los trabajadores.
@@ -87,7 +89,7 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - Manejo de citas.
 - Visualizador de citas pendientes
 
-### Creación de funcionalidades principales - Cliente (12h)
+### Creación de funcionalidades principales - Cliente (13h)
 
 - Sistema de registro de clientes.
 - Login para los clientes.
@@ -97,7 +99,10 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - Sistema de pedir citas.
 - Funcionalidad para solicitar cita o pagar el carrito, generador de factura.
 
-### Implementación de diseño y apartado visual (7h)
+### Retoques del apartado visual y búsqueda de errores (7h)
 
-- Añadir Bootstrap.
-- Estilos adicionales.
+- Integración de Bootstrap para mejorar la apariencia y la usabilidad.
+- Desarrollo de estilos adicionales para mejorar la experiencia visual del usuario.
+- Comprobar al máximo la funcionalidad de la web intentando corregir todos los errores detectables.
+
+### Tiempo total estimado - 51h
