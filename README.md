@@ -1,16 +1,14 @@
 # ANTEPROYECTO
 
-<div style="text-align: center">
-    <strong><p style="font-size: 70px">GASS INK TATTOO</p></strong>
-    <img src="logo.png" alt="Descripción de la imagen" width="400px">
-</div>
+![Título](./titulo.svg "Título")
 
-|                                        |                                 |
-|----------------------------------------|--------------------------------------|
-| Autor                                  | Juan José Flores Gassín             |
-| Centro educativo                       | I.E.S. Francisco Romero Vargas (Jerez de la Frontera) |
-| Grado Superior                    | Desarrollo de Aplicaciones Web      |
-| Curso                                  | 2023/2024                            |
+![Logo](./logo.png "Logo") 
+
+| Autor                          | Juan José Flores Gassín                      |
+|--------------------------------|---------------------------------------------|
+| Centro educativo               | [I.E.S. Francisco Romero Vargas (Jerez de la Frontera)](https://sites.google.com/iesromerovargas.com/romerovargas/inicio) |
+| Grado Superior                 | Desarrollo de Aplicaciones Web               |
+| Curso                          | 2023/2024                                    |
 
 
 ## Índice
@@ -68,23 +66,20 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 
 ## Planificación
 
-### Comienzo del proyecto y estructuración de la web
+### Comienzo del proyecto y estructuración de la web (5h)
 
 - Creación del proyecto.
 - Creación de la base de datos.
 - Creación de la estructura básica de la web.
 
-### Creación de funcionalidades principales - cliente
+### Creación de funcionalidades de la navegación de la página (12h)
 
-- Sistema de registro de clientes.
-- Login para los clientes.
-- Interfaz de usuario.
-- Funcionalidad para poder marcar artículos como favoritos.
-- Creación de carrito, además de funcionalidad.
-- Sistema de pedir citas tras la elección de algún diseño.
-- Funcionalidad para solicitar cita o pagar el carrito, generador de factura.
+- Barra de navegación de la página.
+- Apartado de productos y merchandising.
+- Apartado de diseños.
+- Buscador en ambos apartados con filtros.
 
-### Creación de funcionalidades principales - trabajador
+### Creación de funcionalidades principales - Trabajador (12h)
 
 - Añadir al login la opción para los trabajadores.
 - Interfaz para los trabajadores.
@@ -92,7 +87,17 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - Manejo de citas.
 - Visualizador de citas pendientes
 
-### Creación de funcionalidades de la navegación de la página
+### Creación de funcionalidades principales - Cliente (12h)
 
-- Creación de la barra de búsqueda con filtros.
-- 
+- Sistema de registro de clientes.
+- Login para los clientes.
+- Interfaz de usuario.
+- Funcionalidad para poder marcar artículos como favoritos.
+- Creación de carrito.
+- Sistema de pedir citas.
+- Funcionalidad para solicitar cita o pagar el carrito, generador de factura.
+
+### Implementación de diseño y apartado visual (7h)
+
+- Añadir Bootstrap.
+- Estilos adicionales.
