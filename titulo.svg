@@ -7,7 +7,7 @@
                     font-size: 25px; 
                     color: white;
                     text-align: center;
-                    animation: appear 3s forwards, shine 2s infinite alternate 3s; 
+                    animation: appear 4s forwards, shine 2s infinite alternate 2s; 
                     opacity: 0;
                     padding-top: 10px;
                 }
