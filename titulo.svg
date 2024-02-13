@@ -4,20 +4,22 @@
             <style>
                 p {
                     font-family: Arial, sans-serif;
-                    font-size: 25px; 
+                    font-size: 25px;
                     color: white;
                     text-align: center;
-                    animation: appear 3s forwards, shine 2s infinite alternate 2s; 
+                    animation: appear 3s forwards, shine 2s infinite alternate 2s;
                     opacity: 0;
                     padding-top: 10px;
                 }
 
                 @keyframes appear {
                     from {
-                        opacity: 0; 
+                        opacity: 0;
+                        transform: scale(0.5);
                     }
                     to {
-                        opacity: 1; 
+                        opacity: 1;
+                        transform: scale(1); 
                     }
                 }
 
@@ -34,3 +36,4 @@
         </div>
     </foreignObject>
 </svg>
+
