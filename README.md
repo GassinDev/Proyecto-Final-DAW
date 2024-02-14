@@ -32,7 +32,7 @@ En la siguiente enumeración voy a recalcar algunos de los puntos más important
 
 - **Variedad de diseños:** Tendremos muchísima cantidad de modelos de tatuajes todos ordenados por diferentes tipos para que el cliente pueda encontrar rápidamente lo más semejante a su gusto.
 - **Citas para sesiones de tatuaje:** Se podrá enviar a los tatuadores peticiones para coger cita, de esta forma poder dejar todo confirmado y aceptado por ambas partes, al concertar la cita se le indicará al cliente los datos de esta misma.
-- **Apartado de merchardising y productos para tatuajes:** Podrás añadir a tu cita ciertos productos del estudio, como merchandising o productos de cuidado de tatuajes. Todo esto se incluirá en el precio final que se abonará a través de la web.
+- **Apartado de merchardising y productos para tatuajes:** Además de poder concertar tus citas como bien dije en el apartado anterior, se podrá comprar productos para tus tatuajes y merchardising del estudio, añádiendolos a tu carrito y pasando por sistema de pago web, recibiendo tu respectiva factura. 
 
 La conclusión a la que quiero llegar es que el estudio de tatuajes tenga una web muy útil para facilitar la distribución del trabajo y la satisfacción de los clientes.
 
@@ -41,7 +41,7 @@ La conclusión a la que quiero llegar es que el estudio de tatuajes tenga una we
 Podrá buscar sus tatuajes por tipos, además de poder ordenarlos según el criterio que elija, como podría ser el precio o la fecha de creación.
 
 ### Sistema de citas
-Los clientes podrán solicitar su sesión a través de la web con un diseño seleccionado de ella o uno propio (también se elegirá el horario de esta), en este último caso, el tatuador verificará primero el diseño para luego aceptar e informarle sobre el precio al cliente.
+Los clientes podrán solicitar su sesión a través de la web con un diseño seleccionado de ella o uno propio, en este último caso, el tatuador verificará primero el diseño para luego aceptar e informarle sobre el precio al cliente.
 
 ### Gestión desde el apartado del trabajador
 El trabajador podrá iniciar sesión en la web para poder acceder a sus datos personales, entre ellos estarán sus últimos trabajos realizados, aparte de ver las citas próximas que tiene pendiente, y también las solicitudes de diseños personalizados de los clientes.
