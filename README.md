@@ -24,7 +24,7 @@ En este anteproyecto se explicará detalladamente todo en lo que se va basar la 
 Esta web va enfocada a las personas que les gusta el mundo de los tatuajes, ya que es una web de un futuro estudio de tatuaje. Podrás ver todo tipo de tatuajes en ella, además de poder concertar citas con los tatuadores para tu sesión, donde el tatuaje podrá ser de la misma web, creado desde cero a partir de una idea que se le dará al tatuador o tuyo personalizado. Además de lo ya mencionado, en esta web se podrá comprar productos relacionados con la marca del estudio o para el mantenimiento de tus tatuajes. No entraré en más detalles, porque en los siguientes apartados hablaré en profundidad de cada tema.
 
 ## Finalidad
-Este proyecto estará enfocado en conseguir una web que sea muy intuitiva de manera que todo el mundo pueda navegar con facilidad por ella. Contendrá todo lo necesario para satisfacer las necesidades de cualquier cliente, desde citas de sesiones hasta posibilidad de comprar productos relacionados con el mundo del tatuaje.
+Este proyecto estará enfocado en conseguir una web que sea muy intuitiva de manera que todo el mundo pueda navegar con facilidad por ella.
 
 Por otro lado, quiero que el estudio de tatuaje tenga todo bien organizado en su web, así los trabajadores puedan tener todas sus sesiones, con sus respectivos clientes, ordenadas de manera sencilla.
 
@@ -64,7 +64,7 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - **Frameworks**: para el tema de front-end usaré React y para el lado del back-end usaré un framework dedicado a esta parte de la web, como podría ser Symfony, Express, etc
 - **Elementos gráficos:** estos serán previamente editados en Adobe Photoshop CC 19.
 - **Base de datos:** para el almacenamiento de los usuarios, trabajadores, diseños, etc.
-- **Aspecto de la web:** además de estilos externos con CSS, añadiré Bootstrap para mejorar el diseño de la web.
+- **Aspecto de la web:** además de estilos con CSS, añadiré Bootstrap para mejorar el diseño de la web donde sea necesario.
 
 ## Planificación
 
@@ -79,17 +79,17 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - Barra de navegación de la página.
 - Apartado de productos y merchandising.
 - Apartado de diseños.
-- Buscador en ambos apartados con filtros.
+- Buscador con filtros.
 
-### Creación de funcionalidades principales - Trabajador (13h)
+### Creación de funcionalidades principales - Trabajador (14h)
 
-- Añadir al login la opción para los trabajadores.
+- Login para los trabajadores.
 - Interfaz para los trabajadores.
 - Visualizador de los diseños propios del trabajador.
 - Manejo de citas.
 - Visualizador de citas pendientes
 
-### Creación de funcionalidades principales - Cliente (13h)
+### Creación de funcionalidades principales - Cliente (14h)
 
 - Sistema de registro de clientes.
 - Login para los clientes.
@@ -99,7 +99,7 @@ En este apartado hablaré sobre el hardware y software que utilizaré para desar
 - Sistema de pedir citas.
 - Funcionalidad para solicitar cita o pagar el carrito, generador de factura.
 
-### Retoques del apartado visual y búsqueda de errores (7h)
+### Retoques del apartado visual y búsqueda de errores (5h)
 
 - Integración de Bootstrap para mejorar la apariencia y la usabilidad.
 - Desarrollo de estilos adicionales para mejorar la experiencia visual del usuario.
