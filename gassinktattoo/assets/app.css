@@ -1,0 +1,9 @@
+@font-face {
+  font-family: 'fuente-1';
+  src: url('./fonts/EdgeDisplay-Regular.otf') format('opentype');
+}
+
+body {
+  font-family: 'fuente-1';
+  color: white;
+}
