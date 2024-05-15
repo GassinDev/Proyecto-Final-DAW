@@ -15,4 +15,12 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/veri', name: 'veri')]
+    public function veri(): Response
+    {
+        return $this->render('registration/confirmation_email.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }

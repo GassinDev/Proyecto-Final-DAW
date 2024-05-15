@@ -9,11 +9,12 @@ function NavBar() {
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="mr-auto">
-                    <Nav.Link href="#home">Inicio</Nav.Link>
-                    <Nav.Link href="#link">Acerca de</Nav.Link>
+                    <Nav.Link href="/home">Inicio</Nav.Link>
+                    <Nav.Link href="/">Acerca de</Nav.Link>
                     <Nav.Link href="#link">Productos</Nav.Link>
                     <Nav.Link href="#link">Tatuajes</Nav.Link>
-                    <Nav.Link href="#link">Inicio de sesión</Nav.Link>
+                    <Nav.Link href="/login">Inicio de sesión</Nav.Link>
+                    <Nav.Link href="/register">Registro</Nav.Link>
                 </Nav>
             </Navbar.Collapse>
         </Navbar>
