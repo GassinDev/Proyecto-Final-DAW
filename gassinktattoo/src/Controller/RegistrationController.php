@@ -41,7 +41,9 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            $this->emailVerifier->sendEmailConfirmation(
+                'app_verify_email',
+                $user,
                 (new TemplatedEmail())
                     ->from(new Address('gassinktattoo.bot@gmail.com', 'Confirmación Email'))
                     ->to($user->getEmail())
@@ -79,13 +81,22 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('app_register');
     }
 
+    //RUTA DE COMPROBACIÓN DE VERIFICACIÓN
     #[Route('/home2', name: 'home2')]
-    public function home()
+    public function home(): Response
     {
-        if($this->getUser()->isVerified() == false){
-            echo "el email no está verificado";
-        }else{
-            echo "el email si está verificado";
+        $user = $this->getUser();
+
+        //COMPROBAMOS QUE getUser() NOS DEVUELVA UN OBEJETO Cliente
+        
+        if ($user instanceof Cliente) {
+            if (!$user->isVerified()) {
+                echo "el email no está verificado";
+            } else {
+                echo "el email sí está verificado";
+            }
+        } else {
+            echo "No se pudo determinar el estado de verificación del email.";
         }
 
         return $this->render('registration/home.html.twig', [
