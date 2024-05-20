@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Producto;
 use Doctrine\ORM\EntityManagerInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -22,7 +23,15 @@ class ProductoCrudController extends AbstractCrudController
     
     public function configureFields(string $pageName): iterable
     {
-        $uniqueId = uniqid();
+        $imageField = ImageField::new('image', 'Foto Producto')
+        ->setBasePath('/uploads/images/productos')
+        ->setUploadDir('public/uploads/images/productos')
+        ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]');
+
+        // VERIFICAMOS SI ESTAMOS EN EDITAR PARA CORREGIR EL FALLO DEL CAMPO IMAGEN CON REQUIRE
+        if ($pageName === Crud::PAGE_EDIT) {
+            $imageField->setRequired(false);
+        }
 
         return [
             IdField::new('id')
@@ -30,10 +39,7 @@ class ProductoCrudController extends AbstractCrudController
             TextField::new('name', 'Nombre'),
             TextEditorField::new('description', 'Descripción'),
             NumberField::new('price', 'Precio'),
-            ImageField::new('image', 'Foto Producto')
-                ->setBasePath('/uploads/images/productos')
-                ->setUploadDir('public/uploads/images/productos')
-                ->setUploadedFileNamePattern($uniqueId.'.[extension]'),
+            $imageField,
             NumberField::new('stock', 'Stock'),
             ChoiceField::new('type', 'Tipo')
             ->setChoices([

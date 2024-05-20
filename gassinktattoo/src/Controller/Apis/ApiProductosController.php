@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Apis;
 
+use App\Repository\ProductoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class ApiProductosController extends AbstractController
 {
-    #[Route('/api/productos', name: 'app_api_productos')]
-    public function index(): Response
+    #[Route('/api/productos', name: 'api_productos')]
+    public function productosGet(ProductoRepository $productoRepository): Response
     {
-        return $this->render('api_productos/index.html.twig', [
-            'controller_name' => 'ApiProductosController',
-        ]);
+        $productos = $productoRepository->findAll();
+        return $this->json($productos);
     }
 }
