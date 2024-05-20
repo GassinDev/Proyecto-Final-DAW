@@ -6,25 +6,19 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const NavBar = () => {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
+        <Navbar expand="lg" bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand href="#home">GassInkTattoo</Navbar.Brand>
+                <Navbar.Brand>GassInkTattoo</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Inicio</Nav.Link>
+                        <Nav.Link href="/home">Inicio</Nav.Link>
                         <Nav.Link href="#link">Acerca de</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Productos</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Tatuajes</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
+                        <Nav.Link href="#link">Productos</Nav.Link>
+                        <Nav.Link href="#link">Tatuajes</Nav.Link>
+                        <Nav.Link href="#link">Carrito</Nav.Link>
+                        <Nav.Link href="/register">Registro</Nav.Link>
+                        <Nav.Link href="/login">Inicio de sesión</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
