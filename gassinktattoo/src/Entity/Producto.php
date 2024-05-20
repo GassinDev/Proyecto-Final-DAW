@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductoRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProductoRepository::class)]
@@ -19,8 +20,8 @@ class Producto
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column]
-    private ?float $price = null;
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
+    private ?string $price = null;
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
@@ -63,12 +64,12 @@ class Producto
         return $this;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): ?string
     {
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(string $price): static
     {
         $this->price = $price;
 
