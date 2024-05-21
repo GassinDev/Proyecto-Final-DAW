@@ -21,4 +21,10 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/productos.html.twig');
     }
+
+    #[Route('/merchandising', name: 'merchandising')]
+    public function merchandising(): Response
+    {
+        return $this->render('pages/merchandising.html.twig');
+    }
 }

@@ -30,23 +30,28 @@ const ListadoProductos = () => {
     }
 
     return (
-        <div>
-            <h2>Listado de Productos</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div className='container'>
+            <h2 className='text-center my-4'>Listado de Productos</h2>
+            <div className='row justify-content-center'>
                 {productos.map(producto => (
-                    <Card key={producto.id} style={{ width: '18rem', marginBottom: '20px' }}>
-                        <Card.Img variant="top" src={"uploads/images/productos/" + producto.image} alt={producto.name} />
-                        <Card.Body>
-                            <Card.Title>{producto.name}</Card.Title>
-                            <Card.Text>{producto.description}</Card.Text>
-                            <Card.Text>Precio: ${producto.price}</Card.Text>
-                            <Button variant="primary">Ver detalles</Button>
-                        </Card.Body>
-                    </Card>
+                    <div key={producto.id} className='col-lg-4 col-md-6 mb-4'>
+                        <div className='d-flex justify-content-center'>
+                            <Card style={{ width: '18rem' }}>
+                                <Card.Img variant="top" src={"uploads/images/productos/" + producto.image} alt={producto.name} />
+                                <Card.Body>
+                                    <Card.Title>{producto.name}</Card.Title>
+                                    <Card.Text>{producto.description}</Card.Text>
+                                    <Card.Text>Precio: {producto.price}€</Card.Text>
+                                    <Button variant="secondary">Añadir al carrito</Button>
+                                </Card.Body>
+                            </Card>
+                        </div>
+                    </div>
                 ))}
             </div>
         </div>
     );
 };
+
 
 export default ListadoProductos;

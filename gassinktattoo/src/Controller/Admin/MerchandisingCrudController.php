@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Producto;
+use App\Entity\Merchandising;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
@@ -13,20 +13,19 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
-class ProductoCrudController extends AbstractCrudController
+class MerchandisingCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
-        return Producto::class;
+        return Merchandising::class;
     }
 
-    
     public function configureFields(string $pageName): iterable
     {
         $imageField = ImageField::new('image', 'Foto Producto')
-        ->setBasePath('/uploads/images/productos')
-        ->setUploadDir('public/uploads/images/productos')
-        ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]');
+            ->setBasePath('/uploads/images/merchandising')
+            ->setUploadDir('public/uploads/images/merchandising')
+            ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]');
 
         // VERIFICAMOS SI ESTAMOS EN EDITAR PARA CORREGIR EL FALLO DEL CAMPO IMAGEN CON REQUIRE
         if ($pageName === Crud::PAGE_EDIT) {
@@ -40,11 +39,22 @@ class ProductoCrudController extends AbstractCrudController
             TextEditorField::new('description', 'Descripción'),
             NumberField::new('price', 'Precio'),
             $imageField,
-            NumberField::new('stock', 'Stock'),
+            ChoiceField::new('size', 'Tamaños')
+                ->setRequired(false)
+                ->setChoices([
+                    'XS' => 'XS',
+                    'S' => 'S',
+                    'M' => 'M',
+                    'L' => 'L',
+                    'XL' => 'XL'
+                ])
+                ->allowMultipleChoices(),
             ChoiceField::new('type', 'Tipo')
-            ->setChoices([
-                'Cremas' => 'crema',
-                'Sprays' => 'spray']),
+                ->setChoices([
+                    'Gorra' => 'gorra',
+                    'Camiseta' => 'camiseta',
+                    'Bolso' => 'bolso'
+                ]),
         ];
     }
 
@@ -54,10 +64,9 @@ class ProductoCrudController extends AbstractCrudController
 
         // ELIMINAR LA IMAGEN ASOCIADA AL PRODUCTO
         $photo = $entityInstance->getImage();
-        $photoPath = "../public/uploads/images/productos/" . $photo;
+        $photoPath = "../public/uploads/images/merchandising/" . $photo;
         if (file_exists($photoPath)) {
             unlink($photoPath);
         }
     }
-    
 }

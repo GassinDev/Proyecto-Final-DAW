@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\ProductoRepository;
+use App\Repository\MerchandisingRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductoRepository::class)]
-class Producto
+#[ORM\Entity(repositoryClass: MerchandisingRepository::class)]
+class Merchandising
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -26,11 +26,11 @@ class Producto
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
-    #[ORM\Column]
-    private ?int $stock = null;
-
     #[ORM\Column(length: 255)]
     private ?string $type = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?array $size = null;
 
     public function getId(): ?int
     {
@@ -85,18 +85,6 @@ class Producto
         return $this;
     }
 
-    public function getStock(): ?int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): static
-    {
-        $this->stock = $stock;
-
-        return $this;
-    }
-
     public function getType(): ?string
     {
         return $this->type;
@@ -105,6 +93,18 @@ class Producto
     public function setType(string $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getSize(): ?array
+    {
+        return $this->size;
+    }
+
+    public function setSize(?array $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }
