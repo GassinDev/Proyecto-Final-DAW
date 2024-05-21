@@ -2,7 +2,6 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 
 const NavBar = () => {
     return (
@@ -14,7 +13,7 @@ const NavBar = () => {
                     <Nav className="me-auto">
                         <Nav.Link href="/home">Inicio</Nav.Link>
                         <Nav.Link href="#link">Acerca de</Nav.Link>
-                        <Nav.Link href="#link">Productos</Nav.Link>
+                        <Nav.Link href="/productos">Productos</Nav.Link>
                         <Nav.Link href="#link">Merchandising</Nav.Link>
                         <Nav.Link href="#link">Tatuajes</Nav.Link>
                         <Nav.Link href="#link">Carrito</Nav.Link>

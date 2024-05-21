@@ -15,4 +15,10 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/productos', name: 'productos')]
+    public function productos(): Response
+    {
+        return $this->render('pages/productos.html.twig');
+    }
 }
