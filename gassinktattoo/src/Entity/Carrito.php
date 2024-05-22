@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\CarritoRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CarritoRepository::class)]
@@ -14,7 +13,7 @@ class Carrito
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'carrito', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Cliente $cliente = null;
 

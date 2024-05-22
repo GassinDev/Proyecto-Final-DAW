@@ -36,9 +36,6 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    #[ORM\OneToOne(mappedBy: 'cliente', cascade: ['persist', 'remove'])]
-    private ?Carrito $carrito = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -122,23 +119,6 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
-
-        return $this;
-    }
-
-    public function getCarrito(): ?Carrito
-    {
-        return $this->carrito;
-    }
-
-    public function setCarrito(Carrito $carrito): static
-    {
-        // set the owning side of the relation if necessary
-        if ($carrito->getCliente() !== $this) {
-            $carrito->setCliente($this);
-        }
-
-        $this->carrito = $carrito;
 
         return $this;
     }

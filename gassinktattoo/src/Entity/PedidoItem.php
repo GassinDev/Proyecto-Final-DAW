@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CarritoItemRepository;
+use App\Repository\PedidoItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CarritoItemRepository::class)]
-class CarritoItem
+#[ORM\Entity(repositoryClass: PedidoItemRepository::class)]
+class PedidoItem
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,7 +15,7 @@ class CarritoItem
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Carrito $carrito = null;
+    private ?Pedido $pedido = null;
 
     #[ORM\ManyToOne]
     private ?Producto $producto = null;
@@ -26,19 +26,22 @@ class CarritoItem
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size = null;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getCarrito(): ?Carrito
+    public function getPedido(): ?Pedido
     {
-        return $this->carrito;
+        return $this->pedido;
     }
 
-    public function setCarrito(?Carrito $carrito): static
+    public function setPedido(?Pedido $pedido): static
     {
-        $this->carrito = $carrito;
+        $this->pedido = $pedido;
 
         return $this;
     }
@@ -79,4 +82,15 @@ class CarritoItem
         return $this;
     }
 
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): static
+    {
+        $this->size = $size;
+
+        return $this;
+    }
 }
