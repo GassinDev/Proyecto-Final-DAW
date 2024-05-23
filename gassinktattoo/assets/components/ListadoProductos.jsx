@@ -11,22 +11,42 @@ const ListadoProductos = () => {
     }, []);
 
     const fetchProductos = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/productos');
-            if (!response.ok) {
-                throw new Error('Error al obtener los productos');
-            }
-            const data = await response.json();
-            setProductos(data);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error:', error);
-            setLoading(false);
+
+        const response = await fetch('http://127.0.0.1:8000/api/productos');
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los productos');
         }
+
+        const data = await response.json();
+        setProductos(data);
+        setLoading(false);
     };
 
     if (loading) {
         return <div>Cargando...</div>;
+    }
+
+    //FUNCIÓN PARA PODER ENVIAR LOS DATOS AL BACKEND
+    const handleAddToCart = async (productoId) => {
+
+        const response = await fetch('http://127.0.0.1:8000/api/cart/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                productoId: productoId,
+                quantity: 1
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al añadir el producto al carrito');
+        }
+
+        alert('Producto añadido al carrito');
+
     }
 
     return (
@@ -40,9 +60,9 @@ const ListadoProductos = () => {
                                 <Card.Img variant="top" src={"uploads/images/productos/" + producto.image} alt={producto.name} />
                                 <Card.Body>
                                     <Card.Title>{producto.name}</Card.Title>
-                                    <Card.Text>{producto.description}</Card.Text>
+                                    {/* <Card.Text>{producto.description}</Card.Text> */}
                                     <Card.Text>Precio: {producto.price}€</Card.Text>
-                                    <Button variant="secondary">Añadir al carrito</Button>
+                                    <Button variant="secondary" onClick={() => handleAddToCart(producto.id)}>Añadir al carrito</Button>
                                 </Card.Body>
                             </Card>
                         </div>

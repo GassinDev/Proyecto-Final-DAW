@@ -3,13 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Carrito;
-use App\Entity\CarritoItem;
 use App\Entity\Cliente;
-use App\Entity\Merchandising;
-use App\Repository\CarritoItemRepository;
 use App\Repository\CarritoRepository;
 use App\Repository\ClienteRepository;
 use App\Repository\MerchandisingRepository;
+use App\Repository\ProductoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,8 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class CarritoController extends AbstractController
 {
+    //RUTA PARA AÑADIR ARTICULOS AL CARRITO, AJUSTADO PARA QUE FUNCIONE TANTO PARA MERCHANDISING COMO PARA PRODUCTOS - MEDIANTE VALIDACIONES
     #[Route('/api/cart/add', name: 'ad_to_carrito', methods: ['POST'])]
-    public function addToCart(Request $request, Security $security, CarritoRepository $carritoRepository, ClienteRepository $clienteRepository, MerchandisingRepository $merchandisingRepository) : Response
+    public function addToCart(Request $request, Security $security, CarritoRepository $carritoRepository, ClienteRepository $clienteRepository, MerchandisingRepository $merchandisingRepository, ProductoRepository $productoRepository) : Response
     {
         // DECODIFICAR LOS DATOS JSON RECIBIDOS EN LA SOLICITUD
         $data = json_decode($request->getContent(), true);
@@ -34,20 +33,37 @@ class CarritoController extends AbstractController
         }
 
         // OBTENEMOS LOS IDS DEL ARRAY DE DATOS
-        $merchanId = $data['merchanId'];
+        if((isset($data['merchanId']) && $data['merchanId'] !== null)){
+
+            $articuloId = $data['merchanId'];
+            $size = $data['size'];
+
+            // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
+            $merchan = $merchandisingRepository->find($articuloId);
+
+        }else{
+            $articuloId = $data['productoId'];
+
+            // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
+            $producto = $productoRepository->find($articuloId);
+        }
+        
         $quantity = $data['quantity'];
-        $size = $data['size'];
 
         // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
         $clienteEntity = $clienteRepository->find($clienteId);
-        $merchan = $merchandisingRepository->find($merchanId);
-
+        
         // CREAR UNA NUEVA INSTANCIA DE CARRITO Y ESTABLECER SUS PROPIEDADES
         $carrito = new Carrito();
         $carrito->setCliente($clienteEntity);
-        $carrito->setMerchandising($merchan);
         $carrito->setQuantity($quantity);
-        $carrito->setSize($size);
+
+        if(isset($merchan) && $merchan !== null){
+            $carrito->setMerchandising($merchan);
+            $carrito->setSize($size);
+        }else{
+            $carrito->setProducto($producto);
+        }
 
         // GUARDAR EL PRODUCTO EN EL CARRITO DE LA BASE DE DATOS
         $carritoRepository->save($carrito);
