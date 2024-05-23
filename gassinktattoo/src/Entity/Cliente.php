@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ClienteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -35,6 +37,17 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private bool $isVerified = false;
+
+    /**
+     * @var Collection<int, Carrito>
+     */
+    #[ORM\OneToMany(targetEntity: Carrito::class, mappedBy: 'cliente', orphanRemoval: true)]
+    private Collection $carritos;
+
+    public function __construct()
+    {
+        $this->carritos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -119,6 +132,36 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     public function setVerified(bool $isVerified): static
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Carrito>
+     */
+    public function getCarritos(): Collection
+    {
+        return $this->carritos;
+    }
+
+    public function addCarrito(Carrito $carrito): static
+    {
+        if (!$this->carritos->contains($carrito)) {
+            $this->carritos->add($carrito);
+            $carrito->setCliente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarrito(Carrito $carrito): static
+    {
+        if ($this->carritos->removeElement($carrito)) {
+            // set the owning side to null (unless already changed)
+            if ($carrito->getCliente() === $this) {
+                $carrito->setCliente(null);
+            }
+        }
 
         return $this;
     }
