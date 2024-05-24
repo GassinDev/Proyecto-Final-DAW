@@ -27,4 +27,10 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/merchandising.html.twig');
     }
+
+    #[Route('/carrito', name: 'carrito')]
+    public function carrito(): Response
+    {
+        return $this->render('pages/carrito.html.twig');
+    }
 }

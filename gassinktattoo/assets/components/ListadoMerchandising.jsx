@@ -79,7 +79,6 @@ const ListadoMerchandising = () => {
                                 <Card.Img variant="top" src={"uploads/images/merchandising/" + merchan.image} alt={merchan.name} />
                                 <Card.Body>
                                     <Card.Title>{merchan.name}</Card.Title>
-                                    <Card.Text>{merchan.description}</Card.Text>
                                     <Card.Text>Precio: {merchan.price}€</Card.Text>
                                     <Form.Group>
                                         <Form.Label>Selecciona la talla: </Form.Label>

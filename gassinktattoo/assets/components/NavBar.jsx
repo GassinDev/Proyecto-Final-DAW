@@ -16,7 +16,7 @@ const NavBar = () => {
                         <Nav.Link href="/productos">Productos</Nav.Link>
                         <Nav.Link href="/merchandising">Merchandising</Nav.Link>
                         <Nav.Link href="#link">Tatuajes</Nav.Link>
-                        <Nav.Link href="#link">Carrito</Nav.Link>
+                        <Nav.Link href="/carrito">Carrito</Nav.Link>
                         <Nav.Link href="/register">Registro</Nav.Link>
                         <Nav.Link href="/login">Inicio de sesión</Nav.Link>
                     </Nav>
