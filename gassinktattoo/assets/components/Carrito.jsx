@@ -35,10 +35,19 @@ const Carrito = () => {
         return <div>Cargando...</div>;
     }
 
-    const calculateTotal = () => {
-        const productTotal = productos.reduce((sum, producto) => sum + producto.price * producto.quantity, 0);
-        const merchanTotal = merchandising.reduce((sum, merchan) => sum + merchan.price * merchan.quantity, 0);
-        return productTotal + merchanTotal;
+    //FUNCIÓN PARA CALCULO TOTAL
+    const calcularTotal = () => {
+
+        let total = 0;
+
+        for (const producto of productos) {
+            total += producto.price * producto.quantity;
+        }
+        for (const merchan of merchandising) {
+            total += merchan.price * merchan.quantity;
+        }
+    
+        return total;
     };
 
     return (
@@ -51,7 +60,7 @@ const Carrito = () => {
                         <th>Nombre</th>
                         <th>Precio</th>
                         <th>Cantidad</th>
-                        <th>Talla</th>
+                        <th>Precio total artículos</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,7 +72,7 @@ const Carrito = () => {
                             <td>{producto.name}</td>
                             <td>{producto.price}€</td>
                             <td>{producto.quantity}</td>
-                            <td>N/A</td>
+                            <td>{producto.price * producto.quantity}€</td>
                         </tr>
                     ))}
                     {merchandising.map(merchan => (
@@ -71,15 +80,15 @@ const Carrito = () => {
                             <td>
                                 <img src={`uploads/images/merchandising/${merchan.image}`} alt={merchan.name} style={{ width: '100px' }} />
                             </td>
-                            <td>{merchan.name}</td>
+                            <td>{merchan.name} - Talla: {merchan.size}</td>
                             <td>{merchan.price}€</td>
                             <td>{merchan.quantity}</td>
-                            <td>{merchan.size}</td>
+                            <td>{merchan.price * merchan.quantity}€</td>
                         </tr>
                     ))}
                     <tr>
                         <td colSpan="4" className="text-right"><strong>Total</strong></td>
-                        <td><strong>{calculateTotal()}€</strong></td>
+                        <td><strong>{calcularTotal()}€</strong></td>
                     </tr>
                 </tbody>
             </Table>

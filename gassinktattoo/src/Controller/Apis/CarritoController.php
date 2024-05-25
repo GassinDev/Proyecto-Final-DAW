@@ -23,54 +23,65 @@ class CarritoController extends AbstractController
         // DECODIFICAR LOS DATOS JSON RECIBIDOS EN LA SOLICITUD
         $data = json_decode($request->getContent(), true);
 
-        // OBTENER EL CLIENTE AUTENTICADO Y LUEGO SEGUIDO SU ID
+        // OBTENER EL CLIENTE AUTENTICADO Y LUEGO SU ID
         $cliente = $security->getUser();
 
-        //COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE - ARREGLO DE ERROR
+        // COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE
         if ($cliente instanceof Cliente) {
             $clienteId = $cliente->getId();
+        } else {
+            return new Response('Cliente no autenticado.', Response::HTTP_UNAUTHORIZED);
         }
 
         // OBTENEMOS LOS IDS DEL ARRAY DE DATOS
-        if ((isset($data['merchanId']) && $data['merchanId'] !== null)) {
-
-            $articuloId = $data['merchanId'];
-            $size = $data['size'];
-
-            // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
-            $merchan = $merchandisingRepository->find($articuloId);
-        } else {
-            $articuloId = $data['productoId'];
-
-            // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
-            $producto = $productoRepository->find($articuloId);
-        }
-
+        $merchanId = $data['merchanId'] ?? null;
+        $productoId = $data['productoId'] ?? null;
         $quantity = $data['quantity'];
+        $size = $data['size'] ?? null;
 
         // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
-        $clienteEntity = $clienteRepository->find($clienteId);
+        $cliente = $clienteRepository->find($clienteId);
 
-        // CREAR UNA NUEVA INSTANCIA DE CARRITO Y ESTABLECER SUS PROPIEDADES
-        $carrito = new Carrito();
-        $carrito->setCliente($clienteEntity);
-        $carrito->setQuantity($quantity);
+        if ($merchanId) {
+            $articuloId = $merchanId;
+            $merchan = $merchandisingRepository->find($articuloId);
 
-        if (isset($merchan) && $merchan !== null) {
-            $carrito->setMerchandising($merchan);
-            $carrito->setSize($size);
+            // BUSCAMOS EL ARTÍCULO EN EL CARRITO
+            $carritoArticuloExistente = $carritoRepository->findOneBy(['cliente' => $cliente, 'merchandising' => $merchan, 'size' => $size]);
         } else {
-            $carrito->setProducto($producto);
+            $articuloId = $productoId;
+            $producto = $productoRepository->find($articuloId);
+
+            // BUSCAMOS EL ARTÍCULO EN EL CARRITO
+            $carritoArticuloExistente = $carritoRepository->findOneBy(['cliente' => $cliente, 'producto' => $producto]);
         }
 
-        // GUARDAR EL PRODUCTO EN EL CARRITO DE LA BASE DE DATOS
-        $carritoRepository->save($carrito);
+        if ($carritoArticuloExistente) {
+            // SI EL ARTÍCULO YA ESTÁ EN EL CARRITO, ACTUALIZAMOS LA CANTIDAD
+            $carritoArticuloExistente->setQuantity($carritoArticuloExistente->getQuantity() + $quantity);
+            $carritoRepository->save($carritoArticuloExistente);
+        } else {
+            // SI EL ARTÍCULO NO ESTÁ EN EL CARRITO, CREAMOS UNA NUEVA INSTANCIA
+            $carrito = new Carrito();
+            $carrito->setCliente($cliente);
+            $carrito->setQuantity($quantity);
+    
+            if (isset($merchan)) {
+                $carrito->setMerchandising($merchan);
+                $carrito->setSize($size);
+            } else {
+                $carrito->setProducto($producto);
+            }
+    
+            // GUARDAR EL PRODUCTO EN EL CARRITO DE LA BASE DE DATOS
+            $carritoRepository->save($carrito);
+        }
 
         return new Response();
     }
 
     #[Route('/api/cart/show', name: 'show_carrito', methods: ['GET'])]
-    public function showCart(CarritoRepository $carritoRepository, Security $security, ProductoRepository $productoRepository, MerchandisingRepository $merchandisingRepository): Response
+    public function showCart(CarritoRepository $carritoRepository, Security $security): Response
     {
         $cliente = $security->getUser();
         $articulos = $carritoRepository->findBy(['cliente' => $cliente]);
@@ -86,13 +97,13 @@ class CarritoController extends AbstractController
 
             // VERIFICAMOS SI ES PRODUCTO
             if ($producto !== null) {
-               //OBTENERMOS LOS DETALLES COMPLETOS DE EL ARTICULO DESDE LA RELACION EN LA TABLA CARRITO
+                //OBTENERMOS LOS DETALLES COMPLETOS DE EL ARTICULO DESDE LA RELACION EN LA TABLA CARRITO
                 $productoCompleto = [
                     'id' => $producto->getId(),
                     'name' => $producto->getName(),
                     'image' => $producto->getImage(),
                     'price' => $producto->getPrice(),
-                    'quantity' => $articulo->getQuantity() 
+                    'quantity' => $articulo->getQuantity()
                 ];
 
                 $productos[] = $productoCompleto;
