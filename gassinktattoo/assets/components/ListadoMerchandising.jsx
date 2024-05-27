@@ -9,6 +9,8 @@ const ListadoMerchandising = () => {
     const [merchandising, setMerchandising] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedSizes, setSelectedSizes] = useState({});
+    const [quantities, setQuantities] = useState({});
+    const [errors, setErrors] = useState({});
 
     useEffect(() => {
         fetchMerchandising();
@@ -38,6 +40,16 @@ const ListadoMerchandising = () => {
     const handleAddToCart = async (merchanId) => {
 
         const size = selectedSizes[merchanId];
+        const quantity = quantities[merchanId] || 1;
+
+        // COMPROBAR SI SE HA SELECCIONADO TALLA
+        if (!size) {
+            setErrors(prevState => ({
+                ...prevState,
+                [merchanId]: 'No hay ninguna talla seleccionada'
+            }));
+            return;
+        }
 
         const response = await fetch('http://127.0.0.1:8000/api/cart/add', {
             method: 'POST',
@@ -47,7 +59,7 @@ const ListadoMerchandising = () => {
             body: JSON.stringify({
                 merchanId: merchanId,
                 size: size,
-                quantity: 1
+                quantity: quantity
             }),
         });
 
@@ -56,6 +68,12 @@ const ListadoMerchandising = () => {
         }
 
         alert('Producto añadido al carrito');
+
+        // QUITAMOS EL MENSAJE SI SE AÑADE EL PRODUCTO CON ÉXITO
+        setErrors(prevState => ({
+            ...prevState,
+            [merchanId]: null
+        }));
     }
 
     // ACTUALIZAMOS EL ESTADO CUANDO SE SELECCIONA UNA TALLA
@@ -63,6 +81,19 @@ const ListadoMerchandising = () => {
         setSelectedSizes(prevState => ({
             ...prevState,
             [merchanId]: size
+        }));
+        // SI SE SELECCIONA TALLA QUITAMOS EL MENSAJE
+        setErrors(prevState => ({
+            ...prevState,
+            [merchanId]: null
+        }));
+    };
+
+    // ACTUALIZAMOS EL ESTADO CUANDO SE CAMBIA LA CANTIDAD
+    const handleQuantityChange = (merchanId, change) => {
+        setQuantities(prevState => ({
+            ...prevState,
+            [merchanId]: Math.max(1, (prevState[merchanId] || 1) + change)
         }));
     };
 
@@ -92,7 +123,19 @@ const ListadoMerchandising = () => {
                                                 onChange={() => handleSizeChange(merchan.id, s)}
                                             />
                                         ))}
+                                        {errors[merchan.id] && <Form.Text className="text-danger">{errors[merchan.id]}</Form.Text>}
                                     </Form.Group>
+                                    <div className="d-flex align-items-center mt-3">
+                                        <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, -1)}>-</Button>
+                                        <Form.Control
+                                            type="text"
+                                            value={quantities[merchan.id] || 1}
+                                            readOnly
+                                            className="mx-2 text-center"
+                                            style={{ width: '50px' }}
+                                        />
+                                        <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, 1)}>+</Button>
+                                    </div>
                                     <Button variant="secondary" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button>
                                 </Card.Body>
                             </Card>
