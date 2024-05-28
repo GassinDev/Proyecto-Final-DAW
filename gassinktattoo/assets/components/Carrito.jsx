@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Table, Button } from 'react-bootstrap';
 
 const Carrito = () => {
 
@@ -9,11 +9,11 @@ const Carrito = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchMerchandising();
+        fetchArticulos();
     }, []);
 
     //FUNCION PARA RECOGER TODOS LOS DATOS QUE NOS DA LA API_MERCHANDISING
-    const fetchMerchandising = async () => {
+    const fetchArticulos = async () => {
 
         const response = await fetch('http://127.0.0.1:8000/api/cart/show');
 
@@ -46,8 +46,13 @@ const Carrito = () => {
         for (const merchan of merchandising) {
             total += merchan.price * merchan.quantity;
         }
-    
+
         return total;
+    };
+
+    //FUNCIÓN PARA MANDARNOS A LA RUTA DE REALIZAR PEDIDO
+    const handlePedido = () => {
+        window.location.href = '/pedido/realizar';
     };
 
     return (
@@ -92,6 +97,7 @@ const Carrito = () => {
                     </tr>
                 </tbody>
             </Table>
+            <Button variant="primary" onClick={handlePedido}>Realizar Pedido</Button>
         </Container>
     );
 };

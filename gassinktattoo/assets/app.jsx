@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import ListadoProductos from './components/ListadoProductos';
 import ListadoMerchandising from './components/ListadoMerchandising';
 import Carrito from './components/Carrito';
+import RealizarPedido from './components/RealizarPedido';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -25,4 +26,9 @@ if (merchandising) {
 const carrito = document.getElementById('carrito');
 if (carrito) {
     createRoot(carrito).render(<Carrito/>);
+}
+
+const realizarPedido = document.getElementById('realizarPedido');
+if (realizarPedido) {
+    createRoot(realizarPedido).render(<RealizarPedido/>);
 }
