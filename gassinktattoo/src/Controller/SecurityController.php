@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -29,4 +30,14 @@ class SecurityController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
+
+    #[Route(path: '/comprobadorAutorizado', name: 'comprobadorAutorizado')]
+public function comprobadorAutorizado(AuthorizationCheckerInterface $authorizationChecker): Response
+{
+    //COMPROBAR SI EL USUARIO ESTA AUTENTICADO
+    $isAuthenticated = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
+    
+    //RETORNAMOS TRUE O FALSE
+    return new Response($isAuthenticated ? 'true' : 'false');
+}
 }

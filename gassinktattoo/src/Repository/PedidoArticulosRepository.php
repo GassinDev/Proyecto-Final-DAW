@@ -16,6 +16,13 @@ class PedidoArticulosRepository extends ServiceEntityRepository
         parent::__construct($registry, PedidoArticulos::class);
     }
 
+    public function save(PedidoArticulos $pedidoArticulos): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($pedidoArticulos);
+        $entityManager->flush();
+    }
+
     //    /**
     //     * @return PedidoArticulos[] Returns an array of PedidoArticulos objects
     //     */

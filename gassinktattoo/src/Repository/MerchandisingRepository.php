@@ -15,6 +15,7 @@ class MerchandisingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Merchandising::class);
     }
+    
 
     //    /**
     //     * @return Merchandising[] Returns an array of Merchandising objects

@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Carrito;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -15,7 +17,7 @@ class CarritoRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Carrito::class);
     }
-    
+
 
     //FUNCIÓN PARA GUARDAR LOS PRODUCTOS
     public function save(Carrito $carrito): void

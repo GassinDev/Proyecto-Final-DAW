@@ -4,9 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Cliente;
 use App\Entity\Pedido;
+use App\Entity\PedidoArticulos;
+use App\Repository\CarritoRepository;
 use App\Repository\ClienteRepository;
+use App\Repository\PedidoArticulosRepository;
 use App\Repository\PedidoRepository;
 use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +27,7 @@ class PedidoController extends AbstractController
     }
 
     #[Route('/pedido/guardar', name: 'pedido_guardar')]
-    public function guardarPedido(Request $request, Security $security, ClienteRepository $clienteRepository, PedidoRepository $pedidoRepository): Response
+    public function guardarPedido(Request $request, Security $security, ClienteRepository $clienteRepository, PedidoRepository $pedidoRepository, CarritoRepository $carritoRepository, PedidoArticulosRepository $pedidoArticulosRepository, EntityManagerInterface $entityManagerInterface): Response
     {
         //RECIBIMOS LOS DATOS
         $data = json_decode($request->getContent(), true);
@@ -40,7 +45,7 @@ class PedidoController extends AbstractController
         // BUSCAMOS LAS ENTIDADES EN LA BASE DE DATOS
         $cliente = $clienteRepository->find($clienteId);
 
-        //CREAMOS UNA INSTANCIA DE PEDIDO
+        //CREAMOS UNA INSTANCIA DE PEDIDO Y LA GUARDAMOS EN LA TABLA
         $pedido = new Pedido();
         $pedido->setNombreCompleto($data['nombre']);
         $pedido->setPhone($data['telefono']);
@@ -56,6 +61,34 @@ class PedidoController extends AbstractController
         $pedido->setCliente($cliente);
 
         $pedidoRepository->save($pedido);
+
+        // OBTENEMOS LOS PRODUCTOS DEL CARRITO
+        $carritos = $carritoRepository->findBy(['cliente' => $cliente]);
+
+        foreach ($carritos as $carrito) {
+
+            $pedidoArticulo = new PedidoArticulos();
+            $pedidoArticulo->setPedido($pedido);
+            $pedidoArticulo->setQuantity($carrito->getQuantity());
+            $pedidoArticulo->setSize($carrito->getSize());
+
+            if ($carrito->getProducto()) {
+                $pedidoArticulo->setProduct($carrito->getProducto());
+            }
+
+            if ($carrito->getMerchandising()) {
+                $pedidoArticulo->setMerchandising($carrito->getMerchandising());
+            }
+
+            // GUARDAMOS EL ARTÍCULO DEL PEDIDO
+            $pedidoArticulosRepository->save($pedidoArticulo);
+        }
+
+        //LIMPIAMOS EL CARRITO DESPUÉS DE CREAR EL PEDIDO
+        foreach ($carritos as $carrito) {
+            $entityManagerInterface->remove($carrito);
+            $entityManagerInterface->flush();
+        }
 
         return new Response('Pedido guardado correctamente', Response::HTTP_OK);
     }

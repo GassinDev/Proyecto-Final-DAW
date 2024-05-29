@@ -26,6 +26,9 @@ class PedidoArticulos
     #[ORM\Column]
     private ?int $quantity = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $size = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +78,18 @@ class PedidoArticulos
     public function setQuantity(int $quantity): static
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(?string $size): static
+    {
+        $this->size = $size;
 
         return $this;
     }

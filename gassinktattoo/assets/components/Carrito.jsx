@@ -92,7 +92,7 @@ const Carrito = () => {
                         </tr>
                     ))}
                     <tr>
-                        <td colSpan="4" className="text-right"><strong>Total</strong></td>
+                        <td colSpan="4" className="text-right"><strong>Subtotal</strong></td>
                         <td><strong>{calcularTotal()}€</strong></td>
                     </tr>
                 </tbody>
