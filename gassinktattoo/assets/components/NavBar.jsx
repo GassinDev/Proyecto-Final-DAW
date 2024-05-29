@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import '../styles/navbar.css';
+import '@fortawesome/fontawesome-free/css/all.css';
 
 const NavBar = () => {
 
@@ -25,21 +25,22 @@ const NavBar = () => {
         fetchAuthenticated();
     }, []);
 
+
     return (
-        <Navbar expand="lg" bg="dark" data-bs-theme="dark">
+        <Navbar className='navbar-custom' expand="lg" bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand>GassInkTattoo</Navbar.Brand>
+                <Navbar.Brand className='brand-custom'>GASSINKTATTOO</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="/home">Inicio</Nav.Link>
-                        <Nav.Link href="/productos">Productos</Nav.Link>
-                        <Nav.Link href="/merchandising">Merchandising</Nav.Link>
-                        {authenticated ? <Nav.Link href="/carrito">Carrito</Nav.Link> : null}
-                        {authenticated ? null : <Nav.Link href="/register">Registro</Nav.Link>}
-                        {authenticated ? null : <Nav.Link href="/login">Inicio de sesión</Nav.Link>}
-                        {authenticated ? <Nav.Link href="/perfil">Perfil</Nav.Link> : null}
-                        {authenticated ? <Nav.Link href="/logout">Cerrar sesión</Nav.Link> : null}
+                    <Nav className="me-auto nav-custom">
+                        <a href="/home">Inicio</a>
+                        <a href="/productos">Productos</a>
+                        <a href="/merchandising">Merchandising</a>
+                        {authenticated ? <a href="/carrito">Carrito</a> : null}
+                        {authenticated ? null : <a href="/register">Registro</a>}
+                        {authenticated ? null : <a href="/login">Inicio de sesión</a>}
+                        {authenticated ? <a href="/perfil">Perfil</a> : null}
+                        {authenticated ? <a href="/logout">Cerrar sesión</a> : null}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

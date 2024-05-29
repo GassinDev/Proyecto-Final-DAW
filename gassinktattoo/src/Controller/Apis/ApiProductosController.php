@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class ApiProductosController extends AbstractController
 {
     #[Route('/api/productos', name: 'api_productos')]
-    public function productosGet(ProductoRepository $productoRepository): Response
+    public function getProductos(ProductoRepository $productoRepository): Response
     {
         $productos = $productoRepository->findAll();
         return $this->json($productos);

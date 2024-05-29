@@ -1,12 +1,13 @@
 import NavBar from './components/NavBar';
-import './styles/app.css';
 import { createRoot } from 'react-dom/client';
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import ListadoProductos from './components/ListadoProductos';
 import ListadoMerchandising from './components/ListadoMerchandising';
 import Carrito from './components/Carrito';
 import RealizarPedido from './components/RealizarPedido';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './styles/app.css';
+import BannerVideo from './components/BannerVideo';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -32,3 +33,10 @@ const realizarPedido = document.getElementById('realizarPedido');
 if (realizarPedido) {
     createRoot(realizarPedido).render(<RealizarPedido/>);
 }
+
+
+const bannerVideo = document.getElementById('bannerVideo');
+if (bannerVideo) {
+    createRoot(bannerVideo).render(<BannerVideo/>);
+}
+

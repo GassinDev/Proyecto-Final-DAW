@@ -1,0 +1,42 @@
+@font-face {
+    font-family: 'FuentePrincipal';
+    src: url('../../public/fonts/EdgeDisplay-Regular.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'FuentePrincipal-Bold';
+    src: url('../../public/fonts/EdgeDisplay-Bold.otf') format('opentype');
+}
+
+.navbar-custom {
+    font-family: FuentePrincipal, sans-serif;
+    background: rgba(0, 0, 0, .1) !important;
+    backdrop-filter: blur(5px) !important;
+}
+
+.navbar-custom a {
+    font-size: 1.2rem;
+    margin-left: 2.5rem ;
+    color: white;
+    right: 0;
+    text-decoration: none;
+    transition: all 0.5s;
+}
+
+.brand-custom {
+    font-family: FuentePrincipal-bOLD, sans-serif;
+    font-size: 2.15rem;
+    
+}
+
+.nav-custom{
+    text-align: center;
+}
+
+.nav-custom a:hover{
+    color: black;
+    background-color: white;
+    border-radius: 2px;
+    transition: all 0.5s;
+    border-radius: 5px;
+}

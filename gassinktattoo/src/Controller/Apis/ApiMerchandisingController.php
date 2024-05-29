@@ -10,9 +10,10 @@ use Symfony\Component\Routing\Attribute\Route;
 class ApiMerchandisingController extends AbstractController
 {
     #[Route('/api/merchandising', name: 'api_merchandising')]
-    public function productosGet(MerchandisingRepository $merchandisingRepository): Response
+    public function getMerchandising(MerchandisingRepository $merchandisingRepository): Response
     {
         $merchandising = $merchandisingRepository->findAll();
+        
         return $this->json($merchandising);
     }
 }
