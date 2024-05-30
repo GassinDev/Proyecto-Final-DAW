@@ -8,6 +8,7 @@ import RealizarPedido from './components/RealizarPedido';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import BannerVideo from './components/BannerVideo';
+import Footer from './components/Footer';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -34,9 +35,12 @@ if (realizarPedido) {
     createRoot(realizarPedido).render(<RealizarPedido/>);
 }
 
-
 const bannerVideo = document.getElementById('bannerVideo');
 if (bannerVideo) {
     createRoot(bannerVideo).render(<BannerVideo/>);
 }
 
+const footer = document.getElementById('footer');
+if (footer) {
+    createRoot(footer).render(<Footer/>);
+}

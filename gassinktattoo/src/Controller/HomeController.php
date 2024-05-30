@@ -33,4 +33,10 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/carrito.html.twig');
     }
+
+    #[Route('/tatuajes', name: 'tatuajes')]
+    public function tatuajes(): Response
+    {
+        return $this->render('pages/tatuajes.html.twig');
+    }
 }
