@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Spinner from 'react-bootstrap/Spinner';
+import '../styles/spinner.css';
 
 const ListadoProductos = () => {
     const [productos, setProductos] = useState([]);
@@ -24,7 +26,9 @@ const ListadoProductos = () => {
     };
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return <div className='spinner-container'>
+        <Spinner animation="grow" className='spinner'/>
+    </div>
     }
 
     //FUNCIÓN PARA PODER ENVIAR LOS DATOS AL BACKEND

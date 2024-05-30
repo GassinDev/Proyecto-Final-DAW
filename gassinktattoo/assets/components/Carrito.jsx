@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Container, Table, Button } from 'react-bootstrap';
+import { Container, Table, Button, Spinner } from 'react-bootstrap';
+import '../styles/spinner.css';
 
 const Carrito = () => {
 
@@ -32,7 +33,9 @@ const Carrito = () => {
 
     //DEVOLVEMOS UN DIV MIENTRAS CARGA LA API
     if (loading) {
-        return <div>Cargando...</div>;
+        return <div className='spinner-container'>
+            <Spinner animation="grow" className='spinner'/>
+        </div>
     }
 
     //FUNCIÓN PARA CALCULO TOTAL

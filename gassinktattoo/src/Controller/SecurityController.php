@@ -32,12 +32,12 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/comprobadorAutorizado', name: 'comprobadorAutorizado')]
-public function comprobadorAutorizado(AuthorizationCheckerInterface $authorizationChecker): Response
-{
-    //COMPROBAR SI EL USUARIO ESTA AUTENTICADO
-    $isAuthenticated = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
-    
-    //RETORNAMOS TRUE O FALSE
-    return new Response($isAuthenticated ? 'true' : 'false');
-}
+    public function comprobadorAutorizado(AuthorizationCheckerInterface $authorizationChecker): Response
+    {
+        //COMPROBAR SI EL USUARIO ESTA AUTENTICADO
+        $isAuthenticated = $authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY');
+
+        //RETORNAMOS TRUE O FALSE
+        return new Response($isAuthenticated ? 'true' : 'false');
+    }
 }

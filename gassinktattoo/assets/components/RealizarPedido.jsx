@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Table, Modal } from 'react-bootstrap';
 import PagoPedidoModal from './PagoPedidoModal';
+import Spinner from 'react-bootstrap/Spinner';
+import '../styles/spinner.css';
 
 const RealizarPedido = () => {
 
@@ -73,7 +75,9 @@ const RealizarPedido = () => {
     };
 
     if (loading) {
-        return <div>Cargando...</div>;
+        return <div className='spinner-container'>
+        <Spinner animation="grow" className='spinner'/>
+    </div>
     }
 
 
