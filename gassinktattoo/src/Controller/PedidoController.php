@@ -10,7 +10,6 @@ use App\Repository\ClienteRepository;
 use App\Repository\PedidoArticulosRepository;
 use App\Repository\PedidoRepository;
 use DateTime;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -20,6 +19,29 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class PedidoController extends AbstractController
 {
+    #[Route('/pedido/show', name: 'pedidos_show')]
+    public function getPedidos(PedidoRepository $pedidoRepository, Security $security): Response
+    {
+
+        $cliente = $security->getUser();
+
+        // OBTENEMOS LOS PEDIDOS DEL CLIENTE ACTUAL
+        $pedidos = $pedidoRepository->findBy(['cliente' => $cliente]);
+
+        // Seleccionar manualmente los datos que deseas devolver
+        $pedidosData = [];
+        foreach ($pedidos as $pedido) {
+            $pedidosData[] = [
+                'status' => $pedido->getStatus(),
+                'orderDate'=> $pedido->getOrderDate(),
+                'price'=> $pedido->getPrice()
+            ];
+        }
+
+        // Devuelve la respuesta JSON con los datos seleccionados
+        return $this->json($pedidosData);
+    }
+
     #[Route('/pedido/realizar', name: 'pedido_realizar')]
     public function realizarPedido(): Response
     {

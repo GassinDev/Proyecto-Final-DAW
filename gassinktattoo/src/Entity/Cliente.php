@@ -50,6 +50,12 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Pedido::class, mappedBy: 'cliente')]
     private Collection $pedidos;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imagePerfil = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
+
     public function __construct()
     {
         $this->carritos = new ArrayCollection();
@@ -199,6 +205,30 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
                 $pedido->setCliente(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImagePerfil(): ?string
+    {
+        return $this->imagePerfil;
+    }
+
+    public function setImagePerfil(?string $imagePerfil): static
+    {
+        $this->imagePerfil = $imagePerfil;
+
+        return $this;
+    }
+
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function setUsername(string $username): static
+    {
+        $this->username = $username;
 
         return $this;
     }

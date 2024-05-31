@@ -40,4 +40,7 @@ class SecurityController extends AbstractController
         //RETORNAMOS TRUE O FALSE
         return new Response($isAuthenticated ? 'true' : 'false');
     }
+
+    
+    
 }

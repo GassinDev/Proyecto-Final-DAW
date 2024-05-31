@@ -39,4 +39,10 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/tatuajes.html.twig');
     }
+
+    #[Route('/perfil', name: 'perfil')]
+    public function perfil(): Response
+    {
+        return $this->render('pages/perfil.html.twig');
+    }
 }

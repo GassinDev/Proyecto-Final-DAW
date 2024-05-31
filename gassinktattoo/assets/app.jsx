@@ -9,6 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/app.css';
 import BannerVideo from './components/BannerVideo';
 import Footer from './components/Footer';
+import Perfil from './components/Perfil';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -43,4 +44,9 @@ if (bannerVideo) {
 const footer = document.getElementById('footer');
 if (footer) {
     createRoot(footer).render(<Footer/>);
+}
+
+const perfil = document.getElementById('perfil');
+if (perfil) {
+    createRoot(perfil).render(<Perfil/>);
 }
