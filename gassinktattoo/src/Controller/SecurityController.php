@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Cliente;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -41,6 +43,18 @@ class SecurityController extends AbstractController
         return new Response($isAuthenticated ? 'true' : 'false');
     }
 
-    
+    #[Route(path: '/comprobarVerificado', name: 'comprobarVerificado')]
+    public function comprobadorVerificado(Security $security ): Response
+    {
+        // OBTENER EL CLIENTE AUTENTICADO 
+        $cliente = $security->getUser();
+
+        // COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE
+        if ($cliente instanceof Cliente) {
+            $verificado = $cliente->isVerified();
+        } 
+
+        return new Response($verificado);
+    }
     
 }

@@ -7,10 +7,12 @@ const Carrito = () => {
 
     const [productos, setProductos] = useState([]);
     const [merchandising, setMerchandising] = useState([]);
+    const [verificado, setVerificado] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         fetchArticulos();
+        fetchVerificado();
     }, []);
 
     //FUNCION PARA RECOGER TODOS LOS DATOS QUE NOS DA LA API_MERCHANDISING
@@ -29,12 +31,25 @@ const Carrito = () => {
         setLoading(false);
     };
 
+    //PARA COMPROBAR SI EL EMAIL FUE VERIFICADO PARA HABILITAR EL BOTÓN O NO DE REALIZA PEDIDOS
+    const fetchVerificado = async () => {
+
+        const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
+
+        if (!response.ok) {
+            throw new Error('Error al obtener el resultado');
+        }
+
+        const data = await response.json();
+        setVerificado(data);
+    };
+
 
 
     //DEVOLVEMOS UN DIV MIENTRAS CARGA LA API
     if (loading) {
         return <div className='spinner-container'>
-            <Spinner animation="grow" className='spinner'/>
+            <Spinner animation="grow" className='spinner' />
         </div>
     }
 
@@ -100,7 +115,11 @@ const Carrito = () => {
                     </tr>
                 </tbody>
             </Table>
-            <Button variant="primary" onClick={handlePedido}>Realizar Pedido</Button>
+            {verificado ? (
+                <Button variant="primary" onClick={handlePedido}>Realizar Pedido</Button>
+            ) : (
+                <Button variant="primary" disabled>No verificado - No puede realizar el pedido</Button>
+            )}
         </Container>
     );
 };

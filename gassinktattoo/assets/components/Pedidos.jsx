@@ -8,6 +8,7 @@ const Pedidos = ({ show, onHide }) => {
 
     useEffect(() => {
         fetchPedidos();
+        fetchVerificado
     }, []);
 
     const fetchPedidos = async () => {
