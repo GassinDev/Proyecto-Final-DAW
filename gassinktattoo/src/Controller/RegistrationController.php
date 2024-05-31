@@ -37,6 +37,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            //PARA GUARDAR LA FOTO DE PERFIL
+            $file = $form->get('imagePerfil')->getData();
+            if ($file !== null) {
+                // Generar un nombre único para el archivo
+                $fileName = uniqid() . '.' . $file->guessExtension();
+                // Almacenar el archivo en una ubicación segura
+                $file->move($this->getParameter('images_directory'), $fileName);
+                // Guardar el nombre del archivo en la propiedad del usuario
+                $user->setImagePerfil($fileName);
+            }
+
             $entityManager->persist($user);
             $entityManager->flush();
 
