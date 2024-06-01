@@ -2,18 +2,32 @@ import React, { useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert';
 import '../styles/spinner.css';
 
 const ListadoProductos = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
         fetchProductos();
+        const isAuthenticatedCookie = getCookie('authenticated');
+        setAuthenticated(isAuthenticatedCookie === 'true');
     }, []);
 
-    const fetchProductos = async () => {
+    const getCookie = (name) => {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split('=');
+            if (cookieName.trim() === name) {
+                return cookieValue;
+            }
+        }
+        return '';
+    };
 
+    const fetchProductos = async () => {
         const response = await fetch('http://127.0.0.1:8000/api/productos');
 
         if (!response.ok) {
@@ -26,13 +40,20 @@ const ListadoProductos = () => {
     };
 
     if (loading) {
-        return <div className='spinner-container'>
-        <Spinner animation="grow" className='spinner'/>
-    </div>
+        return (
+            <div className='spinner-container'>
+                <Spinner animation="grow" className='spinner'/>
+            </div>
+        );
     }
 
-    //FUNCIÓN PARA PODER ENVIAR LOS DATOS AL BACKEND
+    // Función para manejar el evento de agregar al carrito
     const handleAddToCart = async (productoId) => {
+        // Verifica si el usuario está autenticado
+        if (!authenticated) {
+            alert('Por favor, inicia sesión para agregar al carrito');
+            return;
+        }
 
         const response = await fetch('http://127.0.0.1:8000/api/cart/add', {
             method: 'POST',
@@ -50,7 +71,6 @@ const ListadoProductos = () => {
         }
 
         alert('Producto añadido al carrito');
-
     }
 
     return (
@@ -64,9 +84,13 @@ const ListadoProductos = () => {
                                 <Card.Img variant="top" src={"uploads/images/productos/" + producto.image} alt={producto.name} />
                                 <Card.Body>
                                     <Card.Title>{producto.name}</Card.Title>
-                                    {/* <Card.Text>{producto.description}</Card.Text> */}
                                     <Card.Text>Precio: {producto.price}€</Card.Text>
-                                    <Button variant="secondary" onClick={() => handleAddToCart(producto.id)}>Añadir al carrito</Button>
+                                    {/* Mostrar el botón solo si el usuario está autenticado */}
+                                    {authenticated ? (
+                                        <Button variant="success" onClick={() => handleAddToCart(producto.id)}>Añadir al carrito</Button>
+                                    ) : (
+                                        <Alert variant="warning">Por favor, inicia sesión para agregar al carrito</Alert>
+                                    )}
                                 </Card.Body>
                             </Card>
                         </div>
@@ -76,6 +100,5 @@ const ListadoProductos = () => {
         </div>
     );
 };
-
 
 export default ListadoProductos;

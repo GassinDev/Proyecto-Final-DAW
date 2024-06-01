@@ -10,6 +10,7 @@ import './styles/app.css';
 import BannerVideo from './components/BannerVideo';
 import Footer from './components/Footer';
 import Perfil from './components/Perfil';
+import ListadoTatuajes from './components/ListadoTatuajes';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -49,4 +50,9 @@ if (footer) {
 const perfil = document.getElementById('perfil');
 if (perfil) {
     createRoot(perfil).render(<Perfil/>);
+}
+
+const tatuajes = document.getElementById('tatuajes');
+if (tatuajes) {
+    createRoot(tatuajes).render(<ListadoTatuajes/>);
 }

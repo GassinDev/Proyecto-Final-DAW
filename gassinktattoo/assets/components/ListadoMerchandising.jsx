@@ -3,23 +3,36 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
+import Alert from 'react-bootstrap/Alert'; // Importa el componente Alert
 import '../styles/spinner.css';
 
 const ListadoMerchandising = () => {
-
+    const [authenticated, setAuthenticated] = useState(false);
     const [merchandising, setMerchandising] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedSizes, setSelectedSizes] = useState({});
     const [quantities, setQuantities] = useState({});
     const [errors, setErrors] = useState({});
+    
 
     useEffect(() => {
         fetchMerchandising();
+        const isAuthenticatedCookie = getCookie('authenticated');
+        setAuthenticated(isAuthenticatedCookie === 'true');
     }, []);
 
-    //FUNCION PARA RECOGER TODOS LOS DATOS QUE NOS DA LA API_MERCHANDISING
-    const fetchMerchandising = async () => {
+    const getCookie = (name) => {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split('=');
+            if (cookieName.trim() === name) {
+                return cookieValue;
+            }
+        }
+        return '';
+    };
 
+    const fetchMerchandising = async () => {
         const response = await fetch('http://127.0.0.1:8000/api/merchandising');
 
         if (!response.ok) {
@@ -32,20 +45,26 @@ const ListadoMerchandising = () => {
         setLoading(false);
     };
 
-    //DEVOLVEMOS UN DIV MIENTRAS CARGA LA API
     if (loading) {
-        return <div className='spinner-container'>
-        <Spinner animation="grow" className='spinner'/>
-    </div>
+        return (
+            <div className='spinner-container'>
+                <Spinner animation="grow" className='spinner'/>
+            </div>
+        );
     }
 
-    //FUNCIÓN PARA PODER ENVIAR LOS DATOS AL BACKEND
     const handleAddToCart = async (merchanId) => {
-
         const size = selectedSizes[merchanId];
         const quantity = quantities[merchanId] || 1;
 
-        // COMPROBAR SI SE HA SELECCIONADO TALLA
+        if (!authenticated) {
+            setErrors(prevState => ({
+                ...prevState,
+                [merchanId]: 'Debe iniciar sesión para agregar al carrito'
+            }));
+            return;
+        }
+
         if (!size) {
             setErrors(prevState => ({
                 ...prevState,
@@ -72,27 +91,23 @@ const ListadoMerchandising = () => {
 
         alert('Producto añadido al carrito');
 
-        // QUITAMOS EL MENSAJE SI SE AÑADE EL PRODUCTO CON ÉXITO
-        setErrors(prevState => ({
-            ...prevState,
-            [merchanId]: null
-        }));
-    }
-
-    // ACTUALIZAMOS EL ESTADO CUANDO SE SELECCIONA UNA TALLA
-    const handleSizeChange = (merchanId, size) => {
-        setSelectedSizes(prevState => ({
-            ...prevState,
-            [merchanId]: size
-        }));
-        // SI SE SELECCIONA TALLA QUITAMOS EL MENSAJE
         setErrors(prevState => ({
             ...prevState,
             [merchanId]: null
         }));
     };
 
-    // ACTUALIZAMOS EL ESTADO CUANDO SE CAMBIA LA CANTIDAD
+    const handleSizeChange = (merchanId, size) => {
+        setSelectedSizes(prevState => ({
+            ...prevState,
+            [merchanId]: size
+        }));
+        setErrors(prevState => ({
+            ...prevState,
+            [merchanId]: null
+        }));
+    };
+
     const handleQuantityChange = (merchanId, change) => {
         setQuantities(prevState => ({
             ...prevState,
@@ -106,8 +121,7 @@ const ListadoMerchandising = () => {
             <h2 className='text-center my-4'>Listado de Merchandising</h2>
             <div className='row justify-content-center'>
                 {merchandising.map(merchan => (
-                    <div key={merchan.id} className={`col-lg-4 col-md-6 mb-4`}
-                    >
+                    <div key={merchan.id} className={`col-lg-4 col-md-6 mb-4`}>
                         <div className='d-flex justify-content-center'>
                             <Card style={{ width: '18rem' }}>
                                 <Card.Img variant="top" src={"uploads/images/merchandising/" + merchan.image} alt={merchan.name} />
@@ -139,7 +153,8 @@ const ListadoMerchandising = () => {
                                         />
                                         <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, 1)}>+</Button>
                                     </div>
-                                    <Button variant="secondary" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button>
+                                    { !authenticated && <Alert variant="warning" className="mt-3">Por favor, inicia sesión para agregar al carrito</Alert> }
+                                    { authenticated && <Button variant="success" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button> }
                                 </Card.Body>
                             </Card>
                         </div>

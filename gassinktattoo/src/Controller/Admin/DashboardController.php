@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Merchandising;
 use App\Entity\Producto;
+use App\Entity\Tatuaje;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -46,5 +47,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Productos', 'fa-solid fa-droplet', Producto::class);
         yield MenuItem::linkToCrud('Merchandising', 'fa-solid fa-shirt', Merchandising::class);
+        yield MenuItem::linkToCrud('Tatuajes', 'fa-solid fa-pencil', Tatuaje::class);
     }
 }

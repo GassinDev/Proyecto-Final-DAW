@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class PerfilController extends AbstractController
 {
     #[Route(path: '/perfilDatos', name: 'perfilDatos')]
-    public function comprobadorVerificado(Security $security): Response
+    public function perfilDatos(Security $security): Response
     {
         // Obtener el cliente autenticado
         $cliente = $security->getUser();
