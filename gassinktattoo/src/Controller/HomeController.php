@@ -45,4 +45,10 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/perfil.html.twig');
     }
+
+    #[Route('/citas', name: 'citas')]
+    public function citas(): Response
+    {
+        return $this->render('pages/citas.html.twig');
+    }
 }

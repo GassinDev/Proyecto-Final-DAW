@@ -59,4 +59,21 @@ class SecurityController extends AbstractController
         // DEVOLVEMOS EL RESULTADO COMO UNA CADENA
         return new Response($verificado ? 'true' : 'false');
     }
+
+    #[Route(path: '/comprobarWorker', name: 'comprobarWorker')]
+    public function comprobarWorker(Security $security): Response
+    {
+        // OBTENER EL CLIENTE AUTENTICADO 
+        $cliente = $security->getUser();
+
+        // COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE
+        if ($cliente instanceof Cliente) {
+            $verificado = $cliente->isWorker();
+        } else {
+            $verificado = false;
+        }
+
+        // DEVOLVEMOS EL RESULTADO COMO UNA CADENA
+        return new Response($verificado ? 'true' : 'false');
+    }
 }

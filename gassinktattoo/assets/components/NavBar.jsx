@@ -5,28 +5,39 @@ import '@fortawesome/fontawesome-free/css/all.css';
 
 const NavBar = () => {
     const [authenticated, setAuthenticated] = useState(false);
+    const [isWorker, setIsWorker] = useState(false);
 
     useEffect(() => {
         const isAuthenticatedCookie = getCookie('authenticated');
         setAuthenticated(isAuthenticatedCookie === 'true');
+        const isWorkerCookie = getCookie('isWorker');
+        setIsWorker(isWorkerCookie === 'true');
     }, []);
 
+    //PARA SABER SI ESTA AUTENTICADO
     const fetchAuthenticated = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/comprobadorAutorizado');
-            if (!response.ok) {
-                throw new Error('Error al obtener la comprobación.');
-            }
-            const data = await response.text();
-            setAuthenticated(data === 'true');
-            document.cookie = `authenticated=${data === 'true'}; path=/`;
-        } catch (error) {
-            console.error('Error al obtener la comprobación:', error);
+        const response = await fetch('http://127.0.0.1:8000/comprobadorAutorizado');
+        if (!response.ok) {
+            throw new Error('Error al obtener la comprobación.');
         }
+        const data = await response.text();
+        setAuthenticated(data === 'true');
+        document.cookie = `authenticated=${data === 'true'}; path=/`;
+    };
+
+    const fetchIsWorker = async () => {
+        const response = await fetch('http://127.0.0.1:8000/comprobarWorker');
+        if (!response.ok) {
+            throw new Error('Error al obtener la comprobación.');
+        }
+        const data = await response.text();
+        setIsWorker(data === 'true');
+        document.cookie = `isWorker=${data === 'true'}; path=/`;
     };
 
     useEffect(() => {
         fetchAuthenticated();
+        fetchIsWorker();
     }, []);
 
     const getCookie = (name) => {
@@ -63,11 +74,13 @@ const NavBar = () => {
                         <a href="/productos">Productos</a>
                         <a href="/merchandising">Merchandising</a>
                         <a href="/tatuajes">Tatuajes</a>
-                        {authenticated ? <a href="/carrito">Carrito</a> : null}
+                        {authenticated && !isWorker ? <a href="/carrito">Carrito</a> : null}
                         {authenticated ? null : <a href="/register">Registro</a>}
                         {authenticated ? null : <a href="/login">Inicio de sesión</a>}
+                        {authenticated && isWorker ? <a href="/citas">Citas</a> : null}
                         {authenticated ? <a href="/perfil">Perfil</a> : null}
                         {authenticated ? <a href="/logout" onClick={logout}>Cerrar sesión</a> : null}
+                        
                     </Nav>
                 </Navbar.Collapse>
             </Container>

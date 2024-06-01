@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Cliente;
 use App\Entity\Merchandising;
 use App\Entity\Producto;
 use App\Entity\Tatuaje;
@@ -45,6 +46,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Clientes', 'fa-solid fa-user', Cliente::class);
         yield MenuItem::linkToCrud('Productos', 'fa-solid fa-droplet', Producto::class);
         yield MenuItem::linkToCrud('Merchandising', 'fa-solid fa-shirt', Merchandising::class);
         yield MenuItem::linkToCrud('Tatuajes', 'fa-solid fa-pencil', Tatuaje::class);
