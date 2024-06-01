@@ -1,10 +1,8 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Spinner } from 'react-bootstrap';
 import '../styles/spinner.css';
 
 const Carrito = () => {
-
     const [productos, setProductos] = useState([]);
     const [merchandising, setMerchandising] = useState([]);
     const [verificado, setVerificado] = useState(false);
@@ -12,63 +10,80 @@ const Carrito = () => {
 
     useEffect(() => {
         fetchArticulos();
-        fetchVerificado();
+        fetchVerificadoCookie();
     }, []);
 
-    //FUNCION PARA RECOGER TODOS LOS DATOS QUE NOS DA LA API_MERCHANDISING
     const fetchArticulos = async () => {
-
-        const response = await fetch('http://127.0.0.1:8000/api/cart/show');
-
-        if (!response.ok) {
-            throw new Error('Error al obtener los productos');
+        try {
+            const response = await fetch('http://127.0.0.1:8000/api/cart/show');
+            if (!response.ok) {
+                throw new Error('Error al obtener los productos');
+            }
+            const data = await response.json();
+            setProductos(data.productos);
+            setMerchandising(data.merchandising);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching articles:', error);
         }
-
-        const data = await response.json();
-
-        setProductos(data.productos);
-        setMerchandising(data.merchandising);
-        setLoading(false);
     };
 
-    //PARA COMPROBAR SI EL EMAIL FUE VERIFICADO PARA HABILITAR EL BOTÓN O NO DE REALIZA PEDIDOS
     const fetchVerificado = async () => {
-
-        const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
-
-        if (!response.ok) {
-            throw new Error('Error al obtener el resultado');
+        try {
+            const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
+            if (!response.ok) {
+                throw new Error('Error al obtener el resultado');
+            }
+            const data = await response.text();
+            const isVerified = data === 'true';
+            console.log('Fetched verification status:', isVerified);
+            setVerificado(isVerified);
+            document.cookie = `verificado=${isVerified}; path=/`;
+        } catch (error) {
+            console.error('Error fetching verification status:', error);
         }
-
-        const data = await response.json();
-        setVerificado(data);
     };
 
+    const fetchVerificadoCookie = () => {
+        const isVerificadoCookie = getCookie('verificado');
+        console.log('Cookie value:', isVerificadoCookie);
+        if (isVerificadoCookie !== 'true') {
+            fetchVerificado();
+        } else {
+            setVerificado(true);
+        }
+    };
 
+    const getCookie = (name) => {
+        const cookies = document.cookie.split(';');
+        for (let cookie of cookies) {
+            const [cookieName, cookieValue] = cookie.split('=');
+            if (cookieName.trim() === name) {
+                return cookieValue.trim();
+            }
+        }
+        return '';
+    };
 
-    //DEVOLVEMOS UN DIV MIENTRAS CARGA LA API
     if (loading) {
-        return <div className='spinner-container'>
-            <Spinner animation="grow" className='spinner' />
-        </div>
+        return (
+            <div className='spinner-container'>
+                <Spinner animation="grow" className='spinner' />
+            </div>
+        );
     }
 
-    //FUNCIÓN PARA CALCULO TOTAL
     const calcularTotal = () => {
-
         let total = 0;
-
         for (const producto of productos) {
             total += producto.price * producto.quantity;
         }
         for (const merchan of merchandising) {
             total += merchan.price * merchan.quantity;
         }
-
         return total;
     };
 
-    //FUNCIÓN PARA MANDARNOS A LA RUTA DE REALIZAR PEDIDO
     const handlePedido = () => {
         window.location.href = '/pedido/realizar';
     };

@@ -7,7 +7,6 @@ const NavBar = () => {
     const [authenticated, setAuthenticated] = useState(false);
 
     useEffect(() => {
-        // AL CARGAR LA PÁGINA, COMPROBAMOS SI EXISTE UNA COOKIE DE AUTENTICACIÓN
         const isAuthenticatedCookie = getCookie('authenticated');
         setAuthenticated(isAuthenticatedCookie === 'true');
     }, []);
@@ -20,7 +19,6 @@ const NavBar = () => {
             }
             const data = await response.text();
             setAuthenticated(data === 'true');
-            // ACTUALIZAMOS LA COOKIE CON EL ESTADO DE AUTENTICACIÓN
             document.cookie = `authenticated=${data === 'true'}; path=/`;
         } catch (error) {
             console.error('Error al obtener la comprobación:', error);
@@ -31,7 +29,6 @@ const NavBar = () => {
         fetchAuthenticated();
     }, []);
 
-
     const getCookie = (name) => {
         const cookies = document.cookie.split(';');
         for (let cookie of cookies) {
@@ -41,6 +38,18 @@ const NavBar = () => {
             }
         }
         return '';
+    };
+
+    //FUNCIÓN PARA PONER FECHA DE EXIRACIÓN A TODAS LAS COOKIES Y ASÍ ELIMINARLAS AL CERRAR SESIÓN
+    const logout = () => {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i];
+            const eqPos = cookie.indexOf('=');
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        }
+        setAuthenticated(false);
     };
 
     return (
@@ -58,7 +67,7 @@ const NavBar = () => {
                         {authenticated ? null : <a href="/register">Registro</a>}
                         {authenticated ? null : <a href="/login">Inicio de sesión</a>}
                         {authenticated ? <a href="/perfil">Perfil</a> : null}
-                        {authenticated ? <a href="/logout">Cerrar sesión</a> : null}
+                        {authenticated ? <a href="/logout" onClick={logout}>Cerrar sesión</a> : null}
                     </Nav>
                 </Navbar.Collapse>
             </Container>

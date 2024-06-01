@@ -44,7 +44,7 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/comprobarVerificado', name: 'comprobarVerificado')]
-    public function comprobadorVerificado(Security $security ): Response
+    public function comprobadorVerificado(Security $security): Response
     {
         // OBTENER EL CLIENTE AUTENTICADO 
         $cliente = $security->getUser();
@@ -52,10 +52,11 @@ class SecurityController extends AbstractController
         // COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE
         if ($cliente instanceof Cliente) {
             $verificado = $cliente->isVerified();
-        } 
+        } else {
+            $verificado = false;
+        }
 
-        return new Response($verificado);
+        // DEVOLVEMOS EL RESULTADO COMO UNA CADENA
+        return new Response($verificado ? 'true' : 'false');
     }
-    
-    
 }
