@@ -9,27 +9,34 @@ const localizer = momentLocalizer(moment);
 const CalendarioCitas = () => {
 
     const [citas, setCitas] = useState([]);
+    
     const handleSelectSlot = ({ start, end }) => {
-        fetch('/crearCita', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                start,
-                end,
-            }),
-        })
-            .then(response => response.json())
-            .then(response => {
-                console.log('Respuesta del servidor:', response); // Agregado para depuración
-                if (response.mensaje === "Cita creada con éxito") {
-                    alert('Cita guardada con éxito.');
-                    fetchCitas();
-                } else {
-                    throw new Error('Ocurrió un error al guardar la cita.');
-                }
+
+        const isConfirmed = window.confirm('¿Estás seguro de que quieres crear una cita en esta fecha y hora?');
+
+        if (isConfirmed) {
+            fetch('/crearCita', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    start,
+                    end,
+                }),
             })
+                .then(response => response.json())
+                .then(response => {
+                    console.log('Respuesta del servidor:', response); // Agregado para depuración
+                    if (response.mensaje === "Cita creada con éxito") {
+                        alert('Cita guardada con éxito.');
+                        fetchCitas();
+                    } else {
+                        throw new Error('Ocurrió un error al guardar la cita.');
+                    }
+                })
+        }
+
     };
 
     const fetchCitas = async () => {
