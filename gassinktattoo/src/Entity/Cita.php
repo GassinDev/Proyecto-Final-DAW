@@ -20,8 +20,8 @@ class Cita
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\ManyToOne]
-    private ?Cliente $cliente = null;
+    #[ORM\Column(length: 255)]
+    private ?string $clienteUsername = null;
 
     #[ORM\ManyToOne]
     private ?Tatuaje $tatuaje = null;
@@ -30,7 +30,10 @@ class Cita
     private ?string $workerName = null;
 
     #[ORM\Column]
-    private ?bool $state = null;
+    private ?bool $realized = null;
+
+    #[ORM\Column(length: 400)]
+    private ?string $description = null;
 
     public function getId(): ?int
     {
@@ -61,14 +64,14 @@ class Cita
         return $this;
     }
 
-    public function getCliente(): ?Cliente
+    public function getClienteUsername(): ?string
     {
-        return $this->cliente;
+        return $this->clienteUsername;
     }
 
-    public function setCliente(?Cliente $cliente): static
+    public function setClienteUsername(string $clienteUsername): static
     {
-        $this->cliente = $cliente;
+        $this->clienteUsername = $clienteUsername;
 
         return $this;
     }
@@ -97,14 +100,26 @@ class Cita
         return $this;
     }
 
-    public function isState(): ?bool
+    public function isRealized(): ?bool
     {
-        return $this->state;
+        return $this->realized;
     }
 
-    public function setState(bool $state): static
+    public function setRealized(bool $realized): static
     {
-        $this->state = $state;
+        $this->realized = $realized;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
 
         return $this;
     }

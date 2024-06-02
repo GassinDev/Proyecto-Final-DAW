@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CitasController extends AbstractController
 {
     #[Route('/crearCita', name: 'crearCita')]
-    public function crearCita(Request $request,Security $security, CitaRepository $citaRepository): Response
+    public function crearCita(Request $request, Security $security, CitaRepository $citaRepository): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -23,13 +23,15 @@ class CitasController extends AbstractController
         $cita = new Cita();
         $cita->setDateInicio(new \DateTime($data['start']));
         $cita->setDateFin(new \DateTime($data['end']));
-        $cita->setState(false);
+        $cita->setRealized(false);
 
         $worker = $security->getUser();
-        if($worker instanceof Cliente){
+        if ($worker instanceof Cliente) {
             $cita->setWorkerName($worker->getUsername());
         }
-        
+        $cita->setClienteUsername($data['usernameCliente']);
+        $cita->setDescription($data['description']);
+
         $citaRepository->save($cita);
 
         return new JsonResponse(['mensaje' => 'Cita creada con éxito'], Response::HTTP_OK);
@@ -39,10 +41,32 @@ class CitasController extends AbstractController
     public function mostrarCitas(Security $security, CitaRepository $citaRepository): Response
     {
         $worker = $security->getUser();
-        if($worker instanceof Cliente){
-            $citas = $citaRepository->findBy(['workerName' => $worker->getUsername()]); 
+        if ($worker instanceof Cliente) {
+            $citas = $citaRepository->findBy(['workerName' => $worker->getUsername()]);
         }
 
         return $this->json($citas);
+    }
+
+    #[Route('/eliminarCita/{id}', name: 'eliminarCita', methods: ['DELETE'])]
+    public function eliminarCita(int $id, Security $security, CitaRepository $citaRepository): Response
+    {
+        $worker = $security->getUser();
+        if ($worker instanceof Cliente) {
+            $cita = $citaRepository->findOneBy([
+                'id' => $id,
+                'workerName' => $worker->getUsername()
+            ]);
+
+            if ($cita) {
+                $citaRepository->remove($cita);
+
+                return new JsonResponse(['mensaje' => 'Cita eliminada con éxito'], Response::HTTP_OK);
+            }
+
+            return new JsonResponse(['mensaje' => 'Cita no encontrada o no autorizada'], Response::HTTP_NOT_FOUND);
+        }
+
+        return new JsonResponse();
     }
 }

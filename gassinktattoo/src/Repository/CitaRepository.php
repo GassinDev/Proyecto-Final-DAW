@@ -23,6 +23,13 @@ class CitaRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    public function remove(Cita $cita): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($cita);
+        $entityManager->flush();
+    }
+
     //    /**
     //     * @return Cita[] Returns an array of Cita objects
     //     */
