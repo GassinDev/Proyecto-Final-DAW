@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
-const CalendarioCitas = () => {
+const CalendarioCitasWorker = () => {
     const [citas, setCitas] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({ usernameCliente: '', description: '' });
@@ -144,4 +144,4 @@ const CalendarioCitas = () => {
     );
 };
 
-export default CalendarioCitas;
+export default CalendarioCitasWorker;

@@ -69,4 +69,13 @@ class CitasController extends AbstractController
 
         return new JsonResponse();
     }
+
+    #[Route('/mostrarCitasTrabajadores/{worker}', name: 'mostrarCitasTrabajadores')]
+    public function mostrarCitasTrabajadores(string $worker, Request $request, CitaRepository $citaRepository): Response
+    {
+
+        $citas = $citaRepository->findBy(['workerName' => $worker]);
+
+        return $this->json($citas);
+    }
 }
