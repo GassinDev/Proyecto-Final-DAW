@@ -11,6 +11,7 @@ import BannerVideo from './components/BannerVideo';
 import Footer from './components/Footer';
 import Perfil from './components/Perfil';
 import ListadoTatuajes from './components/ListadoTatuajes';
+import CalendarioCitas from './components/CalendarioCitas';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -56,3 +57,9 @@ const tatuajes = document.getElementById('tatuajes');
 if (tatuajes) {
     createRoot(tatuajes).render(<ListadoTatuajes/>);
 }
+
+const calendario = document.getElementById('calendario');
+if (calendario) {
+    createRoot(calendario).render(<CalendarioCitas/>);
+}
+

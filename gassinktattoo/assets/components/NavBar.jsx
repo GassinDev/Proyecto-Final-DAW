@@ -74,7 +74,7 @@ const NavBar = () => {
                         <a href="/productos">Productos</a>
                         <a href="/merchandising">Merchandising</a>
                         <a href="/tatuajes">Tatuajes</a>
-                        {authenticated && !isWorker ? <a href="/carrito">Carrito</a> : null}
+                        {authenticated ? <a href="/carrito">Carrito</a> : null}
                         {authenticated ? null : <a href="/register">Registro</a>}
                         {authenticated ? null : <a href="/login">Inicio de sesión</a>}
                         {authenticated && isWorker ? <a href="/citas">Citas</a> : null}
