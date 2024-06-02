@@ -71,7 +71,7 @@ class CitasController extends AbstractController
     }
 
     #[Route('/mostrarCitasTrabajadores/{worker}', name: 'mostrarCitasTrabajadores')]
-    public function mostrarCitasTrabajadores(string $worker, Request $request, CitaRepository $citaRepository): Response
+    public function mostrarCitasTrabajadores(string $worker, CitaRepository $citaRepository): Response
     {
 
         $citas = $citaRepository->findBy(['workerName' => $worker]);

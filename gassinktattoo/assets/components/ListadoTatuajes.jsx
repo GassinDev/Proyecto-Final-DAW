@@ -15,6 +15,9 @@ const ListadoTatuajes = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedWorker, setSelectedWorker] = useState('');
     const [workers, setWorkers] = useState([]);
+    const [selectedTatuaje, setSelectedTatuaje] = useState(null);
+    const [descripcion, setDescripcion] = useState('');
+    const [fechaHora, setFechaHora] = useState('');
 
     useEffect(() => {
         fetchTatuajes();
@@ -65,8 +68,44 @@ const ListadoTatuajes = () => {
         );
     }
 
-    const handleSelectWorker = () => {
+    const handleSelectWorker = (tatuaje) => {
+        setSelectedTatuaje(tatuaje);
         setShowModal(true);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        const data = {
+            tatuajeId: selectedTatuaje.id,
+            descripcion: descripcion,
+            fechaHora: fechaHora,
+            workerName: selectedWorker,
+        };
+
+        const response = await fetch('http://127.0.0.1:8000/realizarPeticion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al enviar la petición');
+        }
+
+        // Manejar la respuesta
+        const result = await response.json();
+        console.log(result);
+
+        
+        // Cerrar el modal y resetear el formulario
+        setShowModal(false);
+        setDescripcion('');
+        setFechaHora('');
+        setSelectedWorker('');
+        alert('Petición realizada con éxito');
     };
 
     return (
@@ -83,7 +122,7 @@ const ListadoTatuajes = () => {
                                     <Card.Text>Rango de precio: {tatuaje.price}€</Card.Text>
                                     {/* Mostrar el botón solo si el usuario está autenticado */}
                                     {authenticated ? (
-                                        <Button variant="success" onClick={handleSelectWorker}>Pedir cita</Button>
+                                        <Button variant="success" onClick={() => handleSelectWorker(tatuaje)}>Pedir cita</Button>
                                     ) : (
                                         <Alert variant="warning">Por favor, inicia sesión para pedir tu cita.</Alert>
                                     )}
@@ -99,19 +138,38 @@ const ListadoTatuajes = () => {
                     <Modal.Title>Seleccionar Trabajador</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <Form>
+                    <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="selectWorker">
                             <Form.Label>Seleccionar Trabajador</Form.Label>
-                            <Form.Select onChange={(e) => setSelectedWorker(e.target.value)}>
+                            <Form.Select onChange={(e) => setSelectedWorker(e.target.value)} required>
                                 <option value="">Seleccionar...</option>
                                 {workers.map(worker => (
                                     <option key={worker.id} value={worker.username}>{worker.username}</option>
                                 ))}
                             </Form.Select>
                         </Form.Group>
+                        <Form.Group controlId="descripcion">
+                            <Form.Label style={{ backgroundColor: 'black' }} >Descripción</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={descripcion}
+                                onChange={(e) => setDescripcion(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                        <Form.Group controlId="fechaHora" style={{ backgroundColor: 'black' }}>
+                            <Form.Label>Fecha y Hora</Form.Label>
+                            <Form.Control
+                                type="datetime-local"
+                                value={fechaHora}
+                                onChange={(e) => setFechaHora(e.target.value)}
+                                required
+                            />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">Enviar</Button>
                     </Form>
                     {/* Mostrar el calendario del trabajador seleccionado */}
-                    {selectedWorker && <CalendarioCitasCliente workerName={selectedWorker}/>}
+                    {selectedWorker && <CalendarioCitasCliente workerName={selectedWorker} />}
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cerrar</Button>
