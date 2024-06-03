@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Pedidos from './Pedidos';
+import '../styles/perfil.css';
 
 const Perfil = () => {
     const [mostrarModal, setMostrarModal] = useState(false);
@@ -21,17 +22,31 @@ const Perfil = () => {
     };
 
     return (
-        <div>
-            <h1>Perfil de Usuario</h1>
+        <div className="profile-container">
             {cliente && (
-                <div>
-                    <p>Username: {cliente.username}</p>
-                    <p>Email: {cliente.email}</p>
-                    <img src={"uploads/images/fotosPerfil/" + cliente.image} alt="Imagen de perfil" style={{ width: '100px', height: '100px' }} />
-                </div>
+                <>
+                    <div 
+                        className="profile-banner" 
+                        style={{ backgroundImage: `url(uploads/images/fotosPerfil/${cliente.image})` }}
+                    ></div>
+                    <div className="profile-details">
+                        <div className="profile-info">
+                            <img 
+                                src={"uploads/images/fotosPerfil/" + cliente.image} 
+                                alt="Imagen de perfil"
+                                className="profile-image"
+                            />
+                            <p>Username: {cliente.username}</p>
+                            <p>Email: {cliente.email}</p>
+                        </div>
+                        <div className="profile-buttons">
+                            <button onClick={abrirModal}>Ver Pedidos</button>
+                            <button>Favoritos</button>
+                            <button>Citas</button>
+                        </div>
+                    </div>
+                </>
             )}
-
-            <button onClick={abrirModal}>Ver Pedidos</button>
             <Pedidos show={mostrarModal} onHide={cerrarModal} />
         </div>
     );
