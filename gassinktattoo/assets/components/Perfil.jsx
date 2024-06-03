@@ -6,7 +6,6 @@ const Perfil = () => {
     const [cliente, setCliente] = useState(null);
 
     useEffect(() => {
-        // Llamada a la API para obtener los datos del cliente
         fetch('/perfilDatos')
             .then(response => response.json())
             .then(data => setCliente(data))
@@ -33,7 +32,7 @@ const Perfil = () => {
             )}
 
             <button onClick={abrirModal}>Ver Pedidos</button>
-            {mostrarModal && <Pedidos onClose={cerrarModal} />}
+            <Pedidos show={mostrarModal} onHide={cerrarModal} />
         </div>
     );
 };

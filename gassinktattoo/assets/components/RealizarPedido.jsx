@@ -12,6 +12,9 @@ const RealizarPedido = () => {
     const [loading, setLoading] = useState(true);
     const [showModal, setShowModal] = useState(false);
     const [paymentAccepted, setPaymentAccepted] = useState(false);
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(null);
+
 
     //PARA ALMACENAR LOS DATOS Y LUEGO MOSTRAR QUE ESTÁ VERIFICADO
     const [datosPedido, setDatosPedido] = useState({
@@ -76,20 +79,18 @@ const RealizarPedido = () => {
 
     if (loading) {
         return <div className='spinner-container'>
-        <Spinner animation="grow" className='spinner'/>
-    </div>
+            <Spinner animation="grow" className='spinner' />
+        </div>
     }
 
 
     //FUNCIÓN PARA ENVIAR LOS DATOS DEL PEDIDO AL BACKEND
     const handlePedidoSubmit = () => {
-
-        //PARA VERIFICAR QUE TODOS LOS CAMPOS ESTEN LLENOS
         const camposRequeridos = ['nombre', 'telefono', 'calle', 'ciudad', 'provincia', 'cp', 'pais'];
         const camposVacios = camposRequeridos.filter(campo => !datosPedido[campo]);
 
         if (camposVacios.length > 0) {
-            alert('Por favor, complete todos los campos requeridos.');
+            setError('Por favor, complete todos los campos requeridos.');
             return;
         }
 
@@ -106,26 +107,34 @@ const RealizarPedido = () => {
                 }
                 return response.json();
             })
-            .then(data => {
-                alert('Realizado pedido: ' + JSON.stringify(data));
+            .then(() => {
+                setError(null);
+                alert('Pedido realiado correctamente');
+                window.location.href = '/perfil';
             })
+            .catch(error => {
+                setError('Error al enviar el pedido. Por favor, inténtelo de nuevo más tarde.');
+                console.error('Error:', error);
+            });
     };
 
     return (
         <Container className="py-4">
+            {error && <div className="alert alert-danger mt-3">{error}</div>}
+            {successMessage && <div className="alert alert-success mt-3">{successMessage}</div>}
             <h2 className="text-center mb-4">Realizar Pedido</h2>
             <Form>
                 <Row className="mb-3">
                     <Col>
                         <Form.Group controlId="formNombre">
                             <Form.Label>Nombre completo *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese su nombre" name="nombre" value={datosPedido.nombre} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese su nombre" name="nombre" value={datosPedido.nombre} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formTelefono">
                             <Form.Label>Teléfono *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese su teléfono" name="telefono" value={datosPedido.telefono} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese su teléfono" name="telefono" value={datosPedido.telefono} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -133,19 +142,19 @@ const RealizarPedido = () => {
                     <Col>
                         <Form.Group controlId="formNumero">
                             <Form.Label>Número *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese el número" name="numero" value={datosPedido.numero} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese el número" name="numero" value={datosPedido.numero} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formCalle" className="mb-3">
                             <Form.Label>Calle *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese la calle" name="calle" value={datosPedido.calle} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese la calle" name="calle" value={datosPedido.calle} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formCP">
                             <Form.Label>Código Postal *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese el código postal" name="cp" value={datosPedido.cp} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese el código postal" name="cp" value={datosPedido.cp} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                 </Row>
@@ -153,19 +162,19 @@ const RealizarPedido = () => {
                     <Col>
                         <Form.Group controlId="formCiudad" className="mb-3">
                             <Form.Label>Ciudad *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese la ciudad" name="ciudad" value={datosPedido.ciudad} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese la ciudad" name="ciudad" value={datosPedido.ciudad} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formProvincia">
                             <Form.Label>Provincia *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese la provincia" name="provincia" value={datosPedido.provincia} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese la provincia" name="provincia" value={datosPedido.provincia} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                     <Col>
                         <Form.Group controlId="formPais">
                             <Form.Label>País *</Form.Label>
-                            <Form.Control type="text" placeholder="Ingrese el país" name="pais" value={datosPedido.pais} onChange={handleChange}/>
+                            <Form.Control type="text" placeholder="Ingrese el país" name="pais" value={datosPedido.pais} onChange={handleChange} />
                         </Form.Group>
                     </Col>
                 </Row>

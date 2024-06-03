@@ -13,6 +13,7 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -28,18 +29,39 @@ class PedidoController extends AbstractController
         // OBTENEMOS LOS PEDIDOS DEL CLIENTE ACTUAL
         $pedidos = $pedidoRepository->findBy(['cliente' => $cliente]);
 
-        // Seleccionar manualmente los datos que deseas devolver
         $pedidosData = [];
         foreach ($pedidos as $pedido) {
             $pedidosData[] = [
+                'id' => $pedido->getId(),
                 'status' => $pedido->getStatus(),
-                'orderDate'=> $pedido->getOrderDate(),
-                'price'=> $pedido->getPrice()
+                'orderDate' => $pedido->getOrderDate()->format('Y-m-d H:i'),
+                'price' => $pedido->getPrice()
             ];
         }
 
         // Devuelve la respuesta JSON con los datos seleccionados
         return $this->json($pedidosData);
+    }
+
+    #[Route('/pedido/show/{id}', name: 'pedidosShowArticulos')]
+    public function getPedidosArticulos(int $id, PedidoArticulosRepository $pedidoArticulosRepository): Response
+    {
+
+        $articulosPedido = $pedidoArticulosRepository->findBy(['pedido' => $id]);
+
+        $formattedArticulosPedido = [];
+
+        foreach ($articulosPedido as $articuloPedido) {
+            $formattedArticulosPedido[] = [
+                'id' => $articuloPedido->getId(),
+                'productName' => $articuloPedido->getProduct() ? $articuloPedido->getProduct()->getName() : null,
+                'merchandisingName' => $articuloPedido->getMerchandising() ? $articuloPedido->getMerchandising()->getName() : null,
+                'quantity' => $articuloPedido->getQuantity(),
+                'size' => $articuloPedido->getSize()
+            ];
+        }
+
+        return new JsonResponse($formattedArticulosPedido);
     }
 
     #[Route('/pedido/realizar', name: 'pedido_realizar')]
@@ -112,6 +134,6 @@ class PedidoController extends AbstractController
             $entityManagerInterface->flush();
         }
 
-        return new Response('Pedido guardado correctamente', Response::HTTP_OK);
+        return new JsonResponse(['message' => 'Pedido guardado correctamente'], Response::HTTP_OK);
     }
 }

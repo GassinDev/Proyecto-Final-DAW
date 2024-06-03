@@ -5,7 +5,7 @@ const PagoPedidoModal = ({ showModal, setShowModal, datosPedido, handleChange, h
 
     return (
         <Modal show={showModal} onHide={() => setShowModal(false)}>
-            <Modal.Header closeButton>
+            <Modal.Header closeButton style={{ backgroundColor: 'black' }}>
                 <Modal.Title>Datos de Pago</Modal.Title>
             </Modal.Header>
             <Modal.Body>
