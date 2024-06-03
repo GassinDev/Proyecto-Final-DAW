@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import Pedidos from './Pedidos';
+import ModalPedidos from './ModalPedidos';
+import ModalCitas from './ModalCitas';
 import '../styles/perfil.css';
 
 const Perfil = () => {
-    const [mostrarModal, setMostrarModal] = useState(false);
+    const [mostrarModalPedidos, setMostrarModalPedidos] = useState(false);
+    const [mostrarModalCitas, setMostrarModalCitas] = useState(false);
     const [cliente, setCliente] = useState(null);
 
     useEffect(() => {
@@ -13,12 +15,20 @@ const Perfil = () => {
             .catch(error => console.error('Error al obtener los datos del cliente:', error));
     }, []);
 
-    const abrirModal = () => {
-        setMostrarModal(true);
+    const abrirModalPedidos = () => {
+        setMostrarModalPedidos(true);
     };
 
-    const cerrarModal = () => {
-        setMostrarModal(false);
+    const cerrarModalPedidos = () => {
+        setMostrarModalPedidos(false);
+    };
+
+    const abrirModalCitas = () => {
+        setMostrarModalCitas(true);
+    };
+
+    const cerrarModalCitas = () => {
+        setMostrarModalCitas(false);
     };
 
     return (
@@ -40,14 +50,15 @@ const Perfil = () => {
                             <p>Email: {cliente.email}</p>
                         </div>
                         <div className="profile-buttons">
-                            <button onClick={abrirModal}>Ver Pedidos</button>
+                            <button onClick={abrirModalPedidos}>Ver Pedidos</button>
                             <button>Favoritos</button>
-                            <button>Citas</button>
+                            <button onClick={abrirModalCitas}>Citas</button>
                         </div>
                     </div>
                 </>
             )}
-            <Pedidos show={mostrarModal} onHide={cerrarModal} />
+            <ModalPedidos show={mostrarModalPedidos} onHide={cerrarModalPedidos} />
+            <ModalCitas show={mostrarModalCitas} onHide={cerrarModalCitas} />
         </div>
     );
 };

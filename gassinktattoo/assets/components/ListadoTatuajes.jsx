@@ -99,7 +99,7 @@ const ListadoTatuajes = () => {
         const result = await response.json();
         console.log(result);
 
-        
+
         // Cerrar el modal y resetear el formulario
         setShowModal(false);
         setDescripcion('');
@@ -133,11 +133,11 @@ const ListadoTatuajes = () => {
                 ))}
             </div>
             {/* Modal para seleccionar el trabajador y ver su calendario */}
-            <Modal show={showModal} onHide={() => setShowModal(false)}>
-                <Modal.Header closeButton style={{ backgroundColor: 'black' }}>
-                    <Modal.Title>Seleccionar Trabajador</Modal.Title>
+            <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
+                <Modal.Header closeButton style={{ backgroundColor: 'white', color: 'black' }}>
+                    <Modal.Title>Pide tu cita</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
+                <Modal.Body style={{ backgroundColor: 'black' }}>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="selectWorker">
                             <Form.Label>Seleccionar Trabajador</Form.Label>
@@ -149,15 +149,15 @@ const ListadoTatuajes = () => {
                             </Form.Select>
                         </Form.Group>
                         <Form.Group controlId="descripcion">
-                            <Form.Label style={{ backgroundColor: 'black' }} >Descripción</Form.Label>
+                            <Form.Label >Descripción</Form.Label>
                             <Form.Control
-                                type="text"
+                                as="textarea"
                                 value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}
                                 required
                             />
                         </Form.Group>
-                        <Form.Group controlId="fechaHora" style={{ backgroundColor: 'black' }}>
+                        <Form.Group controlId="fechaHora">
                             <Form.Label>Fecha y Hora</Form.Label>
                             <Form.Control
                                 type="datetime-local"
@@ -166,7 +166,7 @@ const ListadoTatuajes = () => {
                                 required
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit">Enviar</Button>
+                        <Button variant="primary" className='m-1 mt-3' type="submit">Enviar</Button>
                     </Form>
                     {/* Mostrar el calendario del trabajador seleccionado */}
                     {selectedWorker && <CalendarioCitasCliente workerName={selectedWorker} />}

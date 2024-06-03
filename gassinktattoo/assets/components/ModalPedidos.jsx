@@ -46,14 +46,14 @@ const Pedidos = ({ show, onHide }) => {
     };
 
     return (
-        <Modal show={show && isModalReady} onHide={onHide} size="lg">
+        <Modal show={show && isModalReady} onHide={onHide} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
             <Modal.Header closeButton className='modalHeader'>
                 <Modal.Title>Pedidos</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {loading ? (
-                    <div className='spinner-container'>
-                        <Spinner animation="grow" className='spinner' />
+                    <div className="d-flex justify-content-center">
+                        <Spinner animation="border" style={{ color: 'black' }} />
                     </div>
                 ) : (
                     <Row className="justify-content-center">
@@ -71,8 +71,8 @@ const Pedidos = ({ show, onHide }) => {
                                                     <Accordion.Header onClick={() => fetchArticulosPedido(pedido.id)}>
                                                         <div className="d-flex justify-content-between align-items-center">
                                                             <div>
-                                                                <strong>Fecha:</strong> {pedido.orderDate} - <strong>Precio:</strong> {pedido.price}€ - <strong>Estado:</strong> {pedido.status} 
-                                                                
+                                                                <strong>Fecha:</strong> {pedido.orderDate} - <strong>Precio:</strong> {pedido.price}€ - <strong>Estado:</strong> {pedido.status}
+
                                                                 {pedido.status === 'Pendiente' && (
                                                                     <strong className="text-warning m-1">
                                                                         <FontAwesomeIcon icon={faExclamationCircle} />
