@@ -17,6 +17,10 @@ footer {
     margin: 0 auto;
 }
 
+.footer{
+    margin-top: 150px;
+}
+
 .footer p {
     margin: 0;
 }

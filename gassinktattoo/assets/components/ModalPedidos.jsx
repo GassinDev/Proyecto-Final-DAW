@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faExclamationCircle, faTruck, faBox } from '@fortawesome/free-solid-svg-icons';
 import '../styles/pedidosModal.css';
 
-const Pedidos = ({ show, onHide }) => {
+const ModalPedidos = ({ show, onHide }) => {
     const [pedidos, setPedidos] = useState([]);
     const [articulosPedido, setArticulosPedido] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -128,4 +128,4 @@ const Pedidos = ({ show, onHide }) => {
     );
 };
 
-export default Pedidos;
+export default ModalPedidos;

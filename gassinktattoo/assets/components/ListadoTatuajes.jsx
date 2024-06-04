@@ -6,7 +6,11 @@ import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import Alert from 'react-bootstrap/Alert';
 import CalendarioCitasCliente from './CalendarioCitasCliente';
+import Fab from '@mui/material/Fab';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FiltrosTatuajes from './FiltrosTatuajes';
 import '../styles/spinner.css';
+import '../styles/listadoTatuajes.css';
 
 const ListadoTatuajes = () => {
     const [tatuajes, setTatuajes] = useState([]);
@@ -18,6 +22,8 @@ const ListadoTatuajes = () => {
     const [selectedTatuaje, setSelectedTatuaje] = useState(null);
     const [descripcion, setDescripcion] = useState('');
     const [fechaHora, setFechaHora] = useState('');
+    const [showImageModal, setShowImageModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
 
     useEffect(() => {
         fetchTatuajes();
@@ -60,14 +66,6 @@ const ListadoTatuajes = () => {
         setWorkers(data);
     };
 
-    if (loading) {
-        return (
-            <div className='spinner-container'>
-                <Spinner animation="grow" className='spinner' />
-            </div>
-        );
-    }
-
     const handleSelectWorker = (tatuaje) => {
         setSelectedTatuaje(tatuaje);
         setShowModal(true);
@@ -108,29 +106,96 @@ const ListadoTatuajes = () => {
         alert('Petición realizada con éxito');
     };
 
+    const handleFavoriteClick = async (idTatuaje) => {
+        const tatuaje = tatuajes.find(t => t.id === idTatuaje);
+        if (tatuaje.favorito) {
+            await handleRemoveFavorite(idTatuaje);
+        } else {
+            await handleAddFavorite(idTatuaje);
+        }
+    };
+
+    const handleAddFavorite = async (idTatuaje) => {
+        const response = await fetch(`http://127.0.0.1:8000/addFavorito/${idTatuaje}`, {
+            method: 'POST',
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al agregar el tatuaje a favoritos');
+        }
+
+        fetchTatuajes();
+    };
+
+    const handleRemoveFavorite = async (idTatuaje) => {
+        const response = await fetch(`http://127.0.0.1:8000/removeFavorito/${idTatuaje}`, {
+            method: 'POST',
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al eliminar el tatuaje de favoritos');
+        }
+
+        fetchTatuajes();
+    };
+
+    // Función para mostrar la imagen en grande
+    const handleShowImage = (imageSrc) => {
+        setSelectedImage(imageSrc);
+        setShowImageModal(true);
+    };
+
+    if (loading) {
+        return (
+            <div className='spinner-container'>
+                <Spinner animation="grow" className='spinner' />
+            </div>
+        );
+    }
+
     return (
         <div className='container'>
+            {authenticated ? null : <Alert variant="warning" className='alert'>Por favor, inicia sesión para pedir tu cita.</Alert>}
             <h2 className='text-center my-4'>Listado de Tatuajes</h2>
-            <div className='row justify-content-center'>
-                {tatuajes.map(tatuaje => (
-                    <div key={tatuaje.id} className='col-lg-4 col-md-6 mb-4'>
-                        <div className='d-flex justify-content-center'>
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={"uploads/images/tatuajes/" + tatuaje.image} alt={tatuaje.name} />
-                                <Card.Body>
-                                    <Card.Title>{tatuaje.name}</Card.Title>
-                                    <Card.Text>Rango de precio: {tatuaje.price}€</Card.Text>
-                                    {/* Mostrar el botón solo si el usuario está autenticado */}
-                                    {authenticated ? (
-                                        <Button variant="success" onClick={() => handleSelectWorker(tatuaje)}>Pedir cita</Button>
-                                    ) : (
-                                        <Alert variant="warning">Por favor, inicia sesión para pedir tu cita.</Alert>
-                                    )}
-                                </Card.Body>
-                            </Card>
-                        </div>
+            <div className='row'>
+                <div className='col-lg-3'>
+                    <FiltrosTatuajes />
+                </div>
+                <div className='col-lg-9'>
+                    {/* Aquí va el listado de tatuajes */}
+                    <div className='row justify-content-center'>
+                        {tatuajes.map(tatuaje => (
+                            <div key={tatuaje.id} className='col-lg-4 col-md-6 mb-4'>
+                                <div className='card-container d-flex justify-content-center'>
+                                    <Card className="custom-card">
+                                        <Card.Img
+                                            variant="top"
+                                            src={"uploads/images/tatuajes/" + tatuaje.image}
+                                            alt={tatuaje.name}
+                                            className='custom-card-img'
+                                            onClick={() => handleShowImage("uploads/images/tatuajes/" + tatuaje.image)} // Mostrar imagen en grande al hacer clic
+                                        />
+                                        <div className="like-button">
+                                            <Fab aria-label="like" onClick={() => handleFavoriteClick(tatuaje.id)}>
+                                                <FavoriteIcon style={{ color: tatuaje.favorito ? 'red' : 'black' }} />
+                                            </Fab>
+                                        </div>
+                                        <Card.Body className='custom-card-body d-flex flex-column justify-content-center'>
+                                            <Card.Title>{tatuaje.name}</Card.Title>
+                                            <Card.Text>Rango de precio: {tatuaje.price}€</Card.Text>
+                                            {/* Mostrar el botón solo si el usuario está autenticado */}
+                                            {authenticated ? (
+                                                <Button variant="success" onClick={() => handleSelectWorker(tatuaje)}>Pedir cita</Button>
+                                            ) : (
+                                                <Button disabled variant="success" onClick={() => handleSelectWorker(tatuaje)}>No puede pedir cita</Button>
+                                            )}
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
             {/* Modal para seleccionar el trabajador y ver su calendario */}
             <Modal show={showModal} onHide={() => setShowModal(false)} size="lg">
@@ -174,6 +239,12 @@ const ListadoTatuajes = () => {
                 <Modal.Footer>
                     <Button variant="secondary" onClick={() => setShowModal(false)}>Cerrar</Button>
                 </Modal.Footer>
+            </Modal>
+            {/* Modal para mostrar la imagen en grande */}
+            <Modal show={showImageModal} onHide={() => setShowImageModal(false)} size="lg">
+                <Modal.Body>
+                    <img src={selectedImage} alt="Imagen en grande" style={{ width: '100%' }} />
+                </Modal.Body>
             </Modal>
         </div>
     );

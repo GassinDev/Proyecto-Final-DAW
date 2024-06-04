@@ -31,18 +31,19 @@ const Perfil = () => {
         setMostrarModalCitas(false);
     };
 
+
     return (
         <div className="profile-container">
             {cliente && (
                 <>
-                    <div 
-                        className="profile-banner" 
+                    <div
+                        className="profile-banner"
                         style={{ backgroundImage: `url(uploads/images/fotosPerfil/${cliente.image})` }}
                     ></div>
                     <div className="profile-details">
                         <div className="profile-info">
-                            <img 
-                                src={"uploads/images/fotosPerfil/" + cliente.image} 
+                            <img
+                                src={"uploads/images/fotosPerfil/" + cliente.image}
                                 alt="Imagen de perfil"
                                 className="profile-image"
                             />
@@ -51,8 +52,7 @@ const Perfil = () => {
                         </div>
                         <div className="profile-buttons">
                             <button onClick={abrirModalPedidos}>Ver Pedidos</button>
-                            <button>Favoritos</button>
-                            <button onClick={abrirModalCitas}>Citas</button>
+                            <button onClick={abrirModalCitas}>Peticiones de citas</button>
                         </div>
                     </div>
                 </>
@@ -60,6 +60,7 @@ const Perfil = () => {
             <ModalPedidos show={mostrarModalPedidos} onHide={cerrarModalPedidos} />
             <ModalCitas show={mostrarModalCitas} onHide={cerrarModalCitas} />
         </div>
+        
     );
 };
 
