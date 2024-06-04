@@ -24,6 +24,7 @@ const ListadoTatuajes = () => {
     const [fechaHora, setFechaHora] = useState('');
     const [showImageModal, setShowImageModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
+    const [filtros, setFiltros] = useState({ estilos: [], favoritos: false, price: '' });
 
     useEffect(() => {
         fetchTatuajes();
@@ -145,6 +146,32 @@ const ListadoTatuajes = () => {
         setShowImageModal(true);
     };
 
+    const handleFiltrosChange = (newFiltros) => {
+        setFiltros(newFiltros);
+    };
+
+    const applyFilters = (tatuajes) => {
+        let filteredTatuajes = tatuajes;
+
+        if (filtros.estilos.length > 0) {
+            filteredTatuajes = filteredTatuajes.filter(tatuaje =>
+                filtros.estilos.includes(tatuaje.style)
+            );
+        }
+
+        if (filtros.favoritos) {
+            filteredTatuajes = filteredTatuajes.filter(tatuaje => tatuaje.favorito);
+        }
+
+        if (filtros.precio) {
+            filteredTatuajes = filteredTatuajes.sort((a, b) =>
+                filtros.precio === 'asc' ? a.price - b.price : b.price - a.price
+            );
+        }
+
+        return filteredTatuajes;
+    };
+
     if (loading) {
         return (
             <div className='spinner-container'>
@@ -153,18 +180,19 @@ const ListadoTatuajes = () => {
         );
     }
 
+    const filteredTatuajes = applyFilters(tatuajes);
+
     return (
         <div className='container'>
             {authenticated ? null : <Alert variant="warning" className='alert'>Por favor, inicia sesión para pedir tu cita.</Alert>}
-            <h2 className='text-center my-4'>Listado de Tatuajes</h2>
+            <h2 className='text-center my-4'>Tatuajes</h2>
             <div className='row'>
                 <div className='col-lg-3'>
-                    <FiltrosTatuajes />
+                    <FiltrosTatuajes onChange={handleFiltrosChange} />
                 </div>
                 <div className='col-lg-9'>
-                    {/* Aquí va el listado de tatuajes */}
                     <div className='row justify-content-center'>
-                        {tatuajes.map(tatuaje => (
+                        {filteredTatuajes.map(tatuaje => (
                             <div key={tatuaje.id} className='col-lg-4 col-md-6 mb-4'>
                                 <div className='card-container d-flex justify-content-center'>
                                     <Card className="custom-card">
@@ -173,7 +201,7 @@ const ListadoTatuajes = () => {
                                             src={"uploads/images/tatuajes/" + tatuaje.image}
                                             alt={tatuaje.name}
                                             className='custom-card-img'
-                                            onClick={() => handleShowImage("uploads/images/tatuajes/" + tatuaje.image)} // Mostrar imagen en grande al hacer clic
+                                            onClick={() => handleShowImage("uploads/images/tatuajes/" + tatuaje.image)}
                                         />
                                         <div className="like-button">
                                             <Fab aria-label="like" onClick={() => handleFavoriteClick(tatuaje.id)}>
@@ -182,7 +210,7 @@ const ListadoTatuajes = () => {
                                         </div>
                                         <Card.Body className='custom-card-body d-flex flex-column justify-content-center'>
                                             <Card.Title>{tatuaje.name}</Card.Title>
-                                            <Card.Text>Rango de precio: {tatuaje.price}€</Card.Text>
+                                            <Card.Text>Desde {tatuaje.price}€</Card.Text>
                                             {/* Mostrar el botón solo si el usuario está autenticado */}
                                             {authenticated ? (
                                                 <Button variant="success" onClick={() => handleSelectWorker(tatuaje)}>Pedir cita</Button>

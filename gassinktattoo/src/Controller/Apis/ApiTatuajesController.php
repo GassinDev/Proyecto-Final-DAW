@@ -30,6 +30,7 @@ class ApiTatuajesController extends AbstractController
             $tatuajesConFavoritos[] = [
                 'id' => $tatuaje->getId(),
                 'name' => $tatuaje->getName(),
+                'style' => $tatuaje->getStyle(),
                 'price' => $tatuaje->getPrice(),
                 'image' => $tatuaje->getImage(),
                 'favorito' => $esFavorito,
