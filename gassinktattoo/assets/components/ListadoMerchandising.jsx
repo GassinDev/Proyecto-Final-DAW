@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert'; // Importa el componente Alert
+import Alert from 'react-bootstrap/Alert';
+import FiltrosMerchandising from './FiltrosMerchandising';
 import '../styles/spinner.css';
 
 const ListadoMerchandising = () => {
@@ -13,7 +14,8 @@ const ListadoMerchandising = () => {
     const [selectedSizes, setSelectedSizes] = useState({});
     const [quantities, setQuantities] = useState({});
     const [errors, setErrors] = useState({});
-    
+    const [filtros, setFiltros] = useState({ tipos: [], precio: '' });
+
 
     useEffect(() => {
         fetchMerchandising();
@@ -48,7 +50,7 @@ const ListadoMerchandising = () => {
     if (loading) {
         return (
             <div className='spinner-container'>
-                <Spinner animation="grow" className='spinner'/>
+                <Spinner animation="grow" className='spinner' />
             </div>
         );
     }
@@ -115,51 +117,89 @@ const ListadoMerchandising = () => {
         }));
     };
 
+    const handleFiltrosChange = (newFiltros) => {
+        setFiltros(newFiltros);
+    };
+
+    const applyFilters = (merchandising) => {
+        let filteredMerchandising = merchandising;
+
+        if (filtros.tipos.length > 0) {
+            filteredMerchandising = filteredMerchandising.filter(merchandising =>
+                filtros.tipos.includes(merchandising.type)
+            );
+        }
+
+        if (filtros.precio) {
+            if (filtros.precio === 'asc') {
+                filteredMerchandising = filteredMerchandising.sort((a, b) => a.price - b.price);
+            } else if (filtros.precio === 'desc') {
+                filteredMerchandising = filteredMerchandising.sort((a, b) => b.price - a.price);
+            }
+        }
+
+        return filteredMerchandising;
+    };
+
+    const filteredMerchandising = applyFilters(merchandising);
 
     return (
         <div className='container'>
+            {/* Alerta para usuarios no autenticados */}
+            {!authenticated && <Alert variant="warning" className='alert'>Por favor, inicia sesión para agregar al carrito.</Alert>}
             <h2 className='text-center my-4'>Listado de Merchandising</h2>
             <div className='row justify-content-center'>
-                {merchandising.map(merchan => (
-                    <div key={merchan.id} className={`col-lg-4 col-md-6 mb-4`}>
-                        <div className='d-flex justify-content-center'>
-                            <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={"uploads/images/merchandising/" + merchan.image} alt={merchan.name} />
-                                <Card.Body>
-                                    <Card.Title>{merchan.name}</Card.Title>
-                                    <Card.Text>Precio: {merchan.price}€</Card.Text>
-                                    <Form.Group>
-                                        <Form.Label>Selecciona la talla: </Form.Label>
-                                        {merchan.size && merchan.size.map(s => (
-                                            <Form.Check
-                                                key={s}
-                                                type="checkbox"
-                                                id={s}
-                                                label={s}
-                                                checked={selectedSizes[merchan.id] === s}
-                                                onChange={() => handleSizeChange(merchan.id, s)}
-                                            />
-                                        ))}
-                                        {errors[merchan.id] && <Form.Text className="text-danger">{errors[merchan.id]}</Form.Text>}
-                                    </Form.Group>
-                                    <div className="d-flex align-items-center mt-3">
-                                        <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, -1)}>-</Button>
-                                        <Form.Control
-                                            type="text"
-                                            value={quantities[merchan.id] || 1}
-                                            readOnly
-                                            className="mx-2 text-center"
-                                            style={{ width: '50px' }}
-                                        />
-                                        <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, 1)}>+</Button>
-                                    </div>
-                                    { !authenticated && <Alert variant="warning" className="mt-3">Por favor, inicia sesión para agregar al carrito</Alert> }
-                                    { authenticated && <Button variant="success" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button> }
-                                </Card.Body>
-                            </Card>
-                        </div>
+                <div className='col-lg-3'>
+                    <FiltrosMerchandising onChange={handleFiltrosChange}/>
+                </div>
+                <div className='col-lg-9'>
+                    <div className='row justify-content-center'>
+                        {filteredMerchandising.map(merchan => (
+                            <div key={merchan.id} className={`col-lg-4 col-md-6 mb-4`}>
+                                <div className='d-flex justify-content-center'>
+                                    <Card style={{ width: '18rem' }}>
+                                        <Card.Img variant="top" src={"uploads/images/merchandising/" + merchan.image} alt={merchan.name} />
+                                        <Card.Body>
+                                            <Card.Title>{merchan.name}</Card.Title>
+                                            <Card.Text>Precio: {merchan.price}€</Card.Text>
+                                            <Form.Group>
+                                                <Form.Label>Selecciona la talla: </Form.Label>
+                                                {merchan.size && merchan.size.map(s => (
+                                                    <Form.Check
+                                                        key={s}
+                                                        type="checkbox"
+                                                        id={s}
+                                                        label={s}
+                                                        checked={selectedSizes[merchan.id] === s}
+                                                        onChange={() => handleSizeChange(merchan.id, s)}
+                                                    />
+                                                ))}
+                                                {errors[merchan.id] && <Form.Text className="text-danger">{errors[merchan.id]}</Form.Text>}
+                                            </Form.Group>
+                                            <div className="d-flex align-items-center mt-3">
+                                                <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, -1)}>-</Button>
+                                                <Form.Control
+                                                    type="text"
+                                                    value={quantities[merchan.id] || 1}
+                                                    readOnly
+                                                    className="mx-2 text-center"
+                                                    style={{ width: '50px' }}
+                                                />
+                                                <Button variant="outline-secondary" onClick={() => handleQuantityChange(merchan.id, 1)}>+</Button>
+                                            </div>
+                                            {/* Mostrar botón de añadir al carrito según la autenticación del usuario */}
+                                            {authenticated ? (
+                                                <Button variant="success" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button>
+                                            ) : (
+                                                <Button disabled variant="success" className="mt-3">No puede pedir cita</Button>
+                                            )}
+                                        </Card.Body>
+                                    </Card>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
         </div>
     );

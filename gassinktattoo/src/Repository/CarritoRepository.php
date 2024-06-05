@@ -27,6 +27,14 @@ class CarritoRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
+    public function remove(Carrito $articuloCarrito): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($articuloCarrito);
+        $entityManager->flush();
+    }
+
+
     //    /**
     //     * @return Carrito[] Returns an array of Carrito objects
     //     */

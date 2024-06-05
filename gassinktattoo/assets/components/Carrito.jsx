@@ -14,34 +14,27 @@ const Carrito = () => {
     }, []);
 
     const fetchArticulos = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/cart/show');
-            if (!response.ok) {
-                throw new Error('Error al obtener los productos');
-            }
-            const data = await response.json();
-            setProductos(data.productos);
-            setMerchandising(data.merchandising);
-            setLoading(false);
-        } catch (error) {
-            console.error('Error fetching articles:', error);
+        const response = await fetch('http://127.0.0.1:8000/api/cart/show');
+        if (!response.ok) {
+            throw new Error('Error al obtener los productos');
         }
+        const data = await response.json();
+        setProductos(data.productos);
+        setMerchandising(data.merchandising);
+        setLoading(false);
     };
 
     const fetchVerificado = async () => {
-        try {
-            const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
-            if (!response.ok) {
-                throw new Error('Error al obtener el resultado');
-            }
-            const data = await response.text();
-            const isVerified = data === 'true';
-            console.log('Fetched verification status:', isVerified);
-            setVerificado(isVerified);
-            document.cookie = `verificado=${isVerified}; path=/`;
-        } catch (error) {
-            console.error('Error fetching verification status:', error);
+        const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
+        if (!response.ok) {
+            throw new Error('Error al obtener el resultado');
         }
+        const data = await response.text();
+        const isVerified = data === 'true';
+        console.log('Fetched verification status:', isVerified);
+        setVerificado(isVerified);
+        document.cookie = `verificado=${isVerified}; path=/`;
+
     };
 
     const fetchVerificadoCookie = () => {
@@ -73,6 +66,27 @@ const Carrito = () => {
         );
     }
 
+    const handleRemoveArticuloCarrito = async (idArticulo) => {
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/api/removeArticleCart/${idArticulo}`, {
+                method: 'DELETE', // Cambiar el método a DELETE
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar del carrito el artículo');
+            }
+
+            // Verificar la respuesta
+            console.log('Respuesta del servidor:', response);
+
+            // Actualizar los productos después de eliminar el artículo
+            fetchArticulos();
+        } catch (error) {
+            console.error('Error al eliminar el artículo del carrito:', error.message);
+            // Manejar el error, mostrar un mensaje al usuario, etc.
+        }
+    };
+
     const calcularTotal = () => {
         let total = 0;
         for (const producto of productos) {
@@ -99,6 +113,7 @@ const Carrito = () => {
                         <th>Precio</th>
                         <th>Cantidad</th>
                         <th>Precio total artículos</th>
+                        <td></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -111,6 +126,7 @@ const Carrito = () => {
                             <td>{producto.price}€</td>
                             <td>{producto.quantity}</td>
                             <td>{producto.price * producto.quantity}€</td>
+                            <td><Button className='btn btn-danger' onClick={() => handleRemoveArticuloCarrito(producto.id)}>X</Button></td>
                         </tr>
                     ))}
                     {merchandising.map(merchan => (
@@ -122,11 +138,13 @@ const Carrito = () => {
                             <td>{merchan.price}€</td>
                             <td>{merchan.quantity}</td>
                             <td>{merchan.price * merchan.quantity}€</td>
+                            <td><Button className='btn btn-danger' onClick={() => handleRemoveArticuloCarrito(merchan.id)}>X</Button></td>
                         </tr>
                     ))}
                     <tr>
                         <td colSpan="4" className="text-right"><strong>Subtotal</strong></td>
                         <td><strong>{calcularTotal()}€</strong></td>
+                        <td></td>
                     </tr>
                 </tbody>
             </Table>

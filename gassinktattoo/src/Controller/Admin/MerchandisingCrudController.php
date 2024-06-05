@@ -46,14 +46,16 @@ class MerchandisingCrudController extends AbstractCrudController
                     'S' => 'S',
                     'M' => 'M',
                     'L' => 'L',
-                    'XL' => 'XL'
+                    'XL' => 'XL',
+                    'Tamaño único' => 'Tamaño único'
                 ])
                 ->allowMultipleChoices(),
             ChoiceField::new('type', 'Tipo')
                 ->setChoices([
-                    'Gorra' => 'gorra',
-                    'Camiseta' => 'camiseta',
-                    'Bolso' => 'bolso'
+                    'Camiseta' => 'Camiseta',
+                    'Bolso' => 'Bolso',
+                    'Sudadera' => 'Sudadera',
+                    'Otros' => 'Otros',
                 ]),
         ];
     }

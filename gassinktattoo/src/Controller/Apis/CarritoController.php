@@ -10,6 +10,7 @@ use App\Repository\MerchandisingRepository;
 use App\Repository\ProductoRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -65,14 +66,14 @@ class CarritoController extends AbstractController
             $carrito = new Carrito();
             $carrito->setCliente($cliente);
             $carrito->setQuantity($quantity);
-    
+
             if (isset($merchan)) {
                 $carrito->setMerchandising($merchan);
                 $carrito->setSize($size);
             } else {
                 $carrito->setProducto($producto);
             }
-    
+
             // GUARDAR EL PRODUCTO EN EL CARRITO DE LA BASE DE DATOS
             $carritoRepository->save($carrito);
         }
@@ -131,8 +132,20 @@ class CarritoController extends AbstractController
         ]);
     }
 
-    #[Route('/api/cart/remove', name: 'remove_to_carrito')]
-    public function removeToCart()
+    #[Route('/api/removeArticleCart/{idArticulo}', name: 'removeArticleCart', methods: ['DELETE'])]
+    public function removeArticleCart(int $idArticulo, CarritoRepository $carritoRepository, Security $security): Response
     {
+        $cliente = $security->getUser();
+
+        $productoCarrito = $carritoRepository->findOneBy(['cliente' => $cliente, 'producto' => $idArticulo]);
+        $merchandisingCarrito = $carritoRepository->findOneBy(['cliente' => $cliente, 'merchandising' => $idArticulo]);
+
+        if ($productoCarrito) {
+            $carritoRepository->remove($productoCarrito);
+        }else{
+            $carritoRepository->remove($merchandisingCarrito);
+        }
+
+        return new JsonResponse(['message' => 'Articulo eliminado del carrito'], Response::HTTP_NO_CONTENT);
     }
 }

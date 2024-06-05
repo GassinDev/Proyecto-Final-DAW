@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Form from 'react-bootstrap/Form';
-import '../styles/filtrosTatuajes.css';
+import Button from 'react-bootstrap/Button';
+import '../styles/filtros.css';
 
 const FiltrosTatuajes = ({ onChange }) => {
     const [estilos, setEstilos] = useState([]);
     const [favoritos, setFavoritos] = useState(false);
     const [precio, setPrecio] = useState('');
+    const formRef = useRef(null);
 
     const handleEstilosChange = (e) => {
         const value = e.target.value;
@@ -28,10 +30,19 @@ const FiltrosTatuajes = ({ onChange }) => {
         onChange({ estilos, favoritos, precio: value });
     };
 
+    const resetearFiltros = () => {
+        setEstilos([]);
+        setFavoritos(false);
+        setPrecio('');
+        // REINICIAMOS LOS FORMULARIOS
+        formRef.current.reset();
+        onChange({ estilos: [], favoritos: false, precio: '' });
+    };
+
     return (
         <div className="filters-container">
             <h4 className="filters-title">Filtros</h4>
-            <Form className="filters-form">
+            <Form ref={formRef} className="filters-form">
                 <Form.Group controlId="formEstilo">
                     <Form.Label className="filters-label">Estilos</Form.Label>
                     <div className="filters-checkboxes m-3">
@@ -54,6 +65,7 @@ const FiltrosTatuajes = ({ onChange }) => {
                         <option value="desc">De mayor a menor</option>
                     </Form.Select>
                 </Form.Group>
+                <Button variant="danger" className='mt-3' onClick={resetearFiltros}>Reiniciar filtros</Button>
             </Form>
         </div>
     );

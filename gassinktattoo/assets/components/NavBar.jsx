@@ -71,9 +71,9 @@ const NavBar = () => {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto nav-custom">
                         <a href="/home">Inicio</a>
+                        <a href="/tatuajes">Tatuajes</a>
                         <a href="/productos">Productos</a>
                         <a href="/merchandising">Merchandising</a>
-                        <a href="/tatuajes">Tatuajes</a>
                         {authenticated ? <a href="/carrito">Carrito</a> : null}
                         {authenticated ? null : <a href="/register">Registro</a>}
                         {authenticated ? null : <a href="/login">Inicio de sesión</a>}

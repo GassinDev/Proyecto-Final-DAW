@@ -164,9 +164,11 @@ const ListadoTatuajes = () => {
         }
 
         if (filtros.precio) {
-            filteredTatuajes = filteredTatuajes.sort((a, b) =>
-                filtros.precio === 'asc' ? a.price - b.price : b.price - a.price
-            );
+            if (filtros.precio === 'asc') {
+                filteredTatuajes = filteredTatuajes.sort((a, b) => a.price - b.price);
+            } else if (filtros.precio === 'desc') {
+                filteredTatuajes = filteredTatuajes.sort((a, b) => b.price - a.price);
+            }
         }
 
         return filteredTatuajes;
