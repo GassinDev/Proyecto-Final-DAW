@@ -1,37 +1,106 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Iniciar sesión{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 87vh;
+            color: black;
+        }
 
-    {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        .login-form-container {
+            max-width: 400px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-form-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form-label {
+            font-weight: bold;
+        }
+
+        .login-form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+
+        .login-form-control:focus {
+            outline: none;
+            border-color: #66afe9;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .login-alert {
+            margin-bottom: 20px;
+        }
+    </style>
+
+    <div class="login-container">
+        <div class="login-form-container">
+            {% if error %}
+                <div class="alert alert-danger login-alert" role="alert">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    Ya has iniciado sesión como {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Cerrar sesión</a>
+                </div>
+            {% endif %}
+
+            <h1 class="login-form-title">Inicia sesión</h1>
+            <form method="post">
+                <div class="login-form-group">
+                    <label class="login-form-label" for="inputEmail">Email</label>
+                    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="login-form-control" autocomplete="email" required autofocus>
+                </div>
+                <div class="login-form-group">
+                    <label class="login-form-label" for="inputPassword">Contraseña</label>
+                    <input type="password" name="password" id="inputPassword" class="login-form-control" autocomplete="current-password" required>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input type="checkbox" name="_remember_me"> Recordar usuario
+                    </label>
+                </div>
+
+                <button class="btn btn-lg btn-primary login-btn" type="submit">
+                    Iniciar sesión
+                </button>
+            </form>
         </div>
-    {% endif %}
-
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Recordar usuario
-        </label>
     </div>
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        Iniciar sesión
-    </button>
-</form>
 {% endblock %}

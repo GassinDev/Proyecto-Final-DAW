@@ -32,6 +32,10 @@
     border-top-left-radius: 10px; 
     border-top-right-radius: 10px;
     backface-visibility: hidden;
+    mask-image: linear-gradient(
+        black 80%,
+        transparent
+    );
 }
 
 .custom-card-body {
