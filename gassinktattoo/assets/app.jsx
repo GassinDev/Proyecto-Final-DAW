@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import Perfil from './components/Perfil';
 import ListadoTatuajes from './components/ListadoTatuajes';
 import CalendarioCitasWorker from './components/CalendarioCitasWorker';
+import CarrouselPromos from './components/CarrouselPromos';
 
 const navbar = document.getElementById('navbar');
 if (navbar) {
@@ -61,5 +62,10 @@ if (tatuajes) {
 const calendario = document.getElementById('calendario');
 if (calendario) {
     createRoot(calendario).render(<CalendarioCitasWorker/>);
+}
+
+const carrusel = document.getElementById('carrusel');
+if (carrusel) {
+    createRoot(carrusel).render(<CarrouselPromos/>);
 }
 

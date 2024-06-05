@@ -28,7 +28,7 @@ class PeticionCita
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?bool $isAcepted = false;
+    private ?bool $isAccepted = false;
 
     #[ORM\Column(length: 255)]
     private ?string $usernameWorker = null;
@@ -86,14 +86,14 @@ class PeticionCita
         return $this;
     }
 
-    public function isAcepted(): ?bool
+    public function isAccepted(): ?bool
     {
-        return $this->isAcepted;
+        return $this->isAccepted;
     }
 
-    public function setAcepted(bool $isAcepted): static
+    public function setAccepted(bool $isAccepted): static
     {
-        $this->isAcepted = $isAcepted;
+        $this->isAccepted = $isAccepted;
 
         return $this;
     }

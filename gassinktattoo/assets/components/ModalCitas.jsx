@@ -3,6 +3,9 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
+import IconButton from '@mui/material/IconButton';
+import DoneIcon from '@mui/icons-material/Done';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 const ModalCitas = ({ show, onHide }) => {
     const [peticionesCita, setPeticionesCita] = useState([]);
@@ -31,26 +34,43 @@ const ModalCitas = ({ show, onHide }) => {
                         <Spinner animation="border" style={{ color: 'black' }} />
                     </div>
                 ) : (
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Fecha y Hora</th>
-                                <th>Tatuaje</th>
-                                <th>Descripción</th>
-                                <th>Tatuador</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {peticionesCita.map((peticion) => (
-                                <tr key={peticion.id}>
-                                    <td>{peticion.fecha}</td>
-                                    <td>{peticion.nameTattoo}</td>
-                                    <td>{peticion.description}</td>
-                                    <td>{peticion.nameWorker}</td>
+                    <div className="table-responsive">
+                        <Table striped bordered hover>
+                            <thead>
+                                <tr>
+                                    <th>Fecha y Hora</th>
+                                    <th>Tatuaje</th>
+                                    <th>Descripción</th>
+                                    <th>Tatuador</th>
+                                    <th>Estado</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </Table>
+                            </thead>
+                            <tbody>
+                                {peticionesCita.map((peticion) => (
+                                    <tr key={peticion.id}>
+                                        <td>{peticion.fecha}</td>
+                                        <td>{peticion.nameTattoo}</td>
+                                        <td>{peticion.description}</td>
+                                        <td>{peticion.nameWorker}</td>
+                                        <td>
+                                            <div style={{ display: 'flex', alignItems: 'center', color: peticion.isAccepted ? 'green' : 'orange' }}>
+                                                <span>{peticion.isAccepted ? 'Aceptada' : 'Pendiente'}</span>
+                                                {peticion.isAccepted ? (
+                                                    <IconButton style={{ color: 'green' }} disabled>
+                                                        <DoneIcon />
+                                                    </IconButton>
+                                                ) : (
+                                                    <IconButton style={{ color: 'orange' }} disabled>
+                                                        <HelpOutlineIcon />
+                                                    </IconButton>
+                                                )}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </Table>
+                    </div>
                 )}
             </Modal.Body>
             <Modal.Footer>

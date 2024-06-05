@@ -1,13 +1,29 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import '../styles/filtros.css';
 
 const FiltrosTatuajes = ({ onChange }) => {
+
     const [estilos, setEstilos] = useState([]);
     const [favoritos, setFavoritos] = useState(false);
     const [precio, setPrecio] = useState('');
     const formRef = useRef(null);
+    const [datosEstilos, setDatosEstilos] = useState([]);
+
+    useEffect(() => {
+        fetchDatosEstilos();
+    }, []);
+
+    const fetchDatosEstilos = async () => {
+        const response = await fetch('http://localhost:8000/api/tatuajes/estilos');
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los tipos de merchandising');
+        }
+        const data = await response.json();
+        setDatosEstilos(data);
+    };
 
     const handleEstilosChange = (e) => {
         const value = e.target.value;
@@ -43,21 +59,21 @@ const FiltrosTatuajes = ({ onChange }) => {
         <div className="filters-container">
             <h4 className="filters-title">Filtros</h4>
             <Form ref={formRef} className="filters-form">
-                <Form.Group controlId="formEstilo">
+                <Form.Group>
                     <Form.Label className="filters-label">Estilos</Form.Label>
                     <div className="filters-checkboxes m-3">
-                        <Form.Check type="checkbox" label="Realismo" value="Realismo" className="filter-checkbox" onChange={handleEstilosChange} />
-                        <Form.Check type="checkbox" label="Anime" value="Anime" className="filter-checkbox" onChange={handleEstilosChange} />
-                        <Form.Check type="checkbox" label="Tribales" value="Tribales" className="filter-checkbox" onChange={handleEstilosChange} />
+                        {datosEstilos.map((estilo) => (
+                            <Form.Check key={estilo} type="checkbox" label={estilo} value={estilo} className="filter-checkbox" onChange={handleEstilosChange} />
+                        ))}
                     </div>
                 </Form.Group>
-                <Form.Group controlId="formGustos">
+                <Form.Group>
                     <Form.Label className="filters-label">Tus gustos</Form.Label>
                     <div className="filters-checkboxes  mb-3">
                         <Form.Check type="checkbox" label="Favoritos" className="filter-checkbox" onChange={handleFavoritosChange} />
                     </div>
                 </Form.Group>
-                <Form.Group controlId="formPrecio">
+                <Form.Group>
                     <Form.Label className="filters-label">Precio</Form.Label>
                     <Form.Select aria-label="Precio" className="filter-select" onChange={handlePrecioChange}>
                         <option value="">Seleccionar...</option>

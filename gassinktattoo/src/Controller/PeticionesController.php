@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Cliente;
 use App\Entity\PeticionCita;
 use App\Repository\ClienteRepository;
 use App\Repository\PeticionCitaRepository;
@@ -57,10 +58,52 @@ class PeticionesController extends AbstractController
                 'nameTattoo' => $peticion->getTatuaje()->getName(),
                 'fecha' => $peticion->getFechaHoraCita()->format('Y-m-d H:i'),
                 'nameWorker' => $peticion->getUsernameWorker(),
-                'description' => $peticion->getDescription()
+                'description' => $peticion->getDescription(),
+                'isAccepted' => $peticion->isAccepted()
             ];
         }
 
         return new JsonResponse($datosPeticiones);
+    }
+
+    #[Route('/mostrarPeticiones/trabajador', name: 'mostrarPeticionesTrabajador')]
+    public function mostrarPeticionesTrabajador(PeticionCitaRepository $peticionCitaRepository, Security $security): Response
+    {
+        $user = $security->getUser();
+
+        if ($user instanceof Cliente) {
+            $workerName = $user->getUsername();
+        }
+
+        $peticiones = $peticionCitaRepository->findBy(['usernameWorker' => $workerName]);
+
+        $datosPeticiones = [];
+
+        foreach ($peticiones as $peticion) {
+            $datosPeticiones[] = [
+                'id' => $peticion->getId(),
+                'nameTattoo' => $peticion->getTatuaje()->getName(),
+                'fecha' => $peticion->getFechaHoraCita()->format('Y-m-d H:i'),
+                'description' => $peticion->getDescription(),
+                'usernameCliente' => $peticion->getCliente()->getUsername(),
+                'isAccepted' => $peticion->isAccepted()
+            ];
+        }
+
+        return new JsonResponse($datosPeticiones);
+    }
+
+
+    #[Route('/aceptarSolicitudCita/{idPeticionCita}', name: 'aceptarSolicitudCita', methods: ['POST'])]
+    public function aceptarSolicitudCita(int $idPeticionCita, PeticionCitaRepository $peticionCitaRepository): Response
+    {
+
+        $peticion = $peticionCitaRepository->findOneBy(['id' => $idPeticionCita]);
+
+        $peticion->setAccepted(true);
+
+        $peticionCitaRepository->save($peticion);
+
+        return $this->json(['success' => 'Peticion aceptada con éxito'], Response::HTTP_CREATED);
     }
 }

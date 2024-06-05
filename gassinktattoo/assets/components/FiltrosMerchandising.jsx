@@ -1,13 +1,28 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import '../styles/filtros.css';
 
 const FiltrosMerchandising = ({ onChange }) => {
 
+    const [datosTipos, setDatosTipos] = useState([]);
     const [tipos, setTipos] = useState([]);
     const [precio, setPrecio] = useState('');
     const formRef = useRef(null);
+
+    useEffect(() => {
+        fetchDatosTipos();
+    }, []);
+
+    const fetchDatosTipos = async () => {
+        const response = await fetch('http://localhost:8000/api/merchandising/tipos');
+
+        if (!response.ok) {
+            throw new Error('Error al obtener los tipos de merchandising');
+        }
+        const data = await response.json();
+        setDatosTipos(data);
+    };
 
     const handleTiposChange = (e) => {
         const value = e.target.value;
@@ -36,16 +51,15 @@ const FiltrosMerchandising = ({ onChange }) => {
         <div className="filters-container">
             <h4 className="filters-title">Filtros</h4>
             <Form ref={formRef} className="filters-form">
-                <Form.Group controlId="formEstilo">
+                <Form.Group>
                     <Form.Label className="filters-label">Tipo</Form.Label>
                     <div className="filters-checkboxes m-3">
-                        <Form.Check type="checkbox" label="Camisetas" value="Camiseta" className="filter-checkbox" onChange={handleTiposChange} />
-                        <Form.Check type="checkbox" label="Sudaderas" value="Sudadera" className="filter-checkbox" onChange={handleTiposChange} />
-                        <Form.Check type="checkbox" label="Bolsos" value="Bolso" className="filter-checkbox" onChange={handleTiposChange} />
-                        <Form.Check type="checkbox" label="Otros" value="Otros" className="filter-checkbox" onChange={handleTiposChange} />
+                        {datosTipos.map((tipo) => (
+                            <Form.Check key={tipo} type="checkbox" label={tipo} value={tipo} className="filter-checkbox" onChange={handleTiposChange} />
+                        ))}
                     </div>
                 </Form.Group>
-                <Form.Group controlId="formPrecio">
+                <Form.Group>
                     <Form.Label className="filters-label">Precio</Form.Label>
                     <Form.Select aria-label="Precio" className="filter-select" onChange={handlePrecioChange}>
                         <option value="">Seleccionar...</option>
