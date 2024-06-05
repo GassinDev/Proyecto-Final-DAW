@@ -5,6 +5,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Swal from 'sweetalert2';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -46,8 +47,11 @@ const CalendarioCitasWorker = () => {
             .then(response => {
 
                 if (response.mensaje === "Cita creada con éxito") {
-                    alert('Cita guardada con éxito.');
                     setShowModal(false);
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Cita guardada con éxito',
+                    });
                     fetchCitas();
                 } else {
                     throw new Error('Ocurrió un error al guardar la cita.');
@@ -69,16 +73,15 @@ const CalendarioCitasWorker = () => {
                 .then(response => {
 
                     if (response.mensaje === "Cita eliminada con éxito") {
-                        alert('Cita eliminada con éxito.');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Cita eliminada con éxito',
+                        });
                         fetchCitas();
                     } else {
                         throw new Error('Ocurrió un error al eliminar la cita.');
                     }
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Ocurrió un error al eliminar la cita.');
-                });
         }
     };
 

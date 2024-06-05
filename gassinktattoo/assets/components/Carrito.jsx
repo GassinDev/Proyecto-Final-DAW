@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Spinner } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import '../styles/spinner.css';
 
 const Carrito = () => {
@@ -67,7 +68,18 @@ const Carrito = () => {
     }
 
     const handleRemoveArticuloCarrito = async (idArticulo) => {
-        try {
+
+        // Mostrar la alerta de SweetAlert2 para confirmar si desea guardar los cambios
+        const result = await Swal.fire({
+            title: "¿ Quieres elimar este elemento del carrito ?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: `No`
+        });
+
+        // Procesar la respuesta del usuario
+        if (result.isConfirmed) {
+            // Si el usuario confirma, realizar la petición para eliminar el artículo del carrito
             const response = await fetch(`http://127.0.0.1:8000/api/removeArticleCart/${idArticulo}`, {
                 method: 'DELETE', // Cambiar el método a DELETE
             });
@@ -76,14 +88,11 @@ const Carrito = () => {
                 throw new Error('Error al eliminar del carrito el artículo');
             }
 
-            // Verificar la respuesta
-            console.log('Respuesta del servidor:', response);
+            // Mostrar un mensaje de éxito si la petición se realiza correctamente
+            Swal.fire("Eliminado", "", "success");
 
             // Actualizar los productos después de eliminar el artículo
             fetchArticulos();
-        } catch (error) {
-            console.error('Error al eliminar el artículo del carrito:', error.message);
-            // Manejar el error, mostrar un mensaje al usuario, etc.
         }
     };
 

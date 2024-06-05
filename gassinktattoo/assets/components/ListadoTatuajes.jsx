@@ -9,6 +9,7 @@ import CalendarioCitasCliente from './CalendarioCitasCliente';
 import Fab from '@mui/material/Fab';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FiltrosTatuajes from './FiltrosTatuajes';
+import Swal from 'sweetalert2';
 import '../styles/spinner.css';
 import '../styles/listadoTatuajes.css';
 
@@ -104,7 +105,10 @@ const ListadoTatuajes = () => {
         setDescripcion('');
         setFechaHora('');
         setSelectedWorker('');
-        alert('Petición realizada con éxito');
+        Swal.fire({
+            icon: 'success',
+            title: 'Petición de cita realizada',
+        });
     };
 
     const handleFavoriteClick = async (idTatuaje) => {

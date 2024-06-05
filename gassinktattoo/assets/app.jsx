@@ -14,6 +14,7 @@ import ListadoTatuajes from './components/ListadoTatuajes';
 import CalendarioCitasWorker from './components/CalendarioCitasWorker';
 import ImagenesInicio from './components/ImagenesInicio';
 
+
 const navbar = document.getElementById('navbar');
 if (navbar) {
     createRoot(navbar).render(<NavBar/>);

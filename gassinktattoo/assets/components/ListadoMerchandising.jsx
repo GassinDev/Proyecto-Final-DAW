@@ -6,6 +6,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
 import FiltrosMerchandising from './FiltrosMerchandising';
 import '../styles/spinner.css';
+import Swal from 'sweetalert2';
 
 const ListadoMerchandising = () => {
     const [authenticated, setAuthenticated] = useState(false);
@@ -91,7 +92,10 @@ const ListadoMerchandising = () => {
             throw new Error('Error al añadir el producto al carrito');
         }
 
-        alert('Producto añadido al carrito');
+        Swal.fire({
+            icon: 'success',
+            title: 'Producto añadido al carrito',
+        });
 
         setErrors(prevState => ({
             ...prevState,

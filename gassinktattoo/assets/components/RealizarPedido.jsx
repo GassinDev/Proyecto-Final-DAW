@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Form, Button, Row, Col, Table, Modal } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Table } from 'react-bootstrap';
 import PagoPedidoModal from './PagoPedidoModal';
 import Spinner from 'react-bootstrap/Spinner';
+import Swal from 'sweetalert2';
 import '../styles/spinner.css';
 
 const RealizarPedido = () => {
@@ -85,37 +86,58 @@ const RealizarPedido = () => {
 
 
     //FUNCIÓN PARA ENVIAR LOS DATOS DEL PEDIDO AL BACKEND
-    const handlePedidoSubmit = () => {
+    const handlePedidoSubmit = async () => {
         const camposRequeridos = ['nombre', 'telefono', 'calle', 'ciudad', 'provincia', 'cp', 'pais'];
         const camposVacios = camposRequeridos.filter(campo => !datosPedido[campo]);
+
+        const result = await Swal.fire({
+            title: "¿ Quieres realizar el pedido ?",
+            imageUrl: "https://media2.giphy.com/media/LmsH9leFrFp3vT4f8F/200.webp?cid=790b7611tkxx2tg7s9xwikz60xn8xyw6jag2la21y84l460q&ep=v1_gifs_search&rid=200.webp&ct=g",
+            imageWidth: 400,
+            imageHeight: 300,
+            imageAlt: "Custom image",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: `No`
+        });
 
         if (camposVacios.length > 0) {
             setError('Por favor, complete todos los campos requeridos.');
             return;
         }
 
-        fetch('http://127.0.0.1:8000/pedido/guardar', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(datosPedido),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al enviar el pedido');
-                }
-                return response.json();
+        if (result.isConfirmed) {
+            fetch('http://127.0.0.1:8000/pedido/guardar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datosPedido),
             })
-            .then(() => {
-                setError(null);
-                alert('Pedido realiado correctamente');
-                window.location.href = '/perfil';
-            })
-            .catch(error => {
-                setError('Error al enviar el pedido. Por favor, inténtelo de nuevo más tarde.');
-                console.error('Error:', error);
-            });
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error al enviar el pedido');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    setError(null);
+                    Swal.fire({
+                        title: "Pedido realizado",
+                        text: "¡Tu pedido ha sido realizado correctamente!",
+                        icon: "success",
+                        confirmButtonText: "OK"
+                    }).then(() => {
+                        // Redirigir al usuario al perfil después de cerrar la alerta
+                        Swal.fire("Pedido realizado", "", "success");
+                        window.location.href = '/perfil';
+                    });
+                })
+        } else {
+
+        }
+
+
     };
 
     return (

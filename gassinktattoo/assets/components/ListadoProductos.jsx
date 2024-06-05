@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Spinner from 'react-bootstrap/Spinner';
 import Alert from 'react-bootstrap/Alert';
+import Swal from 'sweetalert2';
 import '../styles/spinner.css';
 
 const ListadoProductos = () => {
@@ -70,7 +71,10 @@ const ListadoProductos = () => {
             throw new Error('Error al añadir el producto al carrito');
         }
 
-        alert('Producto añadido al carrito');
+        Swal.fire({
+            icon: 'success',
+            title: 'Producto añadido al carrito',
+        });
     }
 
     return (
