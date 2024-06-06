@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Entity\Cliente;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
@@ -36,6 +37,9 @@ class ClienteCrudController extends AbstractCrudController
             ->onlyOnForms(),
             BooleanField::new('isVerified', 'Verified'),
             BooleanField::new('isWorker', 'Worker'),
+            ChoiceField::new('roles')
+            ->setChoices(['ROLE_ADMIN' => 'ROLE_ADMIN', 'ROLE_USER' => 'ROLE_USER'])
+            ->allowMultipleChoices()
         ];
     }
     

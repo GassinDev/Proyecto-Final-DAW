@@ -76,4 +76,10 @@ class SecurityController extends AbstractController
         // DEVOLVEMOS EL RESULTADO COMO UNA CADENA
         return new Response($verificado ? 'true' : 'false');
     }
+
+    #[Route(path: '/access-denied', name: 'access-denied')]
+    public function accessDenied(): Response
+    {
+        return $this->render('/security/accessDenied.html.twig');
+    }
 }

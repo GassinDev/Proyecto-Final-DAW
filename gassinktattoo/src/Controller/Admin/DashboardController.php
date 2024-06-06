@@ -41,7 +41,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Gassinktattoo');
+            ->setTitle('<img src=""> GASSINKTATTOO <span class="text-small">Corp.</span>')
+            ->setLocales(['es', 'en', 'fr']);
     }
 
     public function configureMenuItems(): iterable

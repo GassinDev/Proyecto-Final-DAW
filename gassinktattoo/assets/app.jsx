@@ -15,6 +15,7 @@ import CalendarioCitasWorker from './components/CalendarioCitasWorker';
 import ImagenesInicio from './components/ImagenesInicio';
 import FooterTwo from './components/FooterTwo';
 import ErrorRuta from './components/ErrorRuta';
+import AccessDenied from './components/AccessDenied';
 
 
 const navbar = document.getElementById('navbar');
@@ -80,4 +81,9 @@ if (imagenesInicio) {
 const errorRuta = document.getElementById('errorRuta');
 if (errorRuta) {
     createRoot(errorRuta).render(<ErrorRuta/>);
+}
+
+const accessDenied = document.getElementById('accessDenied');
+if (accessDenied) {
+    createRoot(accessDenied).render(<AccessDenied/>);
 }
