@@ -7,3 +7,9 @@ controllers:
 index:
     path: /
     controller: App\Controller\HomeController::index
+
+not_found:
+    path: /{any}
+    controller: App\Controller\HomeController::notFound
+    requirements:
+        any: .*

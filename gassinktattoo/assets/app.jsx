@@ -14,6 +14,7 @@ import ListadoTatuajes from './components/ListadoTatuajes';
 import CalendarioCitasWorker from './components/CalendarioCitasWorker';
 import ImagenesInicio from './components/ImagenesInicio';
 import FooterTwo from './components/FooterTwo';
+import ErrorRuta from './components/ErrorRuta';
 
 
 const navbar = document.getElementById('navbar');
@@ -74,4 +75,9 @@ if (calendario) {
 const imagenesInicio = document.getElementById('imagenesInicio');
 if (imagenesInicio) {
     createRoot(imagenesInicio).render(<ImagenesInicio/>);
+}
+
+const errorRuta = document.getElementById('errorRuta');
+if (errorRuta) {
+    createRoot(errorRuta).render(<ErrorRuta/>);
 }

@@ -51,4 +51,9 @@ class HomeController extends AbstractController
     {
         return $this->render('pages/citas.html.twig');
     }
+
+    public function notFound(): Response
+    {
+        return $this->render('pages/notFound.html.twig');
+    }
 }
