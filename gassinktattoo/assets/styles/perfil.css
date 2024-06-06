@@ -20,7 +20,7 @@ body {
 }
 
 .profile-details {
-    margin-top: -100px; /* Moves the profile details up to overlap with the banner */
+    margin-top: -100px; 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -61,6 +61,7 @@ body {
 .profile-buttons button:hover {
     background-color: #0056b3;
 }
+
 
 @media (max-width: 768px) {
     .profile-details {

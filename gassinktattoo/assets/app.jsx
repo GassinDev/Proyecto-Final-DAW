@@ -13,6 +13,7 @@ import Perfil from './components/Perfil';
 import ListadoTatuajes from './components/ListadoTatuajes';
 import CalendarioCitasWorker from './components/CalendarioCitasWorker';
 import ImagenesInicio from './components/ImagenesInicio';
+import FooterTwo from './components/FooterTwo';
 
 
 const navbar = document.getElementById('navbar');
@@ -50,6 +51,11 @@ if (footer) {
     createRoot(footer).render(<Footer/>);
 }
 
+const footerTwo = document.getElementById('footerTwo');
+if (footerTwo) {
+    createRoot(footerTwo).render(<FooterTwo/>);
+}
+
 const perfil = document.getElementById('perfil');
 if (perfil) {
     createRoot(perfil).render(<Perfil/>);
@@ -64,7 +70,6 @@ const calendario = document.getElementById('calendario');
 if (calendario) {
     createRoot(calendario).render(<CalendarioCitasWorker/>);
 }
-imagenesInicio
 
 const imagenesInicio = document.getElementById('imagenesInicio');
 if (imagenesInicio) {
