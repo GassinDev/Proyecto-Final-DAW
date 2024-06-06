@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert';
+import { Button, Card, Form, Spinner, Alert, Modal } from 'react-bootstrap';
 import FiltrosMerchandising from './FiltrosMerchandising';
 import '../styles/spinner.css';
 import Swal from 'sweetalert2';
+import '../styles/modalInfo.css';
 
 const ListadoMerchandising = () => {
     const [authenticated, setAuthenticated] = useState(false);
@@ -16,7 +13,10 @@ const ListadoMerchandising = () => {
     const [quantities, setQuantities] = useState({});
     const [errors, setErrors] = useState({});
     const [filtros, setFiltros] = useState({ tipos: [], precio: '' });
-
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedNameMerchandising, setSelectedNameMerchandising] = useState('');
+    const [selectedDescriptionMerchandising, setSelectedDescriptionMerchandising] = useState('');
 
     useEffect(() => {
         fetchMerchandising();
@@ -147,6 +147,18 @@ const ListadoMerchandising = () => {
 
     const filteredMerchandising = applyFilters(merchandising);
 
+    const handleImageClick = (image, name, description) => {
+        setSelectedImage("uploads/images/merchandising/" + image);
+        setSelectedNameMerchandising(name);
+        setSelectedDescriptionMerchandising(description);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+    
+
     return (
         <div className='container'>
             {/* Alerta para usuarios no autenticados */}
@@ -154,7 +166,7 @@ const ListadoMerchandising = () => {
             <h2 className='text-center my-4'>Listado de Merchandising</h2>
             <div className='row justify-content-center'>
                 <div className='col-lg-3'>
-                    <FiltrosMerchandising onChange={handleFiltrosChange}/>
+                    <FiltrosMerchandising onChange={handleFiltrosChange} />
                 </div>
                 <div className='col-lg-9'>
                     <div className='row justify-content-center'>
@@ -162,7 +174,13 @@ const ListadoMerchandising = () => {
                             <div key={merchan.id} className={`col-lg-4 col-md-6 mb-4`}>
                                 <div className='d-flex justify-content-center'>
                                     <Card style={{ width: '18rem' }}>
-                                        <Card.Img variant="top" src={"uploads/images/merchandising/" + merchan.image} alt={merchan.name} />
+                                        <Card.Img
+                                            variant="top"
+                                            src={"uploads/images/merchandising/" + merchan.image}
+                                            alt={merchan.name}
+                                            onClick={() => handleImageClick(merchan.image, merchan.name, merchan.description)}
+                                            style={{ cursor: 'pointer' }}
+                                        />
                                         <Card.Body>
                                             <Card.Title>{merchan.name}</Card.Title>
                                             <Card.Text>Precio: {merchan.price}€</Card.Text>
@@ -205,6 +223,31 @@ const ListadoMerchandising = () => {
                     </div>
                 </div>
             </div>
+            <Modal
+                show={showModal}
+                onHide={handleCloseModal}
+                centered
+                dialogClassName="custom-modal"
+            >
+                <Modal.Header className='custom-header'>
+                    <Modal.Title>{selectedNameMerchandising}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="custom-modal-body">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <img src={selectedImage} alt="Producto" className="img-fluid" />
+                        </div>
+                        <div className="col-md-6">
+                            <div dangerouslySetInnerHTML={{ __html: selectedDescriptionMerchandising }} />
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

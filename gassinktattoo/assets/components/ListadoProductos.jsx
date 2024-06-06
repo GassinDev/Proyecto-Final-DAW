@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
-import Spinner from 'react-bootstrap/Spinner';
-import Alert from 'react-bootstrap/Alert';
+import { Button, Card, Spinner, Alert, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import '../styles/spinner.css';
+import '../styles/modalInfo.css';
 
 const ListadoProductos = () => {
     const [productos, setProductos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [authenticated, setAuthenticated] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedImage, setSelectedImage] = useState('');
+    const [selectedNameProducto, setSelectedNameProducto] = useState('');
+    const [selectedDescriptionProducto, setSelectedDescriptionProducto] = useState('');
 
     useEffect(() => {
         fetchProductos();
@@ -43,7 +45,7 @@ const ListadoProductos = () => {
     if (loading) {
         return (
             <div className='spinner-container'>
-                <Spinner animation="grow" className='spinner'/>
+                <Spinner animation="grow" className='spinner' />
             </div>
         );
     }
@@ -77,6 +79,17 @@ const ListadoProductos = () => {
         });
     }
 
+    const handleImageClick = (image, name, description) => {
+        setSelectedImage(image);
+        setSelectedNameProducto(name);
+        setSelectedDescriptionProducto(description);
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
     return (
         <div className='container'>
             <h2 className='text-center my-4'>Listado de Productos</h2>
@@ -85,7 +98,14 @@ const ListadoProductos = () => {
                     <div key={producto.id} className='col-lg-4 col-md-6 mb-4'>
                         <div className='d-flex justify-content-center'>
                             <Card style={{ width: '18rem' }}>
-                                <Card.Img variant="top" src={"uploads/images/productos/" + producto.image} alt={producto.name} />
+                                <Card.Img
+                                    variant="top"
+                                    src={"uploads/images/productos/" + producto.image}
+                                    alt={producto.name}
+                                    onClick={
+                                        () => handleImageClick("uploads/images/productos/" + producto.image, producto.name, producto.description)}
+                                    style={{ cursor: 'pointer' }}
+                                />
                                 <Card.Body>
                                     <Card.Title>{producto.name}</Card.Title>
                                     <Card.Text>Precio: {producto.price}€</Card.Text>
@@ -97,10 +117,37 @@ const ListadoProductos = () => {
                                     )}
                                 </Card.Body>
                             </Card>
+
                         </div>
                     </div>
                 ))}
             </div>
+            
+            <Modal
+                show={showModal}
+                onHide={handleCloseModal}
+                centered
+                dialogClassName="custom-modal"
+            >
+                <Modal.Header className='custom-header'>
+                    <Modal.Title>{selectedNameProducto}</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="custom-modal-body">
+                    <div className="row">
+                        <div className="col-md-6">
+                            <img src={selectedImage} alt="Producto" className="img-fluid" />
+                        </div>
+                        <div className="col-md-6">
+                            <div dangerouslySetInnerHTML={{ __html: selectedDescriptionProducto }} />
+                        </div>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleCloseModal}>
+                        Cerrar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
     );
 };

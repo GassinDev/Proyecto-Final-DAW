@@ -20,13 +20,13 @@ class ProductoCrudController extends AbstractCrudController
         return Producto::class;
     }
 
-    
+
     public function configureFields(string $pageName): iterable
     {
         $imageField = ImageField::new('image', 'Foto Producto')
-        ->setBasePath('/uploads/images/productos')
-        ->setUploadDir('public/uploads/images/productos')
-        ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]');
+            ->setBasePath('/uploads/images/productos')
+            ->setUploadDir('public/uploads/images/productos')
+            ->setUploadedFileNamePattern('[year]-[month]-[day]-[contenthash].[extension]');
 
         // VERIFICAMOS SI ESTAMOS EN EDITAR PARA CORREGIR EL FALLO DEL CAMPO IMAGEN CON REQUIRE
         if ($pageName === Crud::PAGE_EDIT) {
@@ -42,9 +42,11 @@ class ProductoCrudController extends AbstractCrudController
             $imageField,
             NumberField::new('stock', 'Stock'),
             ChoiceField::new('type', 'Tipo')
-            ->setChoices([
-                'Cremas' => 'crema',
-                'Sprays' => 'spray']),
+                ->setChoices([
+                    'Cremas' => 'crema',
+                    'Sprays' => 'spray',
+                    'Otros' => 'otros'
+                ]),
         ];
     }
 
@@ -59,5 +61,4 @@ class ProductoCrudController extends AbstractCrudController
             unlink($photoPath);
         }
     }
-    
 }

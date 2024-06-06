@@ -1,0 +1,21 @@
+.custom-header {
+    background-color: black;
+    color: white;
+}
+
+.custom-modal {
+    max-width: 80%;
+    font-size: 150%;
+    color: black;
+}
+
+.custom-modal-body .col-md-6 {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+    padding-top: 10px !important;
+}
+
+.custom-modal-body img {
+    width: 80%;
+    height: auto;
+}
