@@ -68,6 +68,7 @@ class CitasController extends AbstractController
                     'clienteUsername' => $cita->getClienteUsername(),
                     'description' => $cita->getDescription(),
                     'nameTatuaje' => $cita->getTatuaje()->getName(),
+                    'imageTatuaje' => $cita->getTatuaje()->getImage()
                 ];
 
                 $citasData[] = $citaData;

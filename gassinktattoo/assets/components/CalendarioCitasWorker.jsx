@@ -140,7 +140,23 @@ const CalendarioCitasWorker = () => {
         setFormData({ usernameCliente: '', nameTatuaje: '', description: '' });
     };
 
+    //EVENTOS PERSONALIZADOS PARA DIFERENTES VISTAS
+    const EventAll = ({ event }) => {
 
+        return (
+            <div style={{ display: 'flex' }}>
+                <div>{event.title}</div>
+                <img src={event.imageTatuaje} alt="Tattoo" style={{ marginLeft: '10px', width: '100px', height: '100px' }} />
+            </div>
+        );
+    }
+
+    const EventMonth = ({ event }) => {
+
+        return (
+            <div>{event.title}</div>
+        );
+    }
 
     return (
         <div style={{ height: '80vh' }}>
@@ -157,7 +173,23 @@ const CalendarioCitasWorker = () => {
                     start: new Date(cita.dateInicio),
                     end: new Date(cita.dateFin),
                     title: `Cita con ${cita.clienteUsername} - ${cita.nameTatuaje} - ${cita.description}`,
+                    imageTatuaje: `./uploads/images/tatuajes/${cita.imageTatuaje}`
                 }))}
+                components={{
+                    agenda: {
+                        event: EventAll
+
+                    },
+                    month: {
+                        event: EventMonth
+                    },
+                    week: {
+                        event: EventAll
+                    },
+                    day: {
+                        event: EventAll
+                    }
+                }}
             />
             <Modal show={showModal} onHide={handleCloseModal} style={{ color: 'black' }}>
                 <Modal.Header closeButton style={{ backgroundColor: 'black', color: 'white' }} >
