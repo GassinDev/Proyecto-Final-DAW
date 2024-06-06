@@ -163,7 +163,7 @@ const ListadoMerchandising = () => {
         <div className='container'>
             {/* Alerta para usuarios no autenticados */}
             {!authenticated && <Alert variant="warning" className='alert'>Por favor, inicia sesión para agregar al carrito.</Alert>}
-            <h2 className='text-center my-4'>Listado de Merchandising</h2>
+            <h2 className='text-center my-4'>Merchandising</h2>
             <div className='row justify-content-center'>
                 <div className='col-lg-3'>
                     <FiltrosMerchandising onChange={handleFiltrosChange} />

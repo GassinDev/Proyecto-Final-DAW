@@ -8,6 +8,7 @@ const Carrito = () => {
     const [merchandising, setMerchandising] = useState([]);
     const [verificado, setVerificado] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [carritoVacio, setCarritoVacio] = useState(true);
 
     useEffect(() => {
         fetchArticulos();
@@ -23,6 +24,7 @@ const Carrito = () => {
         setProductos(data.productos);
         setMerchandising(data.merchandising);
         setLoading(false);
+        setCarritoVacio(data.productos.length === 0 && data.merchandising.length === 0);
     };
 
     const fetchVerificado = async () => {
@@ -157,9 +159,12 @@ const Carrito = () => {
                     </tr>
                 </tbody>
             </Table>
-            {verificado ? (
+            {verificado && (!carritoVacio ? (
                 <Button variant="primary" onClick={handlePedido}>Realizar Pedido</Button>
             ) : (
+                <Button variant="primary" disabled>No hay artículos</Button>
+            ))}
+            {!verificado && (
                 <Button variant="primary" disabled>No verificado - No puede realizar el pedido</Button>
             )}
         </Container>

@@ -92,7 +92,7 @@ const ListadoProductos = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-center my-4'>Listado de Productos</h2>
+            <h2 className='text-center my-4'>Productos</h2>
             <div className='row justify-content-center'>
                 {productos.map(producto => (
                     <div key={producto.id} className='col-lg-4 col-md-6 mb-4'>
