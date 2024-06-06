@@ -68,7 +68,6 @@ const CalendarioCitasWorker = () => {
         const { start, end } = selectedSlot;
         const { usernameCliente, nameTatuaje, description } = formData;
 
-
         fetch('http://127.0.0.1:8000/crearCita', {
             method: 'POST',
             headers: {
@@ -102,9 +101,16 @@ const CalendarioCitasWorker = () => {
             });
     };
 
-    const handleSelectEvent = (event) => {
-        const isConfirmed = window.confirm('¿Estás seguro de que quieres eliminar esta cita?');
-        if (isConfirmed) {
+    const handleSelectEvent = async (event) => {
+
+        const result = await Swal.fire({
+            title: "¿ Quieres elimar esta cita ?",
+            showDenyButton: true,
+            confirmButtonText: "Si",
+            denyButtonText: `No`
+        });
+
+        if (result.isConfirmed) {
             fetch(`/eliminarCita/${event.id}`, {
                 method: 'DELETE',
             })
@@ -124,7 +130,6 @@ const CalendarioCitasWorker = () => {
         }
     };
 
-    //PARA SELECCIONAR EL TRAMO HORARIO Y LUEGO MOSTRAR EL FORMULARIO
     const handleSelectSlot = ({ start, end }) => {
         setSelectedSlot({ start, end });
         setShowModal(true);

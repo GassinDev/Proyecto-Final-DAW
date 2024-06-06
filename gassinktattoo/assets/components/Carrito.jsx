@@ -69,7 +69,7 @@ const Carrito = () => {
 
     const handleRemoveArticuloCarrito = async (idArticulo) => {
 
-        // Mostrar la alerta de SweetAlert2 para confirmar si desea guardar los cambios
+        // Mostrar la alerta de SweetAlert2 para confirmar si desea eliminarlo
         const result = await Swal.fire({
             title: "¿ Quieres elimar este elemento del carrito ?",
             showDenyButton: true,
