@@ -59,4 +59,17 @@ class ApiTatuajesController extends AbstractController
 
         return new JsonResponse($estilosArray);
     }
+
+    #[Route(path: '/api/tatuajesName', name: 'tatuajesName')]
+public function getTatuajesName(TatuajeRepository $tatuajeRepository): JsonResponse
+{
+    $tatuajes = $tatuajeRepository->findAll();
+
+    $nameTatuajes = [];
+    foreach ($tatuajes as $tatuaje) {  
+        $nameTatuajes[] = $tatuaje->getName(); 
+    }
+
+    return new JsonResponse(['namesTatuajes' => $nameTatuajes]);
+}
 }
