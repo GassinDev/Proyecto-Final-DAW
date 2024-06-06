@@ -68,9 +68,14 @@ const RealizarPedido = () => {
         return total;
     };
 
-    //VARIABLE PARA USARLA EN EL JSON QUE SE ENVIARÁ AL BACKEND
+    //CALCULAR PRECIO FINAL CON IVA + ENVÍO
     let precioFinal = calcularTotal() * 1.21;
-    datosPedido.precio = precioFinal;
+    if(precioFinal < 30){
+        datosPedido.precio = precioFinal + 4.95;
+    }else{
+        datosPedido.precio = precioFinal;
+    }
+    
 
     const handlePaymentSubmit = (e) => {
         e.preventDefault();
@@ -249,14 +254,19 @@ const RealizarPedido = () => {
                             <td>{merchan.quantity}</td>
                             <td>{merchan.price * merchan.quantity}€</td>
                         </tr>
-                    ))}
-                    <tr>
+                    ))}<tr>
                         <td colSpan="3" className="text-right"><strong>Subtotal</strong></td>
                         <td><strong>{calcularTotal()}€</strong></td>
                     </tr>
+                    {/* Aplicar condición para los gastos de envío */}
+                    <tr>
+                        <td colSpan="3" className="text-right"><strong>Gastos de envío</strong></td>
+                        <td><strong>{datosPedido.precio >= 30 ? 'Gratis' : '4.95€'}</strong></td>
+                    </tr>
+                    {/* Mostrar total con IVA */}
                     <tr>
                         <td colSpan="3" className="text-right"><strong>Total con IVA</strong></td>
-                        <td><strong>{precioFinal}€</strong></td>
+                        <td><strong>{(datosPedido.precio).toFixed(2)}€</strong></td>
                     </tr>
                 </tbody>
             </Table>
