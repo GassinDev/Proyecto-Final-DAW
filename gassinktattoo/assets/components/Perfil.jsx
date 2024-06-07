@@ -62,7 +62,7 @@ const Perfil = () => {
                 <>
                     <div
                         className="profile-banner"
-                        style={{ backgroundImage: `url(uploads/images/fotosPerfil/${cliente.image})` }}
+                        style={{backgroundImage: `url(uploads/images/fotosPerfil/${cliente.image})` }}
                     ></div>
                     <div className="profile-details">
                         <div className="profile-info">

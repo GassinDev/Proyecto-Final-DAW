@@ -67,7 +67,16 @@ const NavBar = () => {
     return (
         <Navbar className='navbar-custom' expand="lg" bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand className='brand-custom'>GASSINKTATTOO</Navbar.Brand>
+                <Navbar.Brand className='brand-custom'>
+                <img
+                        src='./images/logoIco.png'
+                        width="47"
+                        height="47"
+                        className="d-inline-block align-top"
+                        alt="Logo"
+                    />
+                GASSINKTATTOO
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto nav-custom">
