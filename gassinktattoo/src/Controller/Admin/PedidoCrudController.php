@@ -38,7 +38,7 @@ class PedidoCrudController extends AbstractCrudController
             TextField::new('pais', 'País'),
             TextField::new('numero', 'Número / puerta'),
             TextField::new('cp', 'Código postal'),
-            TextField::new('nombreCompleto', 'Código postal'),
+            TextField::new('nombreCompleto', 'Nombre del cliente'),
             TextField::new('phone', 'Teléfono'),
             AssociationField::new('cliente', 'Cliente')
                 ->formatValue(function ($value, $entity) {

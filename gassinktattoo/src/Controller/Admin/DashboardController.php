@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Cita;
 use App\Entity\Cliente;
 use App\Entity\Merchandising;
 use App\Entity\Pedido;
@@ -41,7 +42,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('<img src=""> GASSINKTATTOO <span class="text-small">Corp.</span>')
+            ->setTitle('<img src="./images/bannerAdmin.jpg"> GASSINKTATTOO <span class="text-small"></span>')
             ->setLocales(['es', 'en', 'fr']);
     }
 
@@ -53,5 +54,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Merchandising', 'fa-solid fa-shirt', Merchandising::class);
         yield MenuItem::linkToCrud('Tatuajes', 'fa-solid fa-pencil', Tatuaje::class);
         yield MenuItem::linkToCrud('Pedidos', 'fa-solid fa-box', Pedido::class);
+        yield MenuItem::linkToCrud('Citas', 'fa-solid fa-envelope', Cita::class);
     }
 }

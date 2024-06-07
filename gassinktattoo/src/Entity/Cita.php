@@ -20,20 +20,20 @@ class Cita
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateFin = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $clienteUsername = null;
-
     #[ORM\ManyToOne]
     private ?Tatuaje $tatuaje = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $workerName = null;
-
-    #[ORM\Column]
-    private ?bool $realized = null;
 
     #[ORM\Column(length: 400)]
     private ?string $description = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Cliente $cliente = null;
+
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Cliente $worker = null;
 
     public function getId(): ?int
     {
@@ -64,18 +64,6 @@ class Cita
         return $this;
     }
 
-    public function getClienteUsername(): ?string
-    {
-        return $this->clienteUsername;
-    }
-
-    public function setClienteUsername(string $clienteUsername): static
-    {
-        $this->clienteUsername = $clienteUsername;
-
-        return $this;
-    }
-
     public function getTatuaje(): ?Tatuaje
     {
         return $this->tatuaje;
@@ -88,29 +76,6 @@ class Cita
         return $this;
     }
 
-    public function getWorkerName(): ?string
-    {
-        return $this->workerName;
-    }
-
-    public function setWorkerName(string $workerName): static
-    {
-        $this->workerName = $workerName;
-
-        return $this;
-    }
-
-    public function isRealized(): ?bool
-    {
-        return $this->realized;
-    }
-
-    public function setRealized(bool $realized): static
-    {
-        $this->realized = $realized;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -120,6 +85,30 @@ class Cita
     public function setDescription(string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCliente(): ?Cliente
+    {
+        return $this->cliente;
+    }
+
+    public function setCliente(?Cliente $cliente): static
+    {
+        $this->cliente = $cliente;
+
+        return $this;
+    }
+
+    public function getWorker(): ?Cliente
+    {
+        return $this->worker;
+    }
+
+    public function setWorker(?Cliente $worker): static
+    {
+        $this->worker = $worker;
 
         return $this;
     }

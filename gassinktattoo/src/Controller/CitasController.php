@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cita;
 use App\Entity\Cliente;
 use App\Repository\CitaRepository;
+use App\Repository\ClienteRepository;
 use App\Repository\TatuajeRepository;
 use DateTime;
 use DateTimeZone;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CitasController extends AbstractController
 {
     #[Route('/crearCita', name: 'crearCita')]
-    public function crearCita(Request $request, Security $security, CitaRepository $citaRepository, TatuajeRepository $tatuajeRepository): Response
+    public function crearCita(Request $request, Security $security, CitaRepository $citaRepository, TatuajeRepository $tatuajeRepository, ClienteRepository $clienteRepository): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -33,18 +34,20 @@ class CitasController extends AbstractController
         $cita = new Cita();
         $cita->setDateInicio($start);
         $cita->setDateFin($end);
-        $cita->setRealized(false);
 
         $worker = $security->getUser();
         if ($worker instanceof Cliente) {
-            $cita->setWorkerName($worker->getUsername());
+            $cita->setWorker($worker);
         }
 
         $tatuajeName = $data['nameTatuaje'];
         $tatuaje = $tatuajeRepository->findOneBy(['name' => $tatuajeName]);
 
+        $usernameCliente = $data['usernameCliente'];
+        $cliente = $clienteRepository->findOneBy(['username' => $usernameCliente]);
+
         $cita->setTatuaje($tatuaje);
-        $cita->setClienteUsername($data['usernameCliente']);
+        $cita->setCliente($cliente);
         $cita->setDescription($data['description']);
 
         $citaRepository->save($cita);
@@ -57,7 +60,7 @@ class CitasController extends AbstractController
     {
         $worker = $security->getUser();
         if ($worker instanceof Cliente) {
-            $citas = $citaRepository->findBy(['workerName' => $worker->getUsername()]);
+            $citas = $citaRepository->findBy(['worker' => $worker->getId()]);
             $citasData = [];
 
             foreach ($citas as $cita) {
@@ -65,7 +68,7 @@ class CitasController extends AbstractController
                     'id' => $cita->getId(),
                     'dateInicio' => $cita->getDateInicio()->format('Y-m-d H:i:s'),
                     'dateFin' => $cita->getDateFin()->format('Y-m-d H:i:s'),
-                    'clienteUsername' => $cita->getClienteUsername(),
+                    'clienteUsername' => $cita->getCliente()->getUsername(),
                     'description' => $cita->getDescription(),
                     'nameTatuaje' => $cita->getTatuaje()->getName(),
                     'imageTatuaje' => $cita->getTatuaje()->getImage()
@@ -85,22 +88,16 @@ class CitasController extends AbstractController
     public function eliminarCita(int $id, Security $security, CitaRepository $citaRepository): Response
     {
         $worker = $security->getUser();
-        if ($worker instanceof Cliente) {
-            $cita = $citaRepository->findOneBy([
-                'id' => $id,
-                'workerName' => $worker->getUsername()
-            ]);
 
-            if ($cita) {
-                $citaRepository->remove($cita);
+        $cita = $citaRepository->findOneBy(['id' => $id, 'worker' => $worker]);
 
-                return new JsonResponse(['mensaje' => 'Cita eliminada con éxito'], Response::HTTP_OK);
-            }
+        if ($cita) {
+            $citaRepository->remove($cita);
 
-            return new JsonResponse(['mensaje' => 'Cita no encontrada o no autorizada'], Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['mensaje' => 'Cita eliminada con éxito'], Response::HTTP_OK);
         }
 
-        return new JsonResponse();
+        return new JsonResponse(['mensaje' => 'Cita no encontrada o no autorizada'], Response::HTTP_NOT_FOUND);
     }
 
     #[Route('/mostrarCitasTrabajadores/{worker}', name: 'mostrarCitasTrabajadores')]
