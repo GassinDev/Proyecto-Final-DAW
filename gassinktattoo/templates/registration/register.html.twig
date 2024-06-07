@@ -73,53 +73,73 @@
 	</style>
 
 	<div class="register-container">
-		<div class="register-form-container">
-			{% for flash_error in app.flashes('verify_email_error') %}
-				<div class="alert alert-danger register-alert" role="alert">{{ flash_error }}</div>
-			{% endfor %}
+        <div class="register-form-container">
+            {# Mostrar errores de validación del formulario #}
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger register-alert" role="alert">{{ flash_error }}</div>
+            {% endfor %}
 
-			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				{% set redirectToProfilePath = path('perfil') %}
-				<script>
-					window.location.href = "/perfil";
-				</script>
-			{% else %}
-				<h1 class="register-form-title">Únete a GassInkTattoo</h1>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {% set redirectToProfilePath = path('perfil') %}
+                <script>
+                    window.location.href = "/perfil";
+                </script>
+            {% else %}
+                <h1 class="register-form-title">Únete a GassInkTattoo</h1>
 
-				{{ form_errors(registrationForm) }}
+                {# Mostrar errores de validación del formulario Symfony #}
+                {% if registrationForm.vars.errors|length > 0 %}
+                    <div class="alert alert-danger register-alert" role="alert">
+                        {% for error in registrationForm.vars.errors %}
+                            {{ error.messageKey|trans(error.messageData, 'validators') }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
 
-				{{ form_start(registrationForm) }}
-				<div class="register-form-group">
-					<label class="register-form-label" for="{{ registrationForm.username.vars.id }}">Nombre de usuario</label>
-					{{ form_widget(registrationForm.username, {'attr': {'class': 'register-form-control'}}) }}
-				</div>
-				<div class="register-form-group">
-					<label class="register-form-label" for="{{ registrationForm.email.vars.id }}">Email</label>
-					{{ form_widget(registrationForm.email, {'attr': {'class': 'register-form-control'}}) }}
-				</div>
-				<div class="register-form-group">
-					<label class="register-form-label" for="{{ registrationForm.plainPassword.vars.id }}">Contraseña</label>
-					{{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'register-form-control'}}) }}
-				</div>
-				<div class="register-form-group">
-					<div class="register-image-container" style="display: flex; align-items: center;">
-						<label class="register-form-label" for="{{ registrationForm.imagePerfil.vars.id }}">Imagen de perfil</label>
-						<img src="#" alt="Profile Image" class="register-profile-image" id="profile-image-preview" style="display: none;">
-						{{ form_widget(registrationForm.imagePerfil, {'attr': {'class': 'register-form-control', 'onchange': 'previewImage(this)'}}) }}
-					</div>
-				</div>
-				<div class="register-form-group">
-					{{ form_widget(registrationForm.agreeTerms) }}
-					<label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">Aceptar los términos y condiciones</label>
-				</div>
+                {{ form_start(registrationForm) }}
+                <div class="register-form-group">
+                    <label class="register-form-label" for="{{ registrationForm.username.vars.id }}">Nombre de usuario</label>
+                    {{ form_widget(registrationForm.username, {'attr': {'class': 'register-form-control'}}) }}
+                    {# Mostrar errores de validación específicos del campo #}
+                    {{ form_errors(registrationForm.username) }}
+                </div>
+                <div class="register-form-group">
+                    <label class="register-form-label" for="{{ registrationForm.email.vars.id }}">Email</label>
+                    {{ form_widget(registrationForm.email, {'attr': {'class': 'register-form-control'}}) }}
+                    {# Mostrar errores de validación específicos del campo #}
+                    {{ form_errors(registrationForm.email) }}
+                </div>
+                <div class="register-form-group">
+                    <label class="register-form-label" for="{{ registrationForm.plainPassword.vars.id }}">Contraseña</label>
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'register-form-control'}}) }}
+                    {# Mostrar errores de validación específicos del campo #}
+                    {{ form_errors(registrationForm.plainPassword) }}
+                </div>
+                <div class="register-form-group">
+                    <div class="register-image-container" style="display: flex; align-items: center;">
+                        <label class="register-form-label" for="{{ registrationForm.imagePerfil.vars.id }}">Imagen de perfil</label>
+                        <img src="#" alt="Profile Image" class="register-profile-image" id="profile-image-preview" style="display: none;">
+                        {{ form_widget(registrationForm.imagePerfil, {'attr': {'class': 'register-form-control', 'onchange': 'previewImage(this)'}}) }}
+                    </div>
+                    {# Mostrar errores de validación específicos del campo #}
+                    {{ form_errors(registrationForm.imagePerfil) }}
+                </div>
+                <div class="register-form-group">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    <label class="form-check-label" for="{{ registrationForm.agreeTerms.vars.id }}">Aceptar los términos y condiciones</label>
+                    {# Mostrar errores de validación específicos del campo #}
+                    {{ form_errors(registrationForm.agreeTerms) }}
+                </div>
 
-				<button type="submit" class="register-btn">Registrarme</button>
-				{{ form_end(registrationForm) }}
-			{% endif %}
-		</div>
-	</div>
+                <button type="submit" class="register-btn">Registrarme</button>
+                {{ form_end(registrationForm) }}
+            {% endif %}
+        </div>
+    </div>
 
 	<script>
+
+		//PARA MOSTRAR LA IMAGEN EN EL FORMULARIO
 		function previewImage(input) {
 
             if (input.files && input.files[0]) {

@@ -46,6 +46,8 @@ class RegistrationController extends AbstractController
                 $file->move($this->getParameter('images_directory'), $fileName);
                 // Guardar el nombre del archivo en la propiedad del usuario
                 $user->setImagePerfil($fileName);
+            }else{
+                $user->setImagePerfil('defaultPerfil.jpg');
             }
 
             $entityManager->persist($user);
