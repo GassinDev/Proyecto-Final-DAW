@@ -26,12 +26,14 @@ const ListadoTatuajes = () => {
     const [showImageModal, setShowImageModal] = useState(false);
     const [selectedImage, setSelectedImage] = useState('');
     const [filtros, setFiltros] = useState({ estilos: [], favoritos: false, price: '' });
+    const [verificado, setVerificado] = useState(false);
 
     useEffect(() => {
         fetchTatuajes();
         fetchWorkers();
         const isAuthenticatedCookie = getCookie('authenticated');
         setAuthenticated(isAuthenticatedCookie === 'true');
+        fetchVerificadoCookie();
     }, []);
 
     const getCookie = (name) => {
@@ -43,6 +45,29 @@ const ListadoTatuajes = () => {
             }
         }
         return '';
+    };
+
+    const fetchVerificadoCookie = () => {
+        const isVerificadoCookie = getCookie('verificado');
+        console.log('Cookie value:', isVerificadoCookie);
+        if (isVerificadoCookie !== 'true') {
+            fetchVerificado();
+        } else {
+            setVerificado(true);
+        }
+    };
+
+    const fetchVerificado = async () => {
+        const response = await fetch('http://127.0.0.1:8000/comprobarVerificado');
+        if (!response.ok) {
+            throw new Error('Error al obtener el resultado');
+        }
+        const data = await response.text();
+        const isVerified = data === 'true';
+        console.log('Fetched verification status:', isVerified);
+        setVerificado(isVerified);
+        document.cookie = `verificado=${isVerified}; path=/`;
+
     };
 
     const fetchTatuajes = async () => {
@@ -190,7 +215,8 @@ const ListadoTatuajes = () => {
 
     return (
         <div className='container'>
-            {authenticated ? null : <Alert variant="warning" className='alert'>Por favor, inicia sesión para pedir tu cita.</Alert>}
+            {!authenticated &&  <Alert variant="warning" className='alert'>Por favor, inicia sesión para pedir tu cita.</Alert>}
+            {authenticated && !verificado && <Alert variant="warning" className='alert'>Por favor, verifique el email para pedir tu cita.</Alert>}
             <h2 className='text-center my-4'>Tatuajes</h2>
             <div className='row'>
                 <div className='col-lg-3'>
@@ -218,7 +244,7 @@ const ListadoTatuajes = () => {
                                             <Card.Title>{tatuaje.name}</Card.Title>
                                             <Card.Text>Desde {tatuaje.price}€</Card.Text>
                                             {/* Mostrar el botón solo si el usuario está autenticado */}
-                                            {authenticated ? (
+                                            {authenticated && verificado ? (
                                                 <Button variant="success" onClick={() => handleSelectWorker(tatuaje)}>Pedir cita</Button>
                                             ) : (
                                                 <Button disabled variant="success" onClick={() => handleSelectWorker(tatuaje)}>No puede pedir cita</Button>
