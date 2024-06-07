@@ -100,11 +100,12 @@ class CitasController extends AbstractController
         return new JsonResponse(['mensaje' => 'Cita no encontrada o no autorizada'], Response::HTTP_NOT_FOUND);
     }
 
-    #[Route('/mostrarCitasTrabajadores/{worker}', name: 'mostrarCitasTrabajadores')]
-    public function mostrarCitasTrabajadores(string $worker, CitaRepository $citaRepository): Response
+    #[Route('/mostrarCitasTrabajadores/{workerName}', name: 'mostrarCitasTrabajadores')]
+    public function mostrarCitasTrabajadores(string $workerName, CitaRepository $citaRepository, ClienteRepository $clienteRepository): Response
     {
-
-        $citas = $citaRepository->findBy(['workerName' => $worker]);
+        $worker = $clienteRepository->findOneBy(['username' => $workerName]);
+        
+        $citas = $citaRepository->findBy(['worker' => $worker]);
 
         return $this->json($citas);
     }

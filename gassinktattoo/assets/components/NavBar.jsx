@@ -30,9 +30,10 @@ const NavBar = () => {
         if (!response.ok) {
             throw new Error('Error al obtener la comprobación.');
         }
-        const data = await response.text();
-        setIsWorker(data === 'true');
-        document.cookie = `isWorker=${data === 'true'}; path=/`;
+        const data = await response.json();
+        const roles = data.roles;
+        setIsWorker(data.roles.includes('ROLE_WORKER'));
+        document.cookie = `isWorker=${roles.includes('ROLE_WORKER')}; path=/`;
     };
 
     useEffect(() => {
@@ -80,7 +81,7 @@ const NavBar = () => {
                         {authenticated && isWorker ? <a href="/citas">Citas</a> : null}
                         {authenticated ? <a href="/perfil">Perfil</a> : null}
                         {authenticated ? <a href="/logout" onClick={logout}>Cerrar sesión</a> : null}
-                        
+
                     </Nav>
                 </Navbar.Collapse>
             </Container>

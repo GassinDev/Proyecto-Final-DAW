@@ -56,9 +56,6 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $username = null;
 
-    #[ORM\Column]
-    private ?bool $isWorker = false;
-
     public function __construct()
     {
         $this->carritos = new ArrayCollection();
@@ -232,18 +229,6 @@ class Cliente implements UserInterface, PasswordAuthenticatedUserInterface
     public function setUsername(string $username): static
     {
         $this->username = $username;
-
-        return $this;
-    }
-
-    public function isWorker(): ?bool
-    {
-        return $this->isWorker;
-    }
-
-    public function setIsWorker(bool $isWorker): static
-    {
-        $this->isWorker = $isWorker;
 
         return $this;
     }

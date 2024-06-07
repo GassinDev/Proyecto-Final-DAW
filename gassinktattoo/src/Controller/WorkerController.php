@@ -14,21 +14,39 @@ class WorkerController extends AbstractController
     public function workers(ClienteRepository $clienteRepository): Response
     {
 
-        $workers = $clienteRepository->findBy(['isWorker' => true]);
+        // Obtener todos los clientes
+        $clientes = $clienteRepository->findAll();
 
+        // Filtrar los clientes que tienen el rol ROLE_WORKER
+        $workers = array_filter($clientes, function ($cliente) {
+            return in_array('ROLE_WORKER', $cliente->getRoles());
+        });
 
-        return $this->json($workers);
+        // Convierte el array de objetos a un formato JSON
+        $response = [];
+        foreach ($workers as $worker) {
+            $response[] = [
+                'id' => $worker->getId(),
+                'username' => $worker->getUsername(),
+            ];
+        }
+
+        // Retorna la lista de workers como un JSON
+        return new JsonResponse($response);
     }
 
     #[Route(path: '/workers/clienteUsernames', name: 'clienteUsernames')]
     public function getClienteUsernames(ClienteRepository $clienteRepository): JsonResponse
     {
-        $clientes = $clienteRepository->findBy(['isWorker' => false]);
+        $clientes = $clienteRepository->findAll();
 
         $usernames = [];
         foreach ($clientes as $cliente) {
-            $usernames[] = $cliente->getUsername(); 
+            if (!in_array('ROLE_WORKER', $cliente->getRoles()) && !in_array('ROLE_ADMIN', $cliente->getRoles())) {
+                $usernames[] = $cliente->getUsername();
+            }
         }
+
 
         return new JsonResponse(['usernames' => $usernames]);
     }

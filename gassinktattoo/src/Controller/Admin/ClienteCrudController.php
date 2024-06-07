@@ -36,9 +36,8 @@ class ClienteCrudController extends AbstractCrudController
             TextField::new('password', 'Password')
             ->onlyOnForms(),
             BooleanField::new('isVerified', 'Verified'),
-            BooleanField::new('isWorker', 'Worker'),
             ChoiceField::new('roles')
-            ->setChoices(['ROLE_ADMIN' => 'ROLE_ADMIN', 'ROLE_USER' => 'ROLE_USER'])
+            ->setChoices(['ROLE_USER' => 'ROLE_USER','ROLE_ADMIN' => 'ROLE_ADMIN',  'ROLE_WORKER' => 'ROLE_WORKER'])
             ->allowMultipleChoices()
         ];
     }

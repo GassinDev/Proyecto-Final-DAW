@@ -68,13 +68,14 @@ class SecurityController extends AbstractController
 
         // COMPROBAMOS QUE $CLIENTE ES UNA INSTANCIA DE CLIENTE
         if ($cliente instanceof Cliente) {
-            $verificado = $cliente->isWorker();
-        } else {
-            $verificado = false;
-        }
+            $roles = $cliente->getRoles();
+            
+            $rolesArray = ['roles' => $roles];
 
-        // DEVOLVEMOS EL RESULTADO COMO UNA CADENA
-        return new Response($verificado ? 'true' : 'false');
+            return $this->json($rolesArray);
+        } 
+
+        return new Response();
     }
 
     #[Route(path: '/access-denied', name: 'access-denied')]
