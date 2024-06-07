@@ -1,0 +1,21 @@
+.rbc-btn-group button {
+    background-color: #4CAF50; /* Cambia este color al que prefieras */
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.rbc-btn-group button:hover {
+    background-color: #000000; /* Color al pasar el ratón */
+    color: white;
+}
+
+.rbc-today {
+    background-color: #4f8548 !important;
+}
+
+.rbc-btn-group .rbc-active {
+    background-color: #000000; 
+    color: rgb(255, 255, 255);
+}

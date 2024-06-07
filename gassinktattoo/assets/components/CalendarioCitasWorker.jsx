@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form';
 import Swal from 'sweetalert2';
 import { AsyncTypeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
+import '../styles/calendario.css';
 
 const localizer = momentLocalizer(moment);
 
@@ -190,6 +191,7 @@ const CalendarioCitasWorker = () => {
                         event: EventAll
                     }
                 }}
+                className="custom-calendar"
             />
             <Modal show={showModal} onHide={handleCloseModal} style={{ color: 'black' }}>
                 <Modal.Header closeButton style={{ backgroundColor: 'black', color: 'white' }} >
