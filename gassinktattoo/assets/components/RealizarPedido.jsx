@@ -95,6 +95,11 @@ const RealizarPedido = () => {
         const camposRequeridos = ['nombre', 'telefono', 'calle', 'ciudad', 'provincia', 'cp', 'pais'];
         const camposVacios = camposRequeridos.filter(campo => !datosPedido[campo]);
 
+        if (camposVacios.length > 0) {
+            setError('Por favor, complete todos los campos requeridos.');
+            return;
+        }
+    
         const result = await Swal.fire({
             title: "¿ Quieres realizar el pedido ?",
             imageUrl: "https://media2.giphy.com/media/LmsH9leFrFp3vT4f8F/200.webp?cid=790b7611tkxx2tg7s9xwikz60xn8xyw6jag2la21y84l460q&ep=v1_gifs_search&rid=200.webp&ct=g",
@@ -105,11 +110,6 @@ const RealizarPedido = () => {
             confirmButtonText: "Si",
             denyButtonText: `No`
         });
-
-        if (camposVacios.length > 0) {
-            setError('Por favor, complete todos los campos requeridos.');
-            return;
-        }
 
         if (result.isConfirmed) {
             fetch('http://127.0.0.1:8000/pedido/guardar', {
