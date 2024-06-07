@@ -4,6 +4,7 @@ import FiltrosMerchandising from './FiltrosMerchandising';
 import '../styles/spinner.css';
 import Swal from 'sweetalert2';
 import '../styles/modalInfo.css';
+import '../styles/letras.css';
 
 const ListadoMerchandising = () => {
     const [authenticated, setAuthenticated] = useState(false);
@@ -163,7 +164,7 @@ const ListadoMerchandising = () => {
         <div className='container'>
             {/* Alerta para usuarios no autenticados */}
             {!authenticated && <Alert variant="warning" className='alert'>Por favor, inicia sesión para agregar al carrito.</Alert>}
-            <h2 className='text-center my-4'>Merchandising</h2>
+            <h2 className='text-center my-4 titulo'>Merchandising</h2>
             <div className='row justify-content-center'>
                 <div className='col-lg-3'>
                     <FiltrosMerchandising onChange={handleFiltrosChange} />

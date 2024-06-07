@@ -3,6 +3,7 @@ import { Button, Card, Spinner, Alert, Modal } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import '../styles/spinner.css';
 import '../styles/modalInfo.css';
+import '../styles/letras.css';
 
 const ListadoProductos = () => {
     const [productos, setProductos] = useState([]);
@@ -92,7 +93,7 @@ const ListadoProductos = () => {
 
     return (
         <div className='container'>
-            <h2 className='text-center my-4'>Productos</h2>
+            <h2 className='text-center my-4 titulo'>Productos</h2>
             <div className='row justify-content-center'>
                 {productos.map(producto => (
                     <div key={producto.id} className='col-lg-4 col-md-6 mb-4'>

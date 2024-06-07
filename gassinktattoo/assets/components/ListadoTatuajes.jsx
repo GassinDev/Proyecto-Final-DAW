@@ -217,7 +217,7 @@ const ListadoTatuajes = () => {
         <div className='container'>
             {!authenticated &&  <Alert variant="warning" className='alert'>Por favor, inicia sesión para pedir tu cita.</Alert>}
             {authenticated && !verificado && <Alert variant="warning" className='alert'>Por favor, verifique el email para pedir tu cita.</Alert>}
-            <h2 className='text-center my-4'>Tatuajes</h2>
+            <h2 className='text-center my-4 titulo'>Tatuajes</h2>
             <div className='row'>
                 <div className='col-lg-3'>
                     <FiltrosTatuajes onChange={handleFiltrosChange} />
@@ -262,7 +262,7 @@ const ListadoTatuajes = () => {
                 <Modal.Header closeButton style={{ backgroundColor: 'white', color: 'black' }}>
                     <Modal.Title>Pide tu cita</Modal.Title>
                 </Modal.Header>
-                <Modal.Body style={{ backgroundColor: 'black' }}>
+                <Modal.Body className='color-custom'>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="selectWorker">
                             <Form.Label>Seleccionar Trabajador</Form.Label>

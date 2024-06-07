@@ -34,7 +34,7 @@ const ModalCitas = ({ show, onHide }) => {
                         <Spinner animation="border" style={{ color: 'black' }} />
                     </div>
                 ) : (
-                    <div className="table-responsive">
+                    peticionesCita.length > 0 ? (<div className="table-responsive">
                         <Table striped bordered hover>
                             <thead>
                                 <tr>
@@ -70,7 +70,11 @@ const ModalCitas = ({ show, onHide }) => {
                                 ))}
                             </tbody>
                         </Table>
-                    </div>
+                    </div>) : (
+                        <div style={{color: 'black'}}>
+                        <p>No hay peticiones de citas realizadas.</p>
+                    </div>)
+
                 )}
             </Modal.Body>
             <Modal.Footer>

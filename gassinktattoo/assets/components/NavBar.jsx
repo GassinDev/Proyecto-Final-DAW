@@ -69,7 +69,7 @@ const NavBar = () => {
             <Container>
                 <Navbar.Brand className='brand-custom'>
                 <img
-                        src='./images/logoIco.png'
+                        src='/images/logoIco.png'
                         width="47"
                         height="47"
                         className="d-inline-block align-top"

@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'FuentePrincipal-Bold';
+    src: url('../../public/fonts/EdgeDisplay-Bold.otf') format('opentype');
+}
+
+.titulo{
+    font-family: FuentePrincipal-Bold, sans-serif;
+}

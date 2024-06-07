@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Table, Button, Spinner } from 'react-bootstrap';
 import Swal from 'sweetalert2';
 import '../styles/spinner.css';
+import '../styles/letras.css';
 
 const Carrito = () => {
     const [productos, setProductos] = useState([]);
@@ -115,7 +116,7 @@ const Carrito = () => {
 
     return (
         <Container>
-            <h2>Carrito</h2>
+            <h2 className='titulo'>Carrito</h2>
             <Table striped bordered hover>
                 <thead>
                     <tr>
