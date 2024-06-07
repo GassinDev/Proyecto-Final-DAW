@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Carrito;
 use App\Entity\Cita;
 use App\Entity\Cliente;
 use App\Entity\Merchandising;
@@ -55,5 +56,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Tatuajes', 'fa-solid fa-pencil', Tatuaje::class);
         yield MenuItem::linkToCrud('Pedidos', 'fa-solid fa-box', Pedido::class);
         yield MenuItem::linkToCrud('Citas', 'fa-solid fa-envelope', Cita::class);
+        yield MenuItem::linkToCrud('Carrito', 'fa-solid fa-cart-shopping', Carrito::class);
     }
 }
