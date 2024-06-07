@@ -93,6 +93,8 @@ const ListadoProductos = () => {
 
     return (
         <div className='container'>
+            {/* Alerta para usuarios no autenticados */}
+            {!authenticated && <Alert variant="warning" className='alert'>Por favor, inicia sesión para agregar al carrito.</Alert>}
             <h2 className='text-center my-4 titulo'>Productos</h2>
             <div className='row justify-content-center'>
                 {productos.map(producto => (
@@ -114,7 +116,7 @@ const ListadoProductos = () => {
                                     {authenticated ? (
                                         <Button variant="success" onClick={() => handleAddToCart(producto.id)}>Añadir al carrito</Button>
                                     ) : (
-                                        <Alert variant="warning">Por favor, inicia sesión para agregar al carrito</Alert>
+                                        <Button disabled variant="success" className="mt-3">Añadir al carrito</Button>
                                     )}
                                 </Card.Body>
                             </Card>
@@ -123,7 +125,7 @@ const ListadoProductos = () => {
                     </div>
                 ))}
             </div>
-            
+
             <Modal
                 show={showModal}
                 onHide={handleCloseModal}

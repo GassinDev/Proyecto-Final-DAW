@@ -214,7 +214,7 @@ const ListadoMerchandising = () => {
                                             {authenticated ? (
                                                 <Button variant="success" className="mt-3" onClick={() => handleAddToCart(merchan.id)}>Añadir al carrito</Button>
                                             ) : (
-                                                <Button disabled variant="success" className="mt-3">No puede pedir cita</Button>
+                                                <Button disabled variant="success" className="mt-3">Añadir al carrito</Button>
                                             )}
                                         </Card.Body>
                                     </Card>
